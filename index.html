@@ -3,312 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Undangan Pernikahan</title>
-    <!-- Google Fonts & FontAwesome Icons -->
-    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <style>
-        :root {
-            --primary-color: #8a6d3b;
-            --bg-color: #fcf8f2;
-            --text-color: #4a4a4a;
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        body {
-            font-family: 'Poppins', sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            text-align: center;
-            overflow-x: hidden;
-        }
-
-        h1, h2 {
-            font-family: 'Great Vibes', cursive;
-            color: var(--primary-color);
-        }
-
-        /* --- SCREEN COVER / SAMPUL AWAL --- */
-        #cover-screen {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('images/cover.jpg') center/cover no-repeat;
-            color: #fff;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
-            transition: transform 0.8s ease-in-out;
-            padding: 20px;
-        }
-
-        #cover-screen.hide {
-            transform: translateY(-100%);
-        }
-
-        .guest-box {
-            background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(5px);
-            padding: 15px 25px;
-            border-radius: 10px;
-            margin: 20px 0;
-            border: 1px solid rgba(255,255,255,0.3);
-        }
-
-        .btn-open {
-            background-color: var(--primary-color);
-            color: white;
-            border: none;
-            padding: 12px 28px;
-            font-size: 1rem;
-            border-radius: 25px;
-            cursor: pointer;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-            transition: 0.3s;
-        }
-
-        .btn-open:hover {
-            transform: scale(1.05);
-        }
-
-        /* --- CONTENT WRAPPER --- */
-        #main-content {
-            display: none;
-            padding: 20px 15px 80px 15px;
-            max-width: 600px;
-            margin: 0 auto;
-        }
-
-        section {
-            margin-bottom: 50px;
-            padding: 25px 15px;
-            background: white;
-            border-radius: 15px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-        }
-
-        .couple-img {
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            object-fit: cover;
-            margin: 10px auto;
-            border: 3px solid var(--primary-color);
-        }
-
-        .btn-action {
-            display: inline-block;
-            background-color: #25d366;
-            color: white;
-            padding: 10px 20px;
-            text-decoration: none;
-            border-radius: 8px;
-            margin-top: 10px;
-            font-size: 0.9rem;
-        }
-
-        .btn-maps {
-            background-color: #4285F4;
-        }
-
-        /* --- GALERI --- */
-        .gallery-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-            gap: 10px;
-            margin-top: 15px;
-        }
-
-        .gallery-grid img {
-            width: 100%;
-            height: 120px;
-            object-fit: cover;
-            border-radius: 8px;
-        }
-
-        /* --- MUSIC CONTROLLER --- */
-        #music-control {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: var(--primary-color);
-            color: white;
-            width: 45px;
-            height: 45px;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-            z-index: 1000;
-        }
-    </style>
-</head>
-<body>
-
-    <!-- AUDIO PLAYER -->
-    <audio id="bg-music" loop>
-        <source src="music.mp3" type="audio/mp3">
-    </audio>
-
-    <!-- SAMPUL AWAL (COVER SCREEN) -->
-    <div id="cover-screen">
-        <p style="font-size: 0.9rem; letter-spacing: 2px;">THE WEDDING OF</p>
-        <h1 style="font-size: 3rem; margin: 10px 0;">Romeo & Juliet</h1>
-        
-        <div class="guest-box">
-            <p style="font-size: 0.8rem;">Kepada Yth. Bapak/Ibu/Saudara/i:</p>
-            <h3 id="guest-name" style="font-size: 1.3rem; margin-top: 5px; color: #fff;">Nama Tamu</h3>
-        </div>
-
-        <button class="btn-open" onclick="openInvitation()">
-            <i class="fa-solid fa-envelope-open"></i> Buka Undangan
-        </button>
-    </div>
-
-    <!-- TAMPILAN UTAMA WEBSITE -->
-    <div id="main-content">
-        
-        <!-- HERO SECTION -->
-        <section>
-            <p>Kami Mengundang Anda Untuk Merayakan Pernikahan Kami</p>
-            <h1 style="font-size: 2.5rem; margin: 15px 0;">Romeo & Juliet</h1>
-            <p><b>Minggu, 12 Oktober 2026</b></p>
-        </section>
-
-        <!-- MEMPELAI SECTION -->
-        <section>
-            <h2>Mempelai</h2>
-            <div style="margin-top: 20px;">
-                <img src="images/mempelai-pria.jpg" class="couple-img" alt="Mempelai Pria">
-                <h3>Romeo Montague, S.Kom</h3>
-                <p style="font-size: 0.85rem; color: #777;">Putra dari M. Montague & Ibu Montague</p>
-            </div>
-            
-            <h2 style="font-size: 2rem; margin: 15px 0;">&</h2>
-
-            <div>
-                <img src="images/mempelai-wanita.jpg" class="couple-img" alt="Mempelai Wanita">
-                <h3>Juliet Capulet, S.E</h3>
-                <p style="font-size: 0.85rem; color: #777;">Putri dari M. Capulet & Ibu Capulet</p>
-            </div>
-        </section>
-
-        <!-- ACARA & MAPS -->
-        <section>
-            <h2>Waktu & Lokasi</h2>
-            <hr style="margin: 10px 0; border: none; border-top: 1px solid #ddd;">
-            
-            <h3 style="margin-top: 15px;">Akad Nikah</h3>
-            <p>08.00 WIB - Selesai</p>
-            
-            <h3 style="margin-top: 15px;">Resepsi</h3>
-            <p>11.00 WIB - Selesai</p>
-            
-            <p style="margin-top: 15px;"><b>Gedung Serbaguna Utama</b><br>Jl. Mawar No. 123, Jakarta</p>
-            
-            <a href="https://maps.google.com" target="_blank" class="btn-action btn-maps">
-                <i class="fa-solid fa-location-dot"></i> Buka Google Maps
-            </a>
-        </section>
-
-        <!-- GALERI FOTO -->
-        <section>
-            <h2>Galeri Foto</h2>
-            <div class="gallery-grid">
-                <img src="images/galeri1.jpg" alt="Galeri 1">
-                <img src="images/galeri2.jpg" alt="Galeri 2">
-                <img src="images/galeri3.jpg" alt="Galeri 3">
-            </div>
-        </section>
-
-        <!-- RSVP WHATSAPP -->
-        <section>
-            <h2>Konfirmasi Kehadiran</h2>
-            <p style="font-size: 0.9rem; margin-bottom: 15px;">Mohon konfirmasi kehadiran Anda melalui WhatsApp di bawah ini:</p>
-            
-            <a href="https://wa.me/628123456789?text=Halo,%20saya%20akan%20hadir%20di%20acara%20pernikahan%20Romeo%20%26%20Juliet" target="_blank" class="btn-action">
-                <i class="fa-brands fa-whatsapp"></i> Konfirmasi via WhatsApp
-            </a>
-        </section>
-
-        <!-- AMPLOP DIGITAL -->
-        <section>
-            <h2>Amplop Digital</h2>
-            <p style="font-size: 0.85rem; margin-bottom: 15px;">Doa restu Anda merupakan karunia yang sangat berarti bagi kami. Jika ingin memberi hadiah, Anda dapat mengirimkannya melalui:</p>
-            
-            <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; border: 1px dashed #ccc;">
-                <p><b>Bank BCA</b></p>
-                <p id="rekening">1234567890</p>
-                <p style="font-size: 0.85rem;">a.n. Romeo Montague</p>
-                <button onclick="copyRekening()" style="margin-top: 8px; padding: 5px 12px; font-size: 0.8rem; cursor: pointer;">Salin No. Rekening</button>
-            </div>
-        </section>
-
-    </div>
-
-    <!-- BUTTON CONTROL MUSIK -->
-    <div id="music-control" onclick="toggleMusic()">
-        <i id="music-icon" class="fa-solid fa-music"></i>
-    </div>
-
-    <!-- JAVASCRIPT LOGIC -->
-    <script>
-        const urlParams = new URLSearchParams(window.location.search);
-        const guestName = urlParams.get('kpd');
-        if (guestName) {
-            document.getElementById('guest-name').innerText = guestName;
-        } else {
-            document.getElementById('guest-name').innerText = "Tamu Undangan";
-        }
-
-        const bgMusic = document.getElementById('bg-music');
-        let isPlaying = false;
-
-        function openInvitation() {
-            document.getElementById('cover-screen').classList.add('hide');
-            document.getElementById('main-content').style.display = 'block';
-            
-            bgMusic.play();
-            isPlaying = true;
-        }
-
-        function toggleMusic() {
-            const musicIcon = document.getElementById('music-icon');
-            if (isPlaying) {
-                bgMusic.pause();
-                musicIcon.className = "fa-solid fa-volume-xmark";
-            } else {
-                bgMusic.play();
-                musicIcon.className = "fa-solid fa-music";
-            }
-            isPlaying = !isPlaying;
-        }
-
-        function copyRekening() {
-            const rek = document.getElementById('rekening').innerText;
-            navigator.clipboard.writeText(rek);
-            alert("Nomor rekening berhasil disalin: " + rek);
-        }
-    </script>
-</body>
-</html>
-html_content = """<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Undangan Pernikahan Bayu & Winda</title>
 
-    <!-- Google Fonts & FontAwesome Icons -->
+    <!-- Google Fonts & FontAwesome -->
     <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Cinzel:wght@400;600;700&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
@@ -348,8 +45,11 @@ html_content = """<!DOCTYPE html>
         /* --- COVER SCREEN --- */
         #cover-screen {
             position: fixed;
-            top: 0; left: 0; width: 100%; height: 100vh;
-            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100vh;
+            background: linear-gradient(rgba(0,0,0,0.65), rgba(0,0,0,0.65)), 
                         url('images/cover.jpg'), 
                         url('https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=1000') center/cover no-repeat;
             color: #fff;
@@ -357,13 +57,15 @@ html_content = """<!DOCTYPE html>
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            z-index: 9999;
-            transition: transform 0.8s cubic-bezier(0.77, 0, 0.175, 1);
+            z-index: 99999;
+            transition: transform 0.8s ease-in-out, opacity 0.8s ease-in-out;
             padding: 20px;
         }
 
         #cover-screen.hide {
             transform: translateY(-100%);
+            opacity: 0;
+            pointer-events: none;
         }
 
         .guest-box {
@@ -537,7 +239,6 @@ html_content = """<!DOCTYPE html>
             height: 140px;
             object-fit: cover;
             border-radius: 8px;
-            transition: 0.3s;
         }
 
         /* --- FORM & INPUT --- */
@@ -597,7 +298,7 @@ html_content = """<!DOCTYPE html>
 </head>
 <body>
 
-    <!-- AUDIO PLAYER (Royalty-Free Piano Romantic Music) -->
+    <!-- AUDIO PLAYER -->
     <audio id="bg-music" loop preload="auto">
         <source src="music.mp3" type="audio/mp3">
         <source src="https://assets.mixkit.co/music/preview/mixkit-beautiful-dream-493.mp3" type="audio/mp3">
@@ -613,7 +314,7 @@ html_content = """<!DOCTYPE html>
             <h3 id="guest-name" style="font-size: 1.2rem; margin-top: 5px; color: var(--accent-gold);" class="font-serif">Nama Tamu</h3>
         </div>
 
-        <button class="btn-gold" onclick="openInvitation()">
+        <button class="btn-gold" id="btn-open-invitation">
             <i class="fa-solid fa-envelope-open" style="margin-right: 8px;"></i> BUKA UNDANGAN
         </button>
     </div>
@@ -621,7 +322,7 @@ html_content = """<!DOCTYPE html>
     <!-- MAIN CONTENT -->
     <div id="main-content">
 
-        <!-- KUTIPAN AYAT / QUOTE -->
+        <!-- KUTIPAN AYAT -->
         <section>
             <i class="fa-solid fa-quote-left" style="color: var(--primary-gold); font-size: 1.5rem;"></i>
             <p style="font-size: 0.85rem; color: var(--text-muted); font-style: italic; margin-top: 10px; line-height: 1.6;">
@@ -677,7 +378,6 @@ html_content = """<!DOCTYPE html>
             <h2 class="section-title">Waktu & Lokasi</h2>
             <p style="font-size: 0.85rem; font-weight: 600; color: var(--primary-gold);">SABTU, 24 OKTOBER 2026</p>
 
-            <!-- COUNTDOWN TIMER -->
             <div class="timer-container">
                 <div class="timer-box"><div class="timer-number" id="days">00</div><div class="timer-label">Hari</div></div>
                 <div class="timer-box"><div class="timer-number" id="hours">00</div><div class="timer-label">Jam</div></div>
@@ -717,10 +417,10 @@ html_content = """<!DOCTYPE html>
             </div>
         </section>
 
-        <!-- RSVP (KONFIRMASI KEHADIRAN) -->
+        <!-- RSVP -->
         <section>
             <h2 class="section-title">Konfirmasi Kehadiran</h2>
-            <form id="rsvp-form" onsubmit="sendRSVP(event)">
+            <form id="rsvp-form">
                 <input type="text" id="rsvp-name" placeholder="Nama Anda" required>
                 <select id="rsvp-status" required>
                     <option value="">-- Pilih Kehadiran --</option>
@@ -737,7 +437,7 @@ html_content = """<!DOCTYPE html>
         <!-- BUKU TAMU / UCAPAN -->
         <section>
             <h2 class="section-title">Kirim Doa & Ucapan</h2>
-            <form onsubmit="addWish(event)">
+            <form id="wish-form">
                 <input type="text" id="wish-name" placeholder="Nama Anda" required>
                 <textarea id="wish-message" rows="3" placeholder="Tuliskan ucapan & doa restu..." required></textarea>
                 <button type="submit" class="btn-gold" style="width: 100%; padding: 10px;">Kirim Ucapan</button>
@@ -747,10 +447,6 @@ html_content = """<!DOCTYPE html>
                 <div class="wish-item">
                     <b>Budi Kurniawan & Istri</b>
                     <p>Selamat untuk Bayu dan Winda! Semoga menjadi keluarga sakinah mawaddah warahmah, lancar sampai hari H.</p>
-                </div>
-                <div class="wish-item">
-                    <b>Siti Rahmawati</b>
-                    <p>Happy Wedding Winda & Mas Bayu! Semoga bahagia selalu dan cepat diberikan momongan.</p>
                 </div>
             </div>
         </section>
@@ -766,14 +462,7 @@ html_content = """<!DOCTYPE html>
                 <p style="font-weight: 600;">BANK BCA</p>
                 <p id="rek-1" style="font-size: 1.2rem; font-weight: 700; color: var(--primary-gold); margin: 5px 0;">8830123456</p>
                 <p style="font-size: 0.8rem; color: var(--text-muted);">a.n. Bayu Setiawan</p>
-                <button onclick="copyText('rek-1')" class="btn-gold" style="padding: 6px 15px; font-size: 0.75rem; margin-top: 10px;">Salin No. Rekening</button>
-            </div>
-
-            <div style="background: #fdfbf7; padding: 20px; border-radius: 12px; border: 1px dashed var(--primary-gold);">
-                <p style="font-weight: 600;">BANK MANDIRI</p>
-                <p id="rek-2" style="font-size: 1.2rem; font-weight: 700; color: var(--primary-gold); margin: 5px 0;">1370012345678</p>
-                <p style="font-size: 0.8rem; color: var(--text-muted);">a.n. Winda Anggraeni</p>
-                <button onclick="copyText('rek-2')" class="btn-gold" style="padding: 6px 15px; font-size: 0.75rem; margin-top: 10px;">Salin No. Rekening</button>
+                <button type="button" onclick="copyText('rek-1')" class="btn-gold" style="padding: 6px 15px; font-size: 0.75rem; margin-top: 10px;">Salin No. Rekening</button>
             </div>
         </section>
 
@@ -785,91 +474,96 @@ html_content = """<!DOCTYPE html>
     </div>
 
     <!-- MUSIC CONTROL BUTTON -->
-    <div id="music-control" onclick="toggleMusic()">
+    <div id="music-control">
         <i id="music-icon" class="fa-solid fa-music"></i>
     </div>
 
     <!-- JAVASCRIPT LOGIC -->
     <script>
-        // 1. TAMU DINAMIS (?kpd=...)
-        const urlParams = new URLSearchParams(window.location.search);
-        const guestName = urlParams.get('kpd');
-        if (guestName) {
-            document.getElementById('guest-name').innerText = guestName;
-            document.getElementById('rsvp-name').value = guestName;
-            document.getElementById('wish-name').value = guestName;
-        }
+        document.addEventListener('DOMContentLoaded', function() {
+            // 1. TAMU DINAMIS (?kpd=...)
+            const urlParams = new URLSearchParams(window.location.search);
+            const guestName = urlParams.get('kpd');
+            if (guestName) {
+                document.getElementById('guest-name').innerText = guestName;
+                document.getElementById('rsvp-name').value = guestName;
+                document.getElementById('wish-name').value = guestName;
+            }
 
-        // 2. BUKA UNDANGAN & AUTOPLAY MUSIK (DUAL SOURCE SOUND)
-        const bgMusic = document.getElementById('bg-music');
-        let isPlaying = false;
-
-        function openInvitation() {
-            document.getElementById('cover-screen').classList.add('hide');
-            document.getElementById('main-content').style.display = 'block';
-            
-            bgMusic.play().then(() => {
-                isPlaying = true;
-                document.getElementById('music-control').classList.add('rotate-music');
-            }).catch(err => console.log("Autoplay blocked:", err));
-        }
-
-        function toggleMusic() {
-            const musicIcon = document.getElementById('music-icon');
+            // 2. BUKA UNDANGAN & AUTOPLAY MUSIK
+            const bgMusic = document.getElementById('bg-music');
+            const btnOpen = document.getElementById('btn-open-invitation');
+            const coverScreen = document.getElementById('cover-screen');
+            const mainContent = document.getElementById('main-content');
             const musicBtn = document.getElementById('music-control');
-            if (isPlaying) {
-                bgMusic.pause();
-                musicIcon.className = "fa-solid fa-volume-xmark";
-                musicBtn.classList.remove('rotate-music');
-            } else {
-                bgMusic.play();
-                musicIcon.className = "fa-solid fa-music";
-                musicBtn.classList.add('rotate-music');
-            }
-            isPlaying = !isPlaying;
-        }
+            const musicIcon = document.getElementById('music-icon');
+            let isPlaying = false;
 
-        // 3. COUNTDOWN TIMER (24 OKTOBER 2026)
-        const eventDate = new Date("October 24, 2026 08:00:00").getTime();
-        setInterval(() => {
-            const now = new Date().getTime();
-            const diff = eventDate - now;
+            btnOpen.addEventListener('click', function() {
+                coverScreen.classList.add('hide');
+                mainContent.style.display = 'block';
+                window.scrollTo(0, 0);
 
-            if (diff > 0) {
-                document.getElementById("days").innerText = Math.floor(diff / (1000 * 60 * 60 * 24));
-                document.getElementById("hours").innerText = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                document.getElementById("minutes").innerText = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-                document.getElementById("seconds").innerText = Math.floor((diff % (1000 * 60)) / 1000);
-            }
-        }, 1000);
+                bgMusic.play().then(() => {
+                    isPlaying = true;
+                    musicBtn.classList.add('rotate-music');
+                }).catch(err => console.log("Autoplay blocked:", err));
+            });
 
-        // 4. RSVP VIA WHATSAPP
-        function sendRSVP(e) {
-            e.preventDefault();
-            const name = document.getElementById('rsvp-name').value;
-            const status = document.getElementById('rsvp-status').value;
-            const count = document.getElementById('rsvp-count').value || 1;
-            
-            const phoneNumber = "628123456789"; // GANTI NOMOR WA ANDA
-            
-            const message = `Halo, saya ${name} mengonfirmasi ${status} untuk acara pernikahan Bayu & Winda (Jumlah: ${count} orang). Terima kasih!`;
-            window.open(`https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`, '_blank');
-        }
+            musicBtn.addEventListener('click', function() {
+                if (isPlaying) {
+                    bgMusic.pause();
+                    musicIcon.className = "fa-solid fa-volume-xmark";
+                    musicBtn.classList.remove('rotate-music');
+                } else {
+                    bgMusic.play();
+                    musicIcon.className = "fa-solid fa-music";
+                    musicBtn.classList.add('rotate-music');
+                }
+                isPlaying = !isPlaying;
+            });
 
-        // 5. BUKU TAMU LOKAL
-        function addWish(e) {
-            e.preventDefault();
-            const name = document.getElementById('wish-name').value;
-            const msg = document.getElementById('wish-message').value;
+            // 3. COUNTDOWN TIMER
+            const eventDate = new Date("October 24, 2026 08:00:00").getTime();
+            setInterval(() => {
+                const now = new Date().getTime();
+                const diff = eventDate - now;
 
-            const container = document.getElementById('wishes-container');
-            const wishElement = document.createElement('div');
-            wishElement.className = 'wish-item';
-            wishElement.innerHTML = `<b>${name}</b><p>${msg}</p>`;
-            
-            container.prepend(wishElement);
-            document.getElementById('wish-message').value = '';
-        }
+                if (diff > 0) {
+                    document.getElementById("days").innerText = Math.floor(diff / (1000 * 60 * 60 * 24));
+                    document.getElementById("hours").innerText = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                    document.getElementById("minutes").innerText = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                    document.getElementById("seconds").innerText = Math.floor((diff % (1000 * 60)) / 1000);
+                }
+            }, 1000);
+
+            // 4. RSVP VIA WHATSAPP
+            document.getElementById('rsvp-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                const name = document.getElementById('rsvp-name').value;
+                const status = document.getElementById('rsvp-status').value;
+                const count = document.getElementById('rsvp-count').value || 1;
+                const phoneNumber = "628123456789"; 
+
+                const message = `Halo, saya ${name} mengonfirmasi ${status} untuk acara pernikahan Bayu & Winda (Jumlah: ${count} orang). Terima kasih!`;
+                window.open(`https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`, '_blank');
+            });
+
+            // 5. BUKU TAMU
+            document.getElementById('wish-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                const name = document.getElementById('wish-name').value;
+                const msg = document.getElementById('wish-message').value;
+
+                const container = document.getElementById('wishes-container');
+                const wishElement = document.createElement('div');
+                wishElement.className = 'wish-item';
+                wishElement.innerHTML = `<b>${name}</b><p>${msg}</p>`;
+                
+                container.prepend(wishElement);
+                document.getElementById('wish-message').value = '';
+            });
+        });
 
         // 6. COPY NO REKENING
         function copyText(id) {
@@ -880,9 +574,3 @@ html_content = """<!DOCTYPE html>
     </script>
 </body>
 </html>
-"""
-
-with open("index.html", "w", encoding="utf-8") as f:
-    f.write(html_content)
-
-print("Enhanced index.html updated successfully.")
