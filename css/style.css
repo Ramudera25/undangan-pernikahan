@@ -155,3 +155,43 @@ body.no-scroll {
 .content-hidden {
     display: none;
 }
+/* Custom Font Etnik & Warna Aksentuation Emas */
+:root {
+    --gold: #C5A880;
+    --gold-dark: #A88B63;
+    --font-ethnic: 'Cinzel', serif;
+}
+
+/* Sentuhan Batik/Pattern Halus pada Background */
+body {
+    background-color: var(--cream);
+    background-image: radial-gradient(var(--gold) 0.4px, transparent 0.4px), radial-gradient(var(--gold) 0.4px, var(--cream) 0.4px);
+    background-size: 24px 24px;
+    background-position: 0 0, 12px 12px;
+}
+
+/* Mengubah Font Judul Utama & Cover Menjadi Lebih Etnik */
+.cover h1, .hero h2, .section-head h2 {
+    font-family: var(--font-ethnic), var(--serif) !important;
+}
+
+.cover-mark {
+    border-color: var(--gold) !important;
+    color: var(--gold) !important;
+}
+
+/* Ornaments Divider Gunungan / Bunga */
+.ornament {
+    color: var(--gold) !important;
+    font-size: 2rem;
+    letter-spacing: 0.4em;
+}
+
+/* Pembatas & Aksentuasi Emas pada Card Event */
+.event {
+    border-left: 4px solid var(--gold) !important;
+}
+
+.bank {
+    border: 1px dashed var(--gold) !important;
+}
