@@ -5,52 +5,52 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Undangan Pernikahan</title>
 
-    <!-- Meta Open Graph (Untuk Tampilan Share Link di WhatsApp/Telegram) -->
+    <!-- Meta Open Graph (Tampilan Share Link WhatsApp/Telegram) -->
     <meta property="og:title" content="Undangan Pernikahan - Romeo & Juliet">
     <meta property="og:description" content="Kami mengundang Anda untuk hadir di acara pernikahan kami.">
     <meta property="og:image" content="assets/images/hero-bg.jpg">
 
-    <!-- 1. GOOGLE FONTS (Cinzel & Playfair Display untuk Etnik Elegance, Plus Inter untuk Teks Biasa) -->
+    <!-- 1. GOOGLE FONTS (Cinzel, Inter, Playfair Display) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Inter:wght@300;400;600&family=Playfair+Display:ital,wght@0,600;1,400&display=swap" rel="stylesheet">
 
-    <!-- 2. FONT AWESOME (Untuk Ikon Musik, Copy, Kalender, dll) -->
+    <!-- 2. FONT AWESOME (Ikon) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-    <!-- 3. AOS CSS (Animate On Scroll untuk Transisi Halus) -->
+    <!-- 3. AOS CSS (Animasi Scroll) -->
     <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
 
-    <!-- 4. SWIPER CSS (Untuk Galeri Foto Bergerak) -->
+    <!-- 4. SWIPER CSS (Galeri Carousel) -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
 
-    <!-- 5. GLIGHTBOX CSS (Untuk Pop-up Zoom Foto Galeri) -->
+    <!-- 5. GLIGHTBOX CSS (Zoom Foto Galeri) -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/glightbox/dist/css/glightbox.min.css" />
 
-    <!-- 6. FILE CSS UTAMA KITA -->
+    <!-- 6. FILE CSS UTAMA -->
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body class="bg-pattern">
 
-    <!-- Elemen Canvas untuk Animasi Kelopak Bunga Gugur -->
+    <!-- Elemen Canvas Animasi Kelopak Bunga Gugur -->
     <canvas id="petal-canvas"></canvas>
 
-    <!-- Audio Player (Sembunyi) -->
+    <!-- Audio Player -->
     <audio id="bg-music" loop>
         <source src="assets/audio/wedding-song.mp3" type="audio/mpeg">
     </audio>
 
-    <!-- Tombol Audio Melayang (Floating Button) -->
+    <!-- Tombol Audio Floating -->
     <button id="music-control" class="music-btn hide" aria-label="Toggle Music">
         <i class="fa-solid fa-disc-linecap fa-spin"></i>
     </button>
 
     <!-- =======================================================
-         BAGIAN 1: COVER / OPENING MODAL (Kunci Scroll)
+         BAGIAN 1: COVER / OPENING MODAL
          ======================================================= -->
     <div id="opening-modal" class="modal-overlay">
         <div class="modal-content" data-aos="zoom-in">
-            <!-- Ornamen Gunungan SVG di Atas Modal -->
+            <!-- Ornamen Gunungan SVG -->
             <div class="gunungan-icon">
                 <svg width="60" height="80" viewBox="0 0 100 130" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M50 0L100 130H0L50 0Z" fill="#C5A880" opacity="0.8"/>
@@ -72,7 +72,7 @@
     </div>
 
     <!-- =======================================================
-         ISI UTAMA UNDANGAN (Muncul setelah Modal dibuka)
+         ISI UTAMA UNDANGAN
          ======================================================= -->
     <main id="main-content" class="content-hidden">
         
@@ -85,8 +85,6 @@
             </div>
         </section>
 
-        <!-- (Section lainnya akan kita bangun bertahap berikutnya) -->
-
     </main>
 
     <!-- =======================================================
@@ -95,12 +93,11 @@
     <!-- AOS JS -->
     <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
     <!-- SWIPER JS -->
-    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"></script>
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <!-- GLIGHTBOX JS -->
     <script src="https://cdn.jsdelivr.net/gh/mcstudios/glightbox/dist/js/glightbox.min.js"></script>
     
-    <!-- FILE JS UTAMA KITA -->
+    <!-- FILE JS UTAMA -->
     <script src="js/app.js"></script>
 </body>
 </html>
