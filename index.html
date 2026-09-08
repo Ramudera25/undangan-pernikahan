@@ -1,68 +1,106 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="theme-color" content="#102d32">
-  <title>Bayu & Winda — Sebuah Janji</title>
-  <style>
-    :root{--ink:#102d32;--ink-soft:#315057;--clay:#b55f46;--clay-dark:#8f4938;--cream:#f6f0e6;--paper:#fffaf1;--sand:#dfc9a4;--line:rgba(16,45,50,.16);--serif:Georgia,"Times New Roman",serif;--sans:ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif}
-    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--cream);color:var(--ink);font-family:var(--sans);line-height:1.6;overflow-x:hidden}
-    body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.08;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.32'/%3E%3C/svg%3E");z-index:20}
-    a{color:inherit}button,input,select,textarea{font:inherit}button{cursor:pointer}.serif{font-family:var(--serif)}.eyebrow{font-size:.68rem;letter-spacing:.22em;text-transform:uppercase;font-weight:700;color:var(--clay)}.muted{color:var(--ink-soft)}
-    .cover{position:fixed;inset:0;z-index:50;display:grid;place-items:center;padding:28px;background:linear-gradient(180deg,rgba(16,45,50,.38),rgba(16,45,50,.9)),url("Images/cover.jpg") center/cover;transition:opacity .8s,transform .8s}.cover.is-open{opacity:0;transform:translateY(-100%);pointer-events:none}.cover-inner{text-align:center;color:var(--paper);max-width:560px}.cover-mark{width:70px;height:70px;margin:0 auto 32px;border:1px solid rgba(255,250,241,.7);border-radius:50%;display:grid;place-items:center;font:italic 2.2rem var(--serif)}.cover h1{font:italic 4.2rem/1 var(--serif);margin:16px 0 18px;letter-spacing:-.05em}.cover .date{font-size:.78rem;letter-spacing:.28em;text-transform:uppercase}.guest{margin:34px auto 30px;padding:17px 28px;border-top:1px solid rgba(255,250,241,.45);border-bottom:1px solid rgba(255,250,241,.45);max-width:380px}.guest small{font-size:.62rem;letter-spacing:.18em;text-transform:uppercase;display:block;opacity:.8}.guest strong{display:block;font:1.45rem var(--serif);margin-top:5px}.btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;border:0;border-radius:999px;padding:14px 22px;background:var(--clay);color:var(--paper);font-size:.75rem;font-weight:750;letter-spacing:.1em;text-transform:uppercase;box-shadow:0 8px 20px rgba(143,73,56,.2);transition:transform .25s,background .25s}.btn:hover{transform:translateY(-2px);background:var(--clay-dark)}.btn.outline{background:transparent;border:1px solid var(--clay);color:var(--clay);box-shadow:none}
-    .music{position:fixed;right:18px;bottom:18px;width:48px;height:48px;border:1px solid rgba(255,250,241,.5);border-radius:50%;background:var(--ink);color:var(--paper);z-index:40;box-shadow:0 8px 25px rgba(16,45,50,.28)}.music.playing{animation:turn 4s linear infinite}.music svg{width:18px;fill:none;stroke:currentColor;stroke-width:1.8}
-    main{display:none;max-width:1120px;margin:auto;background:var(--paper);box-shadow:0 0 50px rgba(16,45,50,.08)}main.visible{display:block}.hero{min-height:92vh;display:grid;align-items:end;position:relative;color:var(--paper);background:linear-gradient(0deg,rgba(16,45,50,.93),rgba(16,45,50,.08) 75%),url("Images/cover.jpg") center/cover;padding:40px 7vw 68px}.hero-content{max-width:650px}.hero h2{font:italic clamp(3.5rem,12vw,8rem)/.9 var(--serif);letter-spacing:-.07em;margin:15px 0 22px}.hero p{max-width:500px;font-size:1.02rem;color:rgba(255,250,241,.82)}.hero-meta{display:flex;gap:20px;align-items:center;flex-wrap:wrap;font-size:.72rem;letter-spacing:.15em;text-transform:uppercase}.hero-meta span{display:inline-flex;align-items:center;gap:8px}.rule{height:1px;width:44px;background:var(--sand);display:inline-block}
-    section{padding:76px 7vw;position:relative}.intro{text-align:center;max-width:650px;margin:auto}.intro .quote{font:italic clamp(1.45rem,4vw,2.25rem)/1.35 var(--serif);margin:18px 0}.ornament{color:var(--clay);font:1.7rem var(--serif);letter-spacing:.3em}.section-head{margin-bottom:32px}.section-head h2{font:italic clamp(2.2rem,7vw,4.2rem)/1 var(--serif);letter-spacing:-.05em;margin:7px 0;color:var(--ink)}.section-head p{max-width:520px;color:var(--ink-soft);margin:0}
-    .couple{background:var(--ink);color:var(--paper);display:grid;grid-template-columns:1fr;gap:38px}.couple .section-head{grid-column:1/-1}.couple .section-head p{color:rgba(255,250,241,.68)}.people{display:grid;grid-template-columns:1fr 1fr;gap:22px}.person{text-align:center}.person img{width:100%;aspect-ratio:3/4;object-fit:cover;filter:saturate(.75);border-radius:110px 110px 8px 8px}.person h3{font:italic clamp(1.55rem,4vw,2.2rem) var(--serif);margin:15px 0 0}.person p{font-size:.75rem;color:rgba(255,250,241,.65);line-height:1.5}.amp{align-self:center;text-align:center;font:italic 3rem var(--serif);color:var(--sand)}
-    .story{display:grid;grid-template-columns:1fr;gap:42px}.story-copy{max-width:550px}.story-copy p{color:var(--ink-soft);font-size:1.02rem}.timeline{border-left:1px solid var(--sand);padding-left:24px}.moment{position:relative;margin:0 0 32px}.moment:before{content:"";position:absolute;width:9px;height:9px;border-radius:50%;background:var(--clay);left:-29px;top:9px;border:3px solid var(--paper)}.moment time{font-size:.7rem;letter-spacing:.18em;color:var(--clay);font-weight:700}.moment h3{font:italic 1.4rem var(--serif);margin:4px 0}.moment p{margin:0;color:var(--ink-soft);font-size:.88rem}
-    .events{background:#eadfcd}.countdown{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;max-width:520px;margin:25px auto 45px;text-align:center}.countdown div{padding:13px 5px;background:var(--ink);color:var(--paper);border-radius:4px}.countdown b{display:block;font:1.6rem var(--serif)}.countdown span{font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;color:var(--sand)}.event-grid{display:grid;grid-template-columns:1fr;gap:14px}.event{background:var(--paper);padding:25px;border-left:4px solid var(--clay)}.event h3{font:italic 1.65rem var(--serif);margin:0 0 8px}.event p{margin:4px 0;color:var(--ink-soft);font-size:.86rem}.event strong{color:var(--clay)}.event .btn{margin-top:17px;padding:10px 15px;font-size:.65rem}
-    .gallery-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.gallery-grid button{padding:0;border:0;background:none;overflow:hidden;position:relative}.gallery-grid button:first-child{grid-row:span 2}.gallery-grid img{width:100%;height:100%;min-height:160px;object-fit:cover;display:block;filter:saturate(.8);transition:transform .5s,filter .5s}.gallery-grid button:hover img{transform:scale(1.04);filter:saturate(1)}.lightbox{position:fixed;inset:0;background:rgba(16,45,50,.94);display:grid;place-items:center;padding:28px;z-index:60;opacity:0;pointer-events:none;transition:opacity .3s}.lightbox.open{opacity:1;pointer-events:auto}.lightbox img{max-height:82vh;max-width:100%;object-fit:contain}.lightbox button{position:absolute;right:20px;top:16px;background:none;color:var(--paper);border:0;font-size:2rem}
-    .forms{display:grid;grid-template-columns:1fr;gap:44px}.form-card{background:var(--cream);padding:26px;border-radius:3px}.form-card h2{font:italic 2.1rem var(--serif);margin:0 0 8px}.form-card p{font-size:.86rem;color:var(--ink-soft)}label{display:block;text-align:left;font-size:.72rem;font-weight:700;margin:15px 0 6px;color:var(--ink-soft)}input,select,textarea{width:100%;border:1px solid var(--line);border-radius:2px;background:var(--paper);color:var(--ink);padding:12px 13px;outline:none}input:focus,select:focus,textarea:focus{border-color:var(--clay);box-shadow:0 0 0 3px rgba(181,95,70,.12)}textarea{resize:vertical}.form-note{font-size:.72rem!important;margin-top:12px}.status{min-height:22px;color:var(--clay);font-size:.78rem;margin:9px 0 0}.wishes{margin-top:25px;max-height:330px;overflow:auto}.wish{padding:14px 0;border-top:1px solid var(--line);text-align:left}.wish strong{font:1.1rem var(--serif)}.wish p{margin:3px 0 0;font-size:.82rem;color:var(--ink-soft)}
-    .gift{background:var(--ink);color:var(--paper);text-align:center}.gift p{color:rgba(255,250,241,.7);max-width:480px;margin:0 auto 22px}.bank{max-width:350px;margin:20px auto;padding:22px;border:1px dashed var(--sand);text-align:left}.bank small{color:var(--sand);letter-spacing:.15em}.bank strong{font:1.4rem var(--serif);display:block;margin:6px 0}.bank button{font-size:.7rem;padding:8px 13px}.closing{text-align:center;padding-bottom:100px}.closing h2{font:italic clamp(3rem,10vw,6rem) var(--serif);margin:15px 0}.closing p{color:var(--ink-soft)}footer{font-size:.7rem;color:var(--ink-soft);padding:0 7vw 35px;text-align:center}
-    .reveal{opacity:0;transform:translateY(22px);transition:opacity .7s,transform .7s}.reveal.shown{opacity:1;transform:none}
-    @keyframes turn{to{transform:rotate(360deg)}}@media(min-width:760px){section{padding:110px 10vw}.hero{padding:80px 10vw}.couple{grid-template-columns:1fr 1.6fr}.people{grid-column:2}.amp{grid-column:1;grid-row:2}.story{grid-template-columns:1fr 1fr;align-items:start}.event-grid{grid-template-columns:1fr 1fr}.forms{grid-template-columns:1fr 1fr;align-items:start}.form-card:last-child{grid-column:2}.cover h1{font-size:6rem}.gallery-grid{grid-template-columns:1.35fr 1fr 1fr}.gallery-grid button:first-child{grid-row:span 2}}
-    @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation:none!important;transition:none!important}.reveal{opacity:1;transform:none}}
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Undangan Pernikahan</title>
+
+    <!-- Meta Open Graph (Untuk Tampilan Share Link di WhatsApp/Telegram) -->
+    <meta property="og:title" content="Undangan Pernikahan - Romeo & Juliet">
+    <meta property="og:description" content="Kami mengundang Anda untuk hadir di acara pernikahan kami.">
+    <meta property="og:image" content="assets/images/hero-bg.jpg">
+
+    <!-- 1. GOOGLE FONTS (Cinzel & Playfair Display untuk Etnik Elegance, Plus Inter untuk Teks Biasa) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Inter:wght@300;400;600&family=Playfair+Display:ital,wght@0,600;1,400&display=swap" rel="stylesheet">
+
+    <!-- 2. FONT AWESOME (Untuk Ikon Musik, Copy, Kalender, dll) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- 3. AOS CSS (Animate On Scroll untuk Transisi Halus) -->
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+
+    <!-- 4. SWIPER CSS (Untuk Galeri Foto Bergerak) -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+
+    <!-- 5. GLIGHTBOX CSS (Untuk Pop-up Zoom Foto Galeri) -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/glightbox/dist/css/glightbox.min.css" />
+
+    <!-- 6. FILE CSS UTAMA KITA -->
+    <link rel="stylesheet" href="css/style.css">
 </head>
-<body>
-  <div class="cover" id="cover">
-    <div class="cover-inner">
-      <div class="cover-mark">B W</div><div class="eyebrow" style="color:#dfc9a4">Undangan Pernikahan</div>
-      <h1>Bayu &amp; Winda</h1><div class="date">Sabtu · 24 Oktober 2026 · Semarang</div>
-      <div class="guest"><small>Kepada yang kami kasihi</small><strong id="guest-name">Tamu Undangan</strong></div>
-      <button class="btn" id="open">Buka undangan <span aria-hidden="true">→</span></button>
+<body class="bg-pattern">
+
+    <!-- Elemen Canvas untuk Animasi Kelopak Bunga Gugur -->
+    <canvas id="petal-canvas"></canvas>
+
+    <!-- Audio Player (Sembunyi) -->
+    <audio id="bg-music" loop>
+        <source src="assets/audio/wedding-song.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- Tombol Audio Melayang (Floating Button) -->
+    <button id="music-control" class="music-btn hide" aria-label="Toggle Music">
+        <i class="fa-solid fa-disc-linecap fa-spin"></i>
+    </button>
+
+    <!-- =======================================================
+         BAGIAN 1: COVER / OPENING MODAL (Kunci Scroll)
+         ======================================================= -->
+    <div id="opening-modal" class="modal-overlay">
+        <div class="modal-content" data-aos="zoom-in">
+            <!-- Ornamen Gunungan SVG di Atas Modal -->
+            <div class="gunungan-icon">
+                <svg width="60" height="80" viewBox="0 0 100 130" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M50 0L100 130H0L50 0Z" fill="#C5A880" opacity="0.8"/>
+                </svg>
+            </div>
+            
+            <p class="subtitle">The Wedding of</p>
+            <h1 class="couple-names">Romeo & Juliet</h1>
+            
+            <div class="guest-box">
+                <p>Kepada Yth. Bapak/Ibu/Saudara/i:</p>
+                <h3 id="guest-name">Nama Tamu</h3>
+            </div>
+
+            <button id="btn-open" class="btn-primary">
+                <i class="fa-solid fa-envelope-open me-2"></i> Buka Undangan
+            </button>
+        </div>
     </div>
-  </div>
-  <audio id="music" loop preload="metadata"><source src="music.mp3" type="audio/mpeg"></audio>
-  <button class="music" id="music-btn" aria-label="Putar musik latar" aria-pressed="false"><svg viewBox="0 0 24 24"><path d="M9 18V5l10-2v13M9 18a3 3 0 1 1-3-3 3 3 0 0 1 3 3Zm10-2a3 3 0 1 1-3-3 3 3 0 0 1 3 3Z"/></svg></button>
-  <main id="main">
-    <section class="hero"><div class="hero-content reveal"><div class="eyebrow" style="color:#dfc9a4">Dengan penuh syukur</div><h2>Satu langkah,<br>satu rumah.</h2><p>Kami mengundang Anda untuk menjadi bagian dari hari ketika dua cerita memilih untuk berjalan dalam satu arah.</p><div class="hero-meta"><span><i class="rule"></i> 24.10.26</span><span>Semarang, Jawa Tengah</span></div></div></section>
-    <section class="intro reveal"><div class="ornament">— ❧ —</div><p class="quote">“Dan di antara tanda-tanda kebesaran-Nya ialah Dia menciptakan pasangan-pasangan untukmu agar kamu merasa tenteram kepadanya.”</p><div class="eyebrow">QS. Ar-Rum: 21</div></section>
-    <section class="couple"><div class="section-head reveal"><div class="eyebrow" style="color:#dfc9a4">Yang berbahagia</div><h2 class="serif">Mempelai</h2><p>Dengan memohon rahmat dan ridha Allah SWT, kami bermaksud menyempurnakan perjalanan ini.</p></div><div class="amp reveal">&amp;</div><div class="people"><article class="person reveal"><img src="Images/mempelai pria.jpg" alt="Bayu, mempelai pria"><h3>Bayu Pratama</h3><p>Putra pertama<br>Bapak Bambang &amp; Ibu Ratna</p></article><article class="person reveal"><img src="Images/mempelai wanita.jpg" alt="Winda, mempelai wanita"><h3>Winda Larasati</h3><p>Putri kedua<br>Bapak Hendra &amp; Ibu Sri</p></article></div></section>
-    <section><div class="story"><div class="story-copy reveal"><div class="section-head"><div class="eyebrow">Catatan kecil</div><h2>Yang bermula dari sapaan sederhana.</h2><p>Kami belajar bahwa rumah bukan selalu sebuah tempat. Kadang ia adalah seseorang yang membuat perjalanan panjang terasa pulang.</p></div></div><div class="timeline"><div class="moment reveal"><time>2021</time><h3>Berpapasan</h3><p>Sebuah obrolan singkat di antara kesibukan kota, lalu berlanjut menjadi kabar yang ditunggu.</p></div><div class="moment reveal"><time>2023</time><h3>Memilih bersama</h3><p>Kami mulai mengerti: perbedaan tidak untuk disamakan, melainkan dirayakan.</p></div><div class="moment reveal"><time>2026</time><h3>Menuju satu rumah</h3><p>Dengan restu keluarga, kami mengikat niat untuk tumbuh dalam satu janji.</p></div></div></div></section>
-    <section class="events"><div class="section-head reveal"><div class="eyebrow">Save the date</div><h2>Hari yang kami tunggu</h2><p>Catat tanggalnya. Kehadiran Anda akan menjadi bagian paling hangat dari perayaan ini.</p></div><div class="countdown reveal"><div><b id="days">00</b><span>Hari</span></div><div><b id="hours">00</b><span>Jam</span></div><div><b id="minutes">00</b><span>Menit</span></div><div><b id="seconds">00</b><span>Detik</span></div></div><div class="event-grid"><article class="event reveal"><div class="eyebrow">Pagi</div><h3>Akad Nikah</h3><p><strong>08.00 — 10.00 WIB</strong></p><p>Masjid Agung Jawa Tengah<br>Jl. Gajah Raya, Semarang</p><a class="btn" href="https://maps.google.com/?q=Masjid+Agung+Jawa+Tengah" target="_blank" rel="noopener">Lihat peta ↗</a></article><article class="event reveal"><div class="eyebrow">Siang</div><h3>Resepsi</h3><p><strong>11.00 — 14.00 WIB</strong></p><p>Ballroom Grand Candi Hotel<br>Jl. Sisingamangaraja, Semarang</p><a class="btn" href="https://maps.google.com/?q=Grand+Candi+Hotel+Semarang" target="_blank" rel="noopener">Lihat peta ↗</a></article></div></section>
-    <section><div class="section-head reveal"><div class="eyebrow">Momen yang disimpan</div><h2>Galeri kecil kami</h2></div><div class="gallery-grid"><button class="gallery-item reveal" data-src="Images/foto galeri1.jpg"><img src="Images/foto galeri1.jpg" alt="Momen Bayu dan Winda 1"></button><button class="gallery-item reveal" data-src="Images/foto galeri2.jpg"><img src="Images/foto galeri2.jpg" alt="Momen Bayu dan Winda 2"></button><button class="gallery-item reveal" data-src="Images/foto galeri3.jpg"><img src="Images/foto galeri3.jpg" alt="Momen Bayu dan Winda 3"></button></div></section>
-    <section class="forms"><div class="form-card reveal"><div class="eyebrow">Mohon kabarnya</div><h2>Konfirmasi hadir</h2><p>Jawaban Anda membantu kami menyiapkan tempat terbaik. Anda akan diarahkan ke WhatsApp tanpa data disimpan di halaman ini.</p><form id="rsvp"><label for="rsvp-name">Nama</label><input id="rsvp-name" required autocomplete="name" placeholder="Nama Anda"><label for="rsvp-status">Kehadiran</label><select id="rsvp-status" required><option value="">Pilih jawaban</option><option>Hadir</option><option>Belum dapat hadir</option></select><label for="rsvp-count">Jumlah tamu</label><input id="rsvp-count" type="number" min="1" max="5" value="1"><button class="btn" type="submit">Kirim via WhatsApp ↗</button><div class="status" id="rsvp-status-msg" role="status"></div></form></div><div class="form-card reveal"><div class="eyebrow">Titip doa</div><h2>Ucapan hangat</h2><p>Tuliskan doa terbaik Anda. Ucapan hanya tampil selama halaman ini terbuka dan tidak disimpan ke server.</p><form id="wish"><label for="wish-name">Nama</label><input id="wish-name" required placeholder="Nama Anda"><label for="wish-message">Ucapan</label><textarea id="wish-message" rows="4" required placeholder="Semoga Bayu & Winda..."></textarea><button class="btn" type="submit">Kirim ucapan</button></form><div class="wishes" id="wishes"><div class="wish"><strong>Keluarga besar</strong><p>Semoga menjadi keluarga yang penuh kasih, sabar, dan selalu diberi keberkahan.</p></div></div></div></section>
-    <section class="gift"><div class="eyebrow" style="color:#dfc9a4">Tanda kasih</div><h2 class="section-head" style="font:italic 2.8rem var(--serif);margin:10px 0">Doa adalah hadiah utama.</h2><p>Jika berkenan memberikan tanda kasih, dapat melalui rekening berikut. Terima kasih untuk niat baik Anda.</p><div class="bank"><small>BANK BCA</small><strong id="account">8830 123 456</strong><span style="font-size:.78rem;color:rgba(255,250,241,.65)">a.n. Bayu Pratama</span><br><button class="btn" id="copy" type="button">Salin nomor</button><div class="status" id="copy-status" role="status"></div></div></section>
-    <section class="closing"><div class="ornament">— ❧ —</div><h2>Sampai jumpa<br>di hari bahagia.</h2><p>Bayu &amp; Winda</p></section><footer>Dengan hangat, Bayu &amp; Winda · 24 Oktober 2026</footer>
-  </main>
-  <div class="lightbox" id="lightbox" role="dialog" aria-label="Pratinjau foto"><button id="close-lightbox" aria-label="Tutup pratinjau">×</button><img id="lightbox-img" alt=""></div>
-  <script>
-    const $=s=>document.querySelector(s), $$=s=>document.querySelectorAll(s);
-    const params=new URLSearchParams(location.search), guest=params.get("kpd")||params.get("untuk");
-    if(guest){const name=guest.trim().slice(0,80);$("#guest-name").textContent=name;$("#rsvp-name").value=name;$("#wish-name").value=name}
-    const cover=$("#cover"),main=$("#main"),audio=$("#music"),musicBtn=$("#music-btn");
-    $("#open").addEventListener("click",()=>{cover.classList.add("is-open");main.classList.add("visible");window.scrollTo(0,0);audio.play().then(()=>setMusic(true)).catch(()=>{})});
-    function setMusic(on){musicBtn.classList.toggle("playing",on);musicBtn.setAttribute("aria-pressed",on);musicBtn.setAttribute("aria-label",on?"Matikan musik latar":"Putar musik latar")}
-    musicBtn.addEventListener("click",()=>{if(audio.paused){audio.play().then(()=>setMusic(true)).catch(()=>{})}else{audio.pause();setMusic(false)}});
-    const target=new Date("2026-10-24T08:00:00+07:00").getTime();
-    function tick(){let d=Math.max(0,target-Date.now());$("#days").textContent=String(Math.floor(d/864e5)).padStart(2,"0");$("#hours").textContent=String(Math.floor(d%864e5/36e5)).padStart(2,"0");$("#minutes").textContent=String(Math.floor(d%36e5/6e4)).padStart(2,"0");$("#seconds").textContent=String(Math.floor(d%6e4/1e3)).padStart(2,"0")}tick();setInterval(tick,1000);
-    const observer=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add("shown")}),{threshold:.12});$$(".reveal").forEach(e=>observer.observe(e));
-    const lightbox=$("#lightbox"),lbImg=$("#lightbox-img");$$(".gallery-item").forEach(item=>item.addEventListener("click",()=>{lbImg.src=item.dataset.src;lbImg.alt=item.querySelector("img").alt;lightbox.classList.add("open")}));function closeBox(){lightbox.classList.remove("open");lbImg.src=""}$("#close-lightbox").addEventListener("click",closeBox);lightbox.addEventListener("click",e=>{if(e.target===lightbox)closeBox()});document.addEventListener("keydown",e=>{if(e.key==="Escape")closeBox()});
-    $("#rsvp").addEventListener("submit",e=>{e.preventDefault();const n=$("#rsvp-name").value.trim(),s=$("#rsvp-status").value,c=$("#rsvp-count").value||1;const msg=`Halo, saya ${n}. Saya mengonfirmasi: ${s} untuk pernikahan Bayu & Winda pada 24 Oktober 2026. Jumlah tamu: ${c} orang.`;window.open("https://wa.me/628123456789?text="+encodeURIComponent(msg),"_blank","noopener");$("#rsvp-status-msg").textContent="WhatsApp dibuka di tab baru."});
-    $("#wish").addEventListener("submit",e=>{e.preventDefault();const n=$("#wish-name").value.trim(),m=$("#wish-message").value.trim(),el=document.createElement("div");el.className="wish";const b=document.createElement("strong"),p=document.createElement("p");b.textContent=n;p.textContent=m;el.append(b,p);$("#wishes").prepend(el);e.target.reset();$("#wish-name").value=guest||""});
-    $("#copy").addEventListener("click",async()=>{const value=$("#account").textContent.replace(/\s/g,"");try{await navigator.clipboard.writeText(value);$("#copy-status").textContent="Nomor rekening tersalin."}catch{$("#copy-status").textContent="Salin manual: "+value}});
-  </script>
+
+    <!-- =======================================================
+         ISI UTAMA UNDANGAN (Muncul setelah Modal dibuka)
+         ======================================================= -->
+    <main id="main-content" class="content-hidden">
+        
+        <!-- HERO SECTION -->
+        <section class="hero-section">
+            <div class="hero-content" data-aos="fade-up">
+                <p class="subtitle">Walimatul 'Ursy</p>
+                <h1 class="couple-names">Romeo & Juliet</h1>
+                <p class="wedding-date">Sabtu, 12 Desember 2026</p>
+            </div>
+        </section>
+
+        <!-- (Section lainnya akan kita bangun bertahap berikutnya) -->
+
+    </main>
+
+    <!-- =======================================================
+         LIBRARY JAVASCRIPT (CDN)
+         ======================================================= -->
+    <!-- AOS JS -->
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+    <!-- SWIPER JS -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <!-- GLIGHTBOX JS -->
+    <script src="https://cdn.jsdelivr.net/gh/mcstudios/glightbox/dist/js/glightbox.min.js"></script>
+    
+    <!-- FILE JS UTAMA KITA -->
+    <script src="js/app.js"></script>
 </body>
 </html>
