@@ -1,0 +1,157 @@
+/* =======================================================
+   1. VARIABLE & BASE STYLE
+   ======================================================= */
+:root {
+    --bg-color: #F8F6F0;       /* Off-white hangat */
+    --primary-color: #2B2625;  /* Hitam Jawa / Charcoal */
+    --gold-accent: #C5A880;    /* Warna Emas / Gold */
+    --gold-hover: #A88B63;
+    --font-ethnic: 'Cinzel', serif;
+    --font-heading: 'Playfair Display', serif;
+    --font-body: 'Inter', sans-serif;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--primary-color);
+    font-family: var(--font-body);
+    overflow-x: hidden;
+}
+
+/* Pola Batik Transparan Subtle di Background */
+.bg-pattern {
+    background-image: radial-gradient(var(--gold-accent) 0.5px, transparent 0.5px), radial-gradient(var(--gold-accent) 0.5px, var(--bg-color) 0.5px);
+    background-size: 20px 20px;
+    background-position: 0 0, 10px 10px;
+    background-opacity: 0.05;
+}
+
+/* Pengunci Scroll saat Modal Buka Undangan Masih Aktif */
+body.no-scroll {
+    overflow: hidden;
+}
+
+/* Canvas Kelopak Bunga Melayang */
+#petal-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 99;
+}
+
+/* =======================================================
+   2. OPENING MODAL & COVER
+   ======================================================= */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://images.unsplash.com/photo-1519741497674-611481863552?w=1200') center/cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    color: #FFFFFF;
+    text-align: center;
+    padding: 20px;
+    transition: opacity 0.8s ease, visibility 0.8s ease;
+}
+
+.modal-overlay.fade-out {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.modal-content {
+    background: rgba(43, 38, 37, 0.85);
+    border: 1px solid var(--gold-accent);
+    padding: 40px 25px;
+    border-radius: 16px;
+    max-width: 450px;
+    width: 100%;
+    backdrop-filter: blur(5px);
+}
+
+.subtitle {
+    font-family: var(--font-ethnic);
+    color: var(--gold-accent);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    font-size: 0.9rem;
+    margin-top: 10px;
+}
+
+.couple-names {
+    font-family: var(--font-heading);
+    font-size: 2.5rem;
+    margin: 15px 0;
+}
+
+.guest-box {
+    margin: 25px 0;
+    padding: 15px;
+    border-top: 1px dashed rgba(197, 168, 128, 0.4);
+    border-bottom: 1px dashed rgba(197, 168, 128, 0.4);
+}
+
+.guest-box h3 {
+    font-family: var(--font-heading);
+    color: var(--gold-accent);
+    font-size: 1.4rem;
+    margin-top: 5px;
+}
+
+/* Tombol Utama (Golden Style) */
+.btn-primary {
+    background: var(--gold-accent);
+    color: #FFFFFF;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 30px;
+    font-size: 1rem;
+    font-family: var(--font-body);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+    background: var(--gold-hover);
+    transform: translateY(-2px);
+}
+
+/* Tombol Audio Floating */
+.music-btn {
+    position: fixed;
+    bottom: 25px;
+    right: 25px;
+    width: 50px;
+    height: 50px;
+    background: var(--gold-accent);
+    color: #FFF;
+    border: none;
+    border-radius: 50%;
+    font-size: 1.2rem;
+    cursor: pointer;
+    z-index: 999;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+
+.music-btn.hide {
+    display: none;
+}
+
+/* Sembunyikan Konten Utama Sebelum Tombol Buka Undangan Diklik */
+.content-hidden {
+    display: none;
+}
