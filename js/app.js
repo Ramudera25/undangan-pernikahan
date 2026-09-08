@@ -71,3 +71,52 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 });
+// Animasi Kelopak Bunga Gugur (Falling Petals Canvas)
+(function initPetals() {
+    const canvas = document.getElementById('petal-canvas');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+
+    let width = canvas.width = window.innerWidth;
+    let height = canvas.height = window.innerHeight;
+
+    window.addEventListener('resize', () => {
+        width = canvas.width = window.innerWidth;
+        height = canvas.height = window.innerHeight;
+    });
+
+    const petals = Array.from({ length: 25 }, () => ({
+        x: Math.random() * width,
+        y: Math.random() * height - height,
+        size: Math.random() * 5 + 4,
+        speedY: Math.random() * 1 + 0.8,
+        speedX: Math.random() * 0.5 - 0.25,
+        opacity: Math.random() * 0.6 + 0.2,
+        angle: Math.random() * 360
+    }));
+
+    function draw() {
+        ctx.clearRect(0, 0, width, height);
+        petals.forEach(p => {
+            ctx.save();
+            ctx.translate(p.x, p.y);
+            ctx.rotate((p.angle * Math.PI) / 180);
+            ctx.fillStyle = `rgba(197, 168, 128, ${p.opacity})`; // Warna Emas Halus
+            ctx.beginPath();
+            ctx.ellipse(0, 0, p.size, p.size / 2, 0, 0, 2 * Math.PI);
+            ctx.fill();
+            ctx.restore();
+
+            p.y += p.speedY;
+            p.x += p.speedX;
+            p.angle += 0.5;
+
+            if (p.y > height) {
+                p.y = -10;
+                p.x = Math.random() * width;
+            }
+        });
+        requestAnimationFrame(draw);
+    }
+    draw();
+})();
