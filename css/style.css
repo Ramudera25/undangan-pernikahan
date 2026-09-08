@@ -1,14 +1,17 @@
 /* =======================================================
-   1. VARIABLE & BASE STYLE
+   1. VARIABLES & BASE STYLES
    ======================================================= */
 :root {
-    --bg-color: #F8F6F0;       /* Off-white hangat */
-    --primary-color: #2B2625;  /* Hitam Jawa / Charcoal */
-    --gold-accent: #C5A880;    /* Warna Emas / Gold */
+    --bg-color: #F8F6F0;
+    --primary-color: #2B2625;
+    --gold: #C5A880;
+    --gold-light: #E4D3B4;
     --gold-hover: #A88B63;
-    --font-ethnic: 'Cinzel', serif;
-    --font-heading: 'Playfair Display', serif;
-    --font-body: 'Inter', sans-serif;
+    --muted: #7A726C;
+    --batik-line: #8C6A45;
+    --font-heading: 'Georgia', serif;
+    --font-body: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    --label: 'Courier New', monospace;
 }
 
 * {
@@ -24,159 +27,387 @@ body {
     overflow-x: hidden;
 }
 
-/* Pola Batik Transparan Subtle di Background */
-.bg-pattern {
-    background-image: radial-gradient(var(--gold-accent) 0.5px, transparent 0.5px), radial-gradient(var(--gold-accent) 0.5px, var(--bg-color) 0.5px);
-    background-size: 24px 24px;
-    background-position: 0 0, 12px 12px;
-}
-
-/* Pengunci Scroll saat Modal Buka Undangan Masih Aktif */
-body.no-scroll {
-    overflow: hidden;
-}
-
-/* Canvas Kelopak Bunga Melayang */
+/* =======================================================
+   2. CANVAS & OVERLAY
+   ======================================================= */
 #petal-canvas {
-    position: fixed;
+    position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
     pointer-events: none;
-    z-index: 99;
+    z-index: 2;
+}
+
+#cover-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: #1B1716;
+    color: #EFE7DA;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    text-align: center;
+    transition: transform 0.8s ease-in-out, opacity 0.8s ease-in-out;
+}
+
+#cover-screen.hide {
+    transform: translateY(-100%);
+    opacity: 0;
+    pointer-events: none;
+}
+
+.cover-frame {
+    position: relative;
+    z-index: 3;
+    padding: 20px;
+    max-width: 400px;
+    width: 90%;
+}
+
+.gunungan {
+    width: 60px;
+    height: auto;
+    color: var(--gold);
+    margin-bottom: 12px;
+}
+
+.cover-eyebrow {
+    font-size: 0.75rem;
+    letter-spacing: 2px;
+    color: var(--gold-light);
+    margin-bottom: 8px;
+}
+
+.cover-names {
+    font-family: var(--font-heading);
+    font-size: 2.2rem;
+    color: var(--gold);
+    margin-bottom: 6px;
+}
+
+.cover-date {
+    font-size: 0.7rem;
+    letter-spacing: 1.5px;
+    color: var(--muted);
+}
+
+.guest-box {
+    margin: 24px 0;
+    padding: 12px;
+    border-top: 1px dashed var(--batik-line);
+    border-bottom: 1px dashed var(--batik-line);
+}
+
+.guest-box .to {
+    font-size: 0.65rem;
+    letter-spacing: 1px;
+    color: var(--muted);
+}
+
+.guest-box .name {
+    font-family: var(--font-heading);
+    font-size: 1.2rem;
+    color: var(--gold-light);
+    margin-top: 4px;
 }
 
 /* =======================================================
-   2. OPENING MODAL & COVER
+   3. BUTTONS
    ======================================================= */
-.modal-overlay {
+.btn-gold {
+    background: var(--gold);
+    color: #1B1716;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 30px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+    transition: background 0.3s ease;
+}
+
+.btn-gold svg {
+    width: 16px;
+    height: 16px;
+}
+
+.btn-gold:hover {
+    background: var(--gold-hover);
+}
+
+.btn-gold.btn-dark {
+    background: #2B2625;
+    color: var(--gold);
+    border: 1px solid var(--gold);
+}
+
+/* =======================================================
+   4. SECTIONS & LAYOUT
+   ======================================================= */
+#main-content {
+    max-width: 480px;
+    margin: 0 auto;
+    background: #F8F6F0;
+    box-shadow: 0 0 20px rgba(0,0,0,0.05);
+}
+
+section {
+    padding: 48px 24px;
+    text-align: center;
+}
+
+.section-alt {
+    background: #EFE7DA;
+}
+
+.section-dark {
+    background: #2B2625;
+    color: #EFE7DA;
+}
+
+.eyebrow-label {
+    font-size: 0.65rem;
+    letter-spacing: 2px;
+    color: var(--batik-line);
+    margin-bottom: 4px;
+}
+
+.section-title {
+    font-family: var(--font-heading);
+    font-size: 1.6rem;
+    color: var(--primary-color);
+}
+
+.section-dark .section-title {
+    color: #EFE7DA;
+}
+
+/* Mempelai */
+.couple-card {
+    margin: 24px 0;
+}
+
+.couple-img {
+    width: 130px;
+    height: 130px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--gold);
+    margin-bottom: 12px;
+}
+
+.amp {
+    font-family: var(--font-heading);
+    font-size: 1.8rem;
+    color: var(--gold);
+}
+
+/* Timeline */
+.story-timeline {
+    margin-top: 24px;
+    text-align: left;
+    border-left: 2px solid var(--gold);
+    padding-left: 16px;
+}
+
+.story-item {
+    margin-bottom: 20px;
+}
+
+.story-year {
+    font-weight: bold;
+    color: var(--batik-line);
+    font-size: 0.85rem;
+}
+
+.story-title {
+    font-weight: 600;
+    margin: 2px 0;
+}
+
+.story-desc {
+    font-size: 0.8rem;
+    color: var(--muted);
+}
+
+/* Countdown */
+.timer-container {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 20px;
+}
+
+.timer-box {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid var(--gold);
+    padding: 10px;
+    border-radius: 8px;
+    min-width: 60px;
+}
+
+.timer-number {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: var(--gold);
+}
+
+.timer-label {
+    font-size: 0.55rem;
+    color: var(--muted);
+}
+
+/* Galeri Grid */
+.gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin-top: 20px;
+}
+
+.gallery-grid img {
+    width: 100%;
+    height: 90px;
+    object-fit: cover;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+/* Forms */
+.field {
+    margin-bottom: 14px;
+    text-align: left;
+}
+
+.field label {
+    display: block;
+    font-size: 0.75rem;
+    margin-bottom: 4px;
+}
+
+.field input, .field select, .field textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #CCC;
+    border-radius: 6px;
+    font-family: inherit;
+}
+
+.wishes-box {
+    margin-top: 20px;
+    text-align: left;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.wish-item {
+    background: #FFF;
+    padding: 10px;
+    border-radius: 6px;
+    margin-bottom: 8px;
+    border-left: 3px solid var(--gold);
+    font-size: 0.8rem;
+}
+
+/* Lightbox */
+#lightbox {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://images.unsplash.com/photo-1519741497674-611481863552?w=1200') center/cover;
+    background: rgba(0,0,0,0.85);
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 9999;
-    color: #FFFFFF;
-    text-align: center;
-    padding: 20px;
-    transition: opacity 0.8s ease, visibility 0.8s ease;
-}
-
-.modal-overlay.fade-out {
     opacity: 0;
-    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    z-index: 10000;
 }
 
-.modal-content {
-    background: rgba(43, 38, 37, 0.85);
-    border: 1px solid var(--gold-accent);
-    padding: 40px 25px;
-    border-radius: 16px;
-    max-width: 450px;
-    width: 100%;
-    backdrop-filter: blur(5px);
+#lightbox.show {
+    opacity: 1;
+    pointer-events: auto;
 }
 
-.subtitle {
-    font-family: var(--font-ethnic);
-    color: var(--gold-accent);
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    font-size: 0.9rem;
-    margin-top: 10px;
+#lightbox-img {
+    max-width: 90%;
+    max-height: 80%;
+    border-radius: 8px;
 }
 
-.couple-names {
-    font-family: var(--font-heading);
-    font-size: 2.5rem;
-    margin: 15px 0;
-}
-
-.guest-box {
-    margin: 25px 0;
-    padding: 15px;
-    border-top: 1px dashed rgba(197, 168, 128, 0.4);
-    border-bottom: 1px dashed rgba(197, 168, 128, 0.4);
-}
-
-.guest-box h3 {
-    font-family: var(--font-heading);
-    color: var(--gold-accent);
-    font-size: 1.4rem;
-    margin-top: 5px;
-}
-
-/* Tombol Utama (Golden Style) */
-.btn-primary {
-    background: var(--gold-accent);
-    color: #FFFFFF;
+#lightbox-close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: none;
     border: none;
-    padding: 12px 30px;
-    border-radius: 30px;
-    font-size: 1rem;
-    font-family: var(--font-body);
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.btn-primary:hover {
-    background: var(--gold-hover);
-    transform: translateY(-2px);
-}
-
-/* Tombol Audio Floating */
-.music-btn {
-    position: fixed;
-    bottom: 25px;
-    right: 25px;
-    width: 50px;
-    height: 50px;
-    background: var(--gold-accent);
     color: #FFF;
-    border: none;
-    border-radius: 50%;
-    font-size: 1.2rem;
     cursor: pointer;
-    z-index: 999;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
 }
 
-.music-btn.hide {
-    display: none;
+#lightbox-close svg {
+    width: 32px;
+    height: 32px;
 }
 
-/* Sembunyikan Konten Utama Sebelum Tombol Buka Undangan Diklik */
-.content-hidden {
-    display: none;
+/* Floating Music Button */
+#music-control {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 44px;
+    height: 44px;
+    background: var(--gold);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    z-index: 9000;
 }
 
-/* =======================================================
-   3. HERO & ORNAMENTS STYLING
-   ======================================================= */
-.cover h1, .hero h2, .section-head h2 {
-    font-family: var(--font-ethnic), serif !important;
+#music-control svg {
+    width: 20px;
+    height: 20px;
+    stroke: #1B1716;
 }
 
-.cover-mark {
-    border-color: var(--gold-accent) !important;
-    color: var(--gold-accent) !important;
+.rotate-music {
+    animation: spin 4s linear infinite;
 }
 
-.ornament {
-    color: var(--gold-accent) !important;
-    font-size: 2rem;
-    letter-spacing: 0.4em;
+@keyframes spin {
+    100% { transform: rotate(360deg); }
 }
 
-.event {
-    border-left: 4px solid var(--gold-accent) !important;
+/* Scroll Reveal */
+.reveal {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.8s ease;
 }
 
-.bank {
-    border: 1px dashed var(--gold-accent) !important;
+.reveal.in {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+footer {
+    padding: 32px 20px;
+    text-align: center;
+    font-size: 0.75rem;
 }
