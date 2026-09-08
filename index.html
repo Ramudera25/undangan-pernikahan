@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Undangan Pernikahan</title>
+    <!-- Google Fonts & FontAwesome Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary-color: #8a6d3b;
+            --bg-color: #fcf8f2;
+            --text-color: #4a4a4a;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            text-align: center;
+            overflow-x: hidden;
+        }
+
+        h1, h2 {
+            font-family: 'Great Vibes', cursive;
+            color: var(--primary-color);
+        }
+
+        /* --- SCREEN COVER / SAMPUL AWAL --- */
+        #cover-screen {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('images/cover.jpg') center/cover no-repeat;
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: transform 0.8s ease-in-out;
+            padding: 20px;
+        }
+
+        #cover-screen.hide {
+            transform: translateY(-100%);
+        }
+
+        .guest-box {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(5px);
+            padding: 15px 25px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+
+        .btn-open {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 12px 28px;
+            font-size: 1rem;
+            border-radius: 25px;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            transition: 0.3s;
+        }
+
+        .btn-open:hover {
+            transform: scale(1.05);
+        }
+
+        /* --- CONTENT WRAPPER --- */
+        #main-content {
+            display: none;
+            padding: 20px 15px 80px 15px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        section {
+            margin-bottom: 50px;
+            padding: 25px 15px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+
+        .couple-img {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin: 10px auto;
+            border: 3px solid var(--primary-color);
+        }
+
+        .btn-action {
+            display: inline-block;
+            background-color: #25d366;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 8px;
+            margin-top: 10px;
+            font-size: 0.9rem;
+        }
+
+        .btn-maps {
+            background-color: #4285F4;
+        }
+
+        /* --- GALERI --- */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .gallery-grid img {
+            width: 100%;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        /* --- MUSIC CONTROLLER --- */
+        #music-control {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--primary-color);
+            color: white;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            z-index: 1000;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- AUDIO PLAYER -->
+    <audio id="bg-music" loop>
+        <source src="music.mp3" type="audio/mp3">
+    </audio>
+
+    <!-- SAMPUL AWAL (COVER SCREEN) -->
+    <div id="cover-screen">
+        <p style="font-size: 0.9rem; letter-spacing: 2px;">THE WEDDING OF</p>
+        <h1 style="font-size: 3rem; margin: 10px 0;">Romeo & Juliet</h1>
+        
+        <div class="guest-box">
+            <p style="font-size: 0.8rem;">Kepada Yth. Bapak/Ibu/Saudara/i:</p>
+            <h3 id="guest-name" style="font-size: 1.3rem; margin-top: 5px; color: #fff;">Nama Tamu</h3>
+        </div>
+
+        <button class="btn-open" onclick="openInvitation()">
+            <i class="fa-solid fa-envelope-open"></i> Buka Undangan
+        </button>
+    </div>
+
+    <!-- TAMPILAN UTAMA WEBSITE -->
+    <div id="main-content">
+        
+        <!-- HERO SECTION -->
+        <section>
+            <p>Kami Mengundang Anda Untuk Merayakan Pernikahan Kami</p>
+            <h1 style="font-size: 2.5rem; margin: 15px 0;">Romeo & Juliet</h1>
+            <p><b>Minggu, 12 Oktober 2026</b></p>
+        </section>
+
+        <!-- MEMPELAI SECTION -->
+        <section>
+            <h2>Mempelai</h2>
+            <div style="margin-top: 20px;">
+                <img src="images/mempelai-pria.jpg" class="couple-img" alt="Mempelai Pria">
+                <h3>Romeo Montague, S.Kom</h3>
+                <p style="font-size: 0.85rem; color: #777;">Putra dari M. Montague & Ibu Montague</p>
+            </div>
+            
+            <h2 style="font-size: 2rem; margin: 15px 0;">&</h2>
+
+            <div>
+                <img src="images/mempelai-wanita.jpg" class="couple-img" alt="Mempelai Wanita">
+                <h3>Juliet Capulet, S.E</h3>
+                <p style="font-size: 0.85rem; color: #777;">Putri dari M. Capulet & Ibu Capulet</p>
+            </div>
+        </section>
+
+        <!-- ACARA & MAPS -->
+        <section>
+            <h2>Waktu & Lokasi</h2>
+            <hr style="margin: 10px 0; border: none; border-top: 1px solid #ddd;">
+            
+            <h3 style="margin-top: 15px;">Akad Nikah</h3>
+            <p>08.00 WIB - Selesai</p>
+            
+            <h3 style="margin-top: 15px;">Resepsi</h3>
+            <p>11.00 WIB - Selesai</p>
+            
+            <p style="margin-top: 15px;"><b>Gedung Serbaguna Utama</b><br>Jl. Mawar No. 123, Jakarta</p>
+            
+            <a href="https://maps.google.com" target="_blank" class="btn-action btn-maps">
+                <i class="fa-solid fa-location-dot"></i> Buka Google Maps
+            </a>
+        </section>
+
+        <!-- GALERI FOTO -->
+        <section>
+            <h2>Galeri Foto</h2>
+            <div class="gallery-grid">
+                <img src="images/galeri1.jpg" alt="Galeri 1">
+                <img src="images/galeri2.jpg" alt="Galeri 2">
+                <img src="images/galeri3.jpg" alt="Galeri 3">
+            </div>
+        </section>
+
+        <!-- RSVP WHATSAPP -->
+        <section>
+            <h2>Konfirmasi Kehadiran</h2>
+            <p style="font-size: 0.9rem; margin-bottom: 15px;">Mohon konfirmasi kehadiran Anda melalui WhatsApp di bawah ini:</p>
+            
+            <a href="https://wa.me/628123456789?text=Halo,%20saya%20akan%20hadir%20di%20acara%20pernikahan%20Romeo%20%26%20Juliet" target="_blank" class="btn-action">
+                <i class="fa-brands fa-whatsapp"></i> Konfirmasi via WhatsApp
+            </a>
+        </section>
+
+        <!-- AMPLOP DIGITAL -->
+        <section>
+            <h2>Amplop Digital</h2>
+            <p style="font-size: 0.85rem; margin-bottom: 15px;">Doa restu Anda merupakan karunia yang sangat berarti bagi kami. Jika ingin memberi hadiah, Anda dapat mengirimkannya melalui:</p>
+            
+            <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; border: 1px dashed #ccc;">
+                <p><b>Bank BCA</b></p>
+                <p id="rekening">1234567890</p>
+                <p style="font-size: 0.85rem;">a.n. Romeo Montague</p>
+                <button onclick="copyRekening()" style="margin-top: 8px; padding: 5px 12px; font-size: 0.8rem; cursor: pointer;">Salin No. Rekening</button>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- BUTTON CONTROL MUSIK -->
+    <div id="music-control" onclick="toggleMusic()">
+        <i id="music-icon" class="fa-solid fa-music"></i>
+    </div>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const guestName = urlParams.get('kpd');
+        if (guestName) {
+            document.getElementById('guest-name').innerText = guestName;
+        } else {
+            document.getElementById('guest-name').innerText = "Tamu Undangan";
+        }
+
+        const bgMusic = document.getElementById('bg-music');
+        let isPlaying = false;
+
+        function openInvitation() {
+            document.getElementById('cover-screen').classList.add('hide');
+            document.getElementById('main-content').style.display = 'block';
+            
+            bgMusic.play();
+            isPlaying = true;
+        }
+
+        function toggleMusic() {
+            const musicIcon = document.getElementById('music-icon');
+            if (isPlaying) {
+                bgMusic.pause();
+                musicIcon.className = "fa-solid fa-volume-xmark";
+            } else {
+                bgMusic.play();
+                musicIcon.className = "fa-solid fa-music";
+            }
+            isPlaying = !isPlaying;
+        }
+
+        function copyRekening() {
+            const rek = document.getElementById('rekening').innerText;
+            navigator.clipboard.writeText(rek);
+            alert("Nomor rekening berhasil disalin: " + rek);
+        }
+    </script>
+</body>
+</html>
