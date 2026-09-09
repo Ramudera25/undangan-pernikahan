@@ -1,0 +1,100 @@
+---
+const milestones = [
+  {
+    year: '2020',
+    title: 'Pertama Bertemu',
+    text: 'Diperkenalkan oleh sahabat bersama di sebuah acara kampus di Bojonegoro. Pertemuan singkat yang ternyata menjadi awal dari segalanya.',
+    icon: 'sparkles',
+  },
+  {
+    year: '2021',
+    title: 'Mulai Dekat',
+    text: 'Percakapan ringan yang semakin sering tumbuh menjadi rasa nyaman yang tak terduga di antara keduanya.',
+    icon: 'chat',
+  },
+  {
+    year: '2023',
+    title: 'Memantapkan Hati',
+    text: 'Berdua saling meyakinkan dan berkomitmen untuk membawa hubungan ini ke jenjang yang lebih serius.',
+    icon: 'heart',
+  },
+  {
+    year: '2025',
+    title: 'Lamaran',
+    text: 'Bayu melamar Winda dengan sebentuk cincin dan hati yang berdebar. Winda pun menjawab, "Ya."',
+    icon: 'ring',
+  },
+  {
+    year: '2026',
+    title: 'Pernikahan',
+    text: 'Menuju hari bahagia yang dinanti — Sabtu, 24 Oktober 2026. Semoga menjadi awal dari kisah yang abadi.',
+    icon: 'rings',
+  },
+];
+---
+<section class="py-16 px-4 max-w-3xl mx-auto relative">
+  <div class="text-center mb-14" data-reveal>
+    <p class="text-[10px] text-[#C5A880] tracking-[0.25em] uppercase font-semibold">KISAH KAMI</p>
+    <h2 class="font-serif text-3xl sm:text-4xl text-[#2B2625] mt-1 mb-3">Perjalanan Kasih</h2>
+    <p class="text-xs text-gray-500 max-w-sm mx-auto leading-relaxed">
+      Setiap pertemuan adalah takdir, dan setiap langkah adalah bagian dari cerita indah yang Allah tuliskan untuk kami.
+    </p>
+  </div>
+
+  <div class="relative">
+    <!-- Garis tengah timeline -->
+    <div class="absolute left-7 md:left-1/2 -translate-x-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-[#C5A880]/60 to-transparent"></div>
+
+    <ol class="space-y-10">
+      {milestones.map((m, i) => (
+        <li class="relative pl-20 md:pl-0">
+          <!-- Node icon pada garis -->
+          <div class="absolute left-7 md:left-1/2 -translate-x-1/2 top-1 z-10 flex items-center justify-center w-11 h-11 rounded-full bg-[#FAF8F5] border border-[#C5A880]/50 shadow-md">
+            {m.icon === 'sparkles' && (
+              <svg class="w-5 h-5 text-[#C5A880]" fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 3l1.8 4.7L18.5 9l-4.7 1.8L12 15.5l-1.8-4.7L5.5 9l4.7-1.3L12 3zM18 15l.9 2.4L21 18l-2.1.9L18 21l-.9-2.1L15 18l2.1-.6L18 15z" />
+              </svg>
+            )}
+            {m.icon === 'chat' && (
+              <svg class="w-5 h-5 text-[#C5A880]" fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M8 10h8M8 14h5M21 12a8 8 0 01-11.6 7.1L4 21l1.6-3.6A8 8 0 1121 12z" />
+              </svg>
+            )}
+            {m.icon === 'heart' && (
+              <svg class="w-5 h-5 text-[#C5A880]" fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 21S4 15.5 4 9.5A4.5 4.5 0 0112 6.6 4.5 4.5 0 0120 9.5c0 6-8 11.5-8 11.5z" />
+              </svg>
+            )}
+            {m.icon === 'ring' && (
+              <svg class="w-5 h-5 text-[#C5A880]" fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 5.5a3.5 3.5 0 00-3.5 3.5 3.5 3.5 0 003.5 3.5 3.5 3.5 0 013.5 3.5A3.5 3.5 0 0112 19.5M7 9h2.5M14.5 15H17" />
+              </svg>
+            )}
+            {m.icon === 'rings' && (
+              <svg class="w-5 h-5 text-[#C5A880]" fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24">
+                <circle cx="9" cy="14" r="5.5" />
+                <circle cx="15" cy="14" r="5.5" />
+              </svg>
+            )}
+          </div>
+
+          <!-- Kartu konten: kiri/kanan berselang di desktop -->
+          <div
+            class:list={[
+              'w-full rounded-2xl bg-white/70 backdrop-blur-md border border-[#C5A880]/20 p-5 shadow-sm hover:border-[#C5A880]/50 transition-all md:w-[calc(50%-2.5rem)]',
+              i % 2 === 0 ? 'md:mr-auto md:pr-8 md:text-right' : 'md:ml-auto md:pl-8 md:text-left',
+            ]}
+            data-reveal
+            data-reveal-delay={String(i * 100)}
+          >
+            <span class="inline-block text-[10px] font-semibold tracking-[0.2em] text-[#C5A880] uppercase bg-[#C5A880]/10 px-3 py-1 rounded-full">
+              {m.year}
+            </span>
+            <h3 class="font-serif text-xl text-[#2B2625] mt-2">{m.title}</h3>
+            <p class="text-xs text-gray-500 leading-relaxed mt-2">{m.text}</p>
+          </div>
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>
