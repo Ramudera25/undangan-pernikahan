@@ -1,0 +1,42 @@
+---
+interface Props {
+  title: string;
+}
+const { title } = Astro.props;
+---
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..700;1,400..700&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <title>{title}</title>
+  </head>
+  <body class="bg-[#FAF8F5] text-[#2B2625] font-sans antialiased selection:bg-[#C5A880] selection:text-white overflow-hidden relative">
+    
+    <!-- Pattern Background Tekstur Lembut -->
+    <div class="fixed inset-0 pointer-events-none opacity-40 z-0 bg-[radial-gradient(#C5A880_0.75px,transparent_0.75px)] [background-size:24px_24px]"></div>
+    
+    <!-- Ambient Light Glow Ambient (Emas & Warm) -->
+    <div class="fixed top-[-10%] left-[-10%] w-[50vw] h-[50vw] bg-[#C5A880]/10 rounded-full blur-[120px] pointer-events-none z-0"></div>
+    <div class="fixed bottom-[-10%] right-[-10%] w-[50vw] h-[50vw] bg-[#C5A880]/10 rounded-full blur-[120px] pointer-events-none z-0"></div>
+
+    <div class="relative z-10">
+      <slot />
+    </div>
+  </body>
+</html>
+
+<style is:global>
+  body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+  }
+  h1, h2, h3, .font-serif {
+    font-family: 'Playfair Display', serif;
+  }
+</style>

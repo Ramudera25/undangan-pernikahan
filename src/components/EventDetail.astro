@@ -1,0 +1,40 @@
+---
+import Countdown from './Countdown';
+---
+<section class="bg-[#2B2625] text-[#EFE7DA] py-16 px-4 text-center relative overflow-hidden">
+  <div class="absolute top-0 left-1/2 -translate-x-1/2 w-96 h-96 bg-[#C5A880]/5 rounded-full blur-3xl pointer-events-none"></div>
+
+  <p class="text-[10px] text-[#C5A880] tracking-[0.25em] uppercase font-semibold">SIMPAN TANGGALNYA</p>
+  <h2 class="font-serif text-3xl sm:text-4xl my-2 text-[#EFE7DA]">Waktu & Lokasi</h2>
+
+  <Countdown client:visible />
+
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-2xl mx-auto mt-10">
+    <!-- Akad -->
+    <div class="p-8 border border-[#C5A880]/30 rounded-2xl bg-gradient-to-b from-white/5 to-transparent backdrop-blur-sm">
+      <h3 class="font-serif text-xl text-[#C5A880] mb-1">Akad Nikah</h3>
+      <p class="text-xs text-gray-300 font-medium mb-4">08.00 – 10.00 WIB</p>
+      <div class="w-8 h-[1px] bg-[#C5A880]/40 mx-auto mb-4"></div>
+      <p class="text-xs text-gray-400 leading-relaxed">
+        <strong class="text-gray-200 font-medium block mb-1">Masjid Agung Darussalam Bojonegoro</strong>
+        Jl. Jenderal Sudirman No. 1, Kauman, Bojonegoro
+      </p>
+    </div>
+
+    <!-- Resepsi -->
+    <div class="p-8 border border-[#C5A880]/30 rounded-2xl bg-gradient-to-b from-white/5 to-transparent backdrop-blur-sm">
+      <h3 class="font-serif text-xl text-[#C5A880] mb-1">Resepsi Pernikahan</h3>
+      <p class="text-xs text-gray-300 font-medium mb-4">11.00 – 14.00 WIB</p>
+      <div class="w-8 h-[1px] bg-[#C5A880]/40 mx-auto mb-4"></div>
+      <p class="text-xs text-gray-400 leading-relaxed">
+        <strong class="text-gray-200 font-medium block mb-1">Kediaman Mempelai Wanita</strong>
+        RT 04 / RW 02, Desa Kauman, Kec. Bojonegoro, Kab. Bojonegoro
+      </p>
+    </div>
+  </div>
+
+  <a href="https://maps.google.com/?q=Bojonegoro" target="_blank" class="inline-flex items-center gap-2 mt-10 px-8 py-3.5 bg-[#C5A880] text-[#2B2625] font-semibold text-xs tracking-wider rounded-full hover:bg-[#b5976f] transition-all shadow-lg">
+    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+    PETUNJUK LOKASI (MAPS)
+  </a>
+</section>

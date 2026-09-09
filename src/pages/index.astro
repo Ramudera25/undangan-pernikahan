@@ -1,0 +1,24 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Cover from '../components/Cover.astro';
+import Hero from '../components/Hero.astro';
+import EventDetail from '../components/EventDetail.astro';
+import Gallery from '../components/Gallery.astro';
+import GuestBook from '../components/GuestBook';
+import GiftInfo from '../components/GiftInfo.astro';
+import MusicPlayer from '../components/MusicPlayer';
+import PetalsAnimation from '../components/PetalsAnimation.astro'; // <--- Import ini
+---
+
+<Layout title="Undangan Pernikahan Bayu & Winda">
+  <PetalsAnimation /> <!-- <--- Pasang di sini -->
+  <Cover />
+  <main class="w-full overflow-hidden">
+    <Hero />
+    <EventDetail />
+    <Gallery />
+    <GuestBook client:visible />
+    <GiftInfo />
+  </main>
+  <MusicPlayer client:load />
+</Layout>

@@ -1,0 +1,90 @@
+---
+---
+<canvas id="petal-canvas" class="pointer-events-none fixed inset-0 z-40 w-full h-full"></canvas>
+
+<script>
+  class Petal {
+    x: number;
+    y: number;
+    size: number;
+    speedY: number;
+    speedX: number;
+    opacity: number;
+    rotation: number;
+    rotationSpeed: number;
+    canvasWidth: number;
+    canvasHeight: number;
+
+    constructor(canvasWidth: number, canvasHeight: number) {
+      this.canvasWidth = canvasWidth;
+      this.canvasHeight = canvasHeight;
+      this.x = Math.random() * canvasWidth;
+      this.y = Math.random() * -canvasHeight;
+      this.size = Math.random() * 8 + 6;
+      this.speedY = Math.random() * 1.2 + 0.8;
+      this.speedX = Math.random() * 0.8 - 0.4;
+      this.opacity = Math.random() * 0.5 + 0.3;
+      this.rotation = Math.random() * 360;
+      this.rotationSpeed = Math.random() * 2 - 1;
+    }
+
+    update() {
+      this.y += this.speedY;
+      this.x += Math.sin(this.y * 0.01) + this.speedX;
+      this.rotation += this.rotationSpeed;
+
+      if (this.y > this.canvasHeight) {
+        this.y = -20;
+        this.x = Math.random() * this.canvasWidth;
+      }
+    }
+
+    draw(ctx: CanvasRenderingContext2D) {
+      ctx.save();
+      ctx.translate(this.x, this.y);
+      ctx.rotate((this.rotation * Math.PI) / 180);
+      ctx.globalAlpha = this.opacity;
+
+      // Menggambar bentuk daun / kelopak bunga elegan
+      ctx.beginPath();
+      ctx.fillStyle = '#C5A880'; // Warna emas matching theme
+      ctx.moveTo(0, 0);
+      ctx.quadraticCurveTo(this.size, -this.size / 2, this.size, -this.size);
+      ctx.quadraticCurveTo(0, -this.size * 1.5, -this.size, -this.size);
+      ctx.quadraticCurveTo(-this.size, -this.size / 2, 0, 0);
+      ctx.fill();
+
+      ctx.restore();
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const canvas = document.getElementById('petal-canvas') as HTMLCanvasElement;
+    if (!canvas) return;
+
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    let width = (canvas.width = window.innerWidth);
+    let height = (canvas.height = window.innerHeight);
+
+    window.addEventListener('resize', () => {
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+    });
+
+    const totalPetals = window.innerWidth < 768 ? 20 : 35; // Otomatis menyesuaikan jumlah di HP agar enteng
+    const petals: Petal[] = Array.from({ length: totalPetals }, () => new Petal(width, height));
+
+    function animate() {
+      ctx?.clearRect(0, 0, width, height);
+      petals.forEach((petal) => {
+        petal.update();
+        petal.draw(ctx!);
+      });
+      requestAnimationFrame(animate);
+    }
+
+    animate();
+  });
+</script>
