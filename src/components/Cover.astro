@@ -1,11 +1,12 @@
 ---
+const makeUrl = (p: string) => `${import.meta.env.BASE_URL}/${p}`.replace(/(?<!:)\/\/+/g, '/');
 ---
 <div id="cover-screen" class="fixed inset-0 z-50 flex flex-col items-center justify-center text-[#EFE7DA] text-center p-6 transition-transform duration-1000 ease-in-out shadow-2xl overflow-hidden">
   
   <!-- Background Image dengan Dark Overlay -->
   <div class="absolute inset-0 z-0">
     <img 
-      src="https://images.unsplash.com/photo-1519225421980-715cb0215aed?q=80&w=1200&auto=format&fit=crop" 
+      src={makeUrl('cover.jpg')} 
       alt="Wedding Cover Background" 
       class="w-full h-full object-cover scale-105 animate-pulse"
       style="animation-duration: 10s;"
