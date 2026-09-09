@@ -1,0 +1,62 @@
+---
+// Utilitas animasi reveal-on-scroll.
+// Setiap elemen dengan atribut `data-reveal` akan fade-in + slide-up
+// secara mulus saat masuk viewport. Dukungan `data-reveal-delay` (ms)
+// untuk efek stagger antar elemen.
+---
+<style is:global>
+  [data-reveal] {
+    opacity: 0;
+    transform: translateY(24px);
+    transition:
+      opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+      transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+    will-change: opacity, transform;
+  }
+
+  [data-reveal].reveal-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Hormati preferensi pengguna yang mengurangi gerakan */
+  @media (prefers-reduced-motion: reduce) {
+    [data-reveal] {
+      opacity: 1 !important;
+      transform: none !important;
+      transition: none !important;
+    }
+  }
+</style>
+
+<script>
+  (() => {
+    const elements = Array.from(document.querySelectorAll('[data-reveal]'));
+    if (!elements.length) return;
+
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    if (!('IntersectionObserver' in window) || reduceMotion) {
+      elements.forEach((el) => el.classList.add('reveal-visible'));
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          const el = entry.target as HTMLElement;
+          const delay = Number(el.dataset.revealDelay) || 0;
+          if (delay) {
+            el.style.transitionDelay = `${delay}ms`;
+          }
+          el.classList.add('reveal-visible');
+          observer.unobserve(el);
+        });
+      },
+      { threshold: 0.12, rootMargin: '0px 0px -8% 0px' }
+    );
+
+    elements.forEach((el) => observer.observe(el));
+  })();
+</script>

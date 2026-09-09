@@ -9,6 +9,9 @@ Undangan pernikahan digital berbasis web modern yang dibangun menggunakan **Astr
 - **Cover & Guest Name**: Menampilkan nama tamu undangan secara dinamis via query URL (`?to=Nama+Tamu`).
 - **Interactive Audio Player**: Musik latar otomatis menyala saat tombol "Buka Undangan" diklik.
 - **Visual Petals Animation**: Animasi daun/kelopak bunga emas berjatuhan menggunakan Canvas 2D.
+- **Reveal-on-Scroll Animation**: Animasi *fade-in* + *slide-up* yang mulus saat elemen masuk viewport.
+- **Love Story Timeline**: Linimasa "Perjalanan Kasih" dengan ikon khusus — dari pertama bertemu hingga pernikahan.
+- **Foto Prewedding**: Galeri & potret mempelai menggunakan foto *dummy* prewedding yang hangat dan elegan.
 - **Real-time Countdown Timer**: Fitur hitung mundur menuju tanggal acara pernikahan.
 - **RSVP via WhatsApp**: Form konfirmasi kehadiran terintegrasi langsung ke WhatsApp.
 - **Digital Guestbook**: Form ucapan dan doa interaktif dari para tamu.
@@ -36,8 +39,10 @@ wedding-invitation/
 │   │   ├── GiftInfo.astro      # Informasi amplop digital & rekening
 │   │   ├── GuestBook.tsx       # Form ucapan & RSVP WhatsApp
 │   │   ├── Hero.astro          # Informasi utama kedua mempelai
+│   │   ├── LoveStory.astro     # Linimasa "Perjalanan Kasih"
 │   │   ├── MusicPlayer.tsx     # Floating player audio latar
-│   │   └── PetalsAnimation.astro # Animasi canvas kelopak bunga berjatuhan
+│   │   ├── PetalsAnimation.astro # Animasi canvas kelopak bunga berjatuhan
+│   │   └── RevealOnScroll.astro # Utilitas animasi reveal-on-scroll
 │   ├── layouts/
 │   │   └── Layout.astro        # Layout utama, fonts, & metadata HTML
 │   ├── pages/
