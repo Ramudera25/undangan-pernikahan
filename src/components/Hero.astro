@@ -1,4 +1,5 @@
 ---
+const makeUrl = (p: string) => `${import.meta.env.BASE_URL}/${p}`.replace(/(?<!:)\/\/+/g, '/');
 ---
 <section class="text-center py-16 px-4 max-w-2xl mx-auto relative">
   <p class="text-[10px] text-[#C5A880] tracking-[0.25em] uppercase font-semibold">MEMPELAI</p>
@@ -10,7 +11,7 @@
     <div class="p-8 bg-white/70 backdrop-blur-md rounded-3xl shadow-sm border border-[#C5A880]/20 hover:border-[#C5A880]/50 transition-all">
       <div class="w-24 h-24 mx-auto mb-4 rounded-full p-1 bg-gradient-to-tr from-[#C5A880] to-transparent">
         <img 
-          src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=300&auto=format&fit=crop" 
+          src={makeUrl('groom.jpg')} 
           alt="Bayu Setiawan" 
           class="w-full h-full object-cover rounded-full shadow-md"
         />
@@ -25,7 +26,7 @@
     <div class="p-8 bg-white/70 backdrop-blur-md rounded-3xl shadow-sm border border-[#C5A880]/20 hover:border-[#C5A880]/50 transition-all">
       <div class="w-24 h-24 mx-auto mb-4 rounded-full p-1 bg-gradient-to-tr from-[#C5A880] to-transparent">
         <img 
-          src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=300&auto=format&fit=crop" 
+          src={makeUrl('bride.jpg')} 
           alt="Winda Anggraeni" 
           class="w-full h-full object-cover rounded-full shadow-md"
         />
