@@ -1,52 +1,50 @@
-# Undangan Pernikahan — Bayu & Winda (LuxeVow — Jawa Etnik Modern)
+# 💒 Digital Wedding Invitation - Bayu & Winda
 
-Undangan pernikahan digital, dibangun dengan HTML/CSS/JS murni (tanpa framework), tema Jawa Etnik Modern (off-white, charcoal, gold), siap di-hosting gratis di GitHub Pages, Netlify, atau Cloudflare Pages.
+Undangan pernikahan digital berbasis web modern yang dibangun menggunakan **Astro**, **React**, dan **Tailwind CSS**. Proyek ini menggunakan pendekatan Single Page Application (SPA) dengan performa Static Site Generation (SSG) super cepat dan sudah dilengkapi pipeline otomatis deployment ke GitHub Pages.
 
-## Struktur folder
+---
+
+## ✨ Fitur Utama
+
+- **Cover & Guest Name**: Menampilkan nama tamu undangan secara dinamis via query URL (`?to=Nama+Tamu`).
+- **Interactive Audio Player**: Musik latar otomatis menyala saat tombol "Buka Undangan" diklik.
+- **Visual Petals Animation**: Animasi daun/kelopak bunga emas berjatuhan menggunakan Canvas 2D.
+- **Real-time Countdown Timer**: Fitur hitung mundur menuju tanggal acara pernikahan.
+- **RSVP via WhatsApp**: Form konfirmasi kehadiran terintegrasi langsung ke WhatsApp.
+- **Digital Guestbook**: Form ucapan dan doa interaktif dari para tamu.
+- **Digital Envelope & Copy Account**: Informasi nomor rekening dengan tombol *copy-to-clipboard*.
+- **CI/CD Auto-Deploy**: Deployment otomatis ke GitHub Pages via GitHub Actions.
+
+---
+
+## 📁 Struktur Folder Proyek
 
 ```text
-undangan-pernikahan/
-├── index.html
-├── css/
-│   └── style.css
-├── js/
-│   └── app.js
-└── assets/
-    ├── audio/
-    │   └── music.mp3       ← belum ada, tambahkan file musikmu di sini
-    ├── images/
-    │   ├── cover.jpg
-    │   ├── groom.jpg
-    │   ├── bride.jpg
-    │   ├── gallery-1.jpg
-    │   ├── gallery-2.jpg
-    │   └── gallery-3.jpg
-    └── svg/
-        └── gunungan.svg
-```
-
-## Apa yang diperbaiki pada revisi ini
-
-1. **Bug foto tidak muncul (penyebab utama tampilan sebelumnya "kosong")** — repo sebelumnya punya dua folder gambar yang berbeda: `Images/` (huruf besar, isi lama) dan kode yang memanggil `images/...` (huruf kecil). GitHub Pages itu *case-sensitive*, jadi semua foto gagal tampil. Sekarang seluruh path memakai `assets/images/...` (huruf kecil, konsisten) — **hapus folder `Images/` yang lama dari repo** supaya tidak membingungkan.
-2. **Restrukturisasi sesuai dokumentasi (MD)** — sebelumnya semuanya dalam satu `index.html`. Sekarang dipecah jadi `css/style.css` dan `js/app.js`, sesuai arsitektur yang kamu dokumentasikan.
-3. **Desain diganti ke tema Jawa Etnik Modern** — palet off-white `#F8F6F0`, charcoal `#2B2625`, gold `#C5A880`; tipografi *Cinzel* (label/aksen) + *Playfair Display* (judul & isi); motif batik halus di layar sampul; ornamen gunungan sebagai aksen; ikon dibuat custom (SVG), tidak lagi bergantung pada FontAwesome dari CDN luar.
-4. **Animasi kelopak bunga gugur** ditambahkan di layar sampul memakai `<canvas>`, otomatis nonaktif kalau perangkat pengguna mengaktifkan "reduce motion".
-5. **Parameter nama tamu** sekarang mendukung tiga variasi sekaligus: `?to=`, `?kpd=`, dan `?untuk=`.
-6. **Fallback gambar aman** — kalau file foto belum diganti/hilang, situs menampilkan placeholder buatan sendiri (bukan menarik dari Unsplash/situs luar).
-7. **Keamanan buku tamu** — ucapan tamu dimasukkan lewat `textContent`, bukan `innerHTML`, jadi tidak bisa disalahgunakan untuk menyisipkan kode.
-8. **Hitung mundur** dua digit otomatis, dan berganti pesan "Hari bahagia telah tiba" begitu tanggal acara terlewati.
-9. Placeholder foto (`cover.jpg`, `groom.jpg`, `bride.jpg`, `gallery-1/2/3.jpg`) sudah disertakan bergaya minimal senada tema, supaya situs tetap tampil rapi sebelum kamu mengganti dengan foto asli.
-
-## Cara pakai / cara upload ke GitHub-mu
-
-1. Buka repo `undangan-pernikahan` di GitHub, **hapus** file `index.html` lama dan folder `Images/` lama.
-2. Upload semua file dari paket ini (`index.html`, folder `css/`, `js/`, `assets/`) ke root repo, sambil mempertahankan strukturnya persis seperti di atas (gunakan "Add file → Upload files" lalu drag seluruh folder, atau lewat git di komputer/GitHub Desktop).
-3. Ganti foto di `assets/images/` dengan foto asli (nama file harus tetap sama: `cover.jpg`, `groom.jpg`, `bride.jpg`, `gallery-1.jpg`, `gallery-2.jpg`, `gallery-3.jpg`).
-4. Tambahkan file musik instrumental bebas royalti ke `assets/audio/music.mp3`.
-5. Buka `js/app.js`, cari baris `const phoneNumber = '628123456789';` dan ganti dengan nomor WhatsApp aktif (format `62xxxxxxxxxx`, tanpa tanda `+`).
-6. Ganti nama, tanggal, alamat, dan nomor rekening di `index.html` sesuai data asli kalian.
-7. Bagikan link dengan `?to=Nama+Tamu` (atau `?kpd=`/`?untuk=`) di akhir URL supaya nama tamu otomatis tampil di sampul.
-
-## Keterbatasan yang masih ada
-
-Buku tamu ("Kirim Ucapan") hanya tersimpan selama sesi kunjungan di browser masing-masing tamu — belum ada penyimpanan terpusat yang terlihat oleh semua pengunjung, karena situs ini murni statis tanpa server. Kalau mau buku tamu benar-benar tersimpan dan terlihat semua orang, perlu tambahan backend gratis seperti Google Apps Script + Google Sheets — beri tahu aku kalau kamu mau ini ditambahkan.
+wedding-invitation/
+├── .github/
+│   └── workflows/
+│       └── deploy.yml          # Pipeline otomatis GitHub Actions untuk build & deploy
+├── public/
+│   ├── favicon.svg             # Favicon website
+│   └── music.mp3               # Audio musik latar undangan
+├── src/
+│   ├── components/             # Komponen UI (Astro & React)
+│   │   ├── Countdown.tsx       # Hitung mundur acara (Client-side)
+│   │   ├── Cover.astro         # Tampilan pembuka / cover depan
+│   │   ├── EventDetail.astro   # Detail waktu & lokasi (Akad & Resepsi)
+│   │   ├── Gallery.astro       # Galeri foto pasangan
+│   │   ├── GiftInfo.astro      # Informasi amplop digital & rekening
+│   │   ├── GuestBook.tsx       # Form ucapan & RSVP WhatsApp
+│   │   ├── Hero.astro          # Informasi utama kedua mempelai
+│   │   ├── MusicPlayer.tsx     # Floating player audio latar
+│   │   └── PetalsAnimation.astro # Animasi canvas kelopak bunga berjatuhan
+│   ├── layouts/
+│   │   └── Layout.astro        # Layout utama, fonts, & metadata HTML
+│   ├── pages/
+│   │   ├── 404.astro           # Halaman fallback 404
+│   │   └── index.astro         # Halaman utama undangan
+│   └── utils/
+│       └── getGuestName.ts     # Utility membaca parameter nama tamu (?to=)
+├── astro.config.mjs
+├── package.json
+└── README.md
