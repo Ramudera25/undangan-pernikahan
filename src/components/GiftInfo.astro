@@ -5,20 +5,73 @@
   <h2 class="font-serif text-3xl text-[#2B2625] my-2" data-reveal data-reveal-delay="80">Amplop Digital</h2>
   <p class="text-xs text-gray-600 max-w-sm mx-auto mb-6" data-reveal data-reveal-delay="160">Doa restu Anda merupakan hadiah terindah. Bagi yang ingin memberikan tanda kasih, dapat melalui rekening berikut:</p>
 
-  <div class="bg-white p-6 rounded-2xl border border-gray-200 max-w-xs mx-auto shadow-sm" data-reveal data-reveal-delay="240">
+  <div class="bg-white p-8 rounded-2xl border border-gray-200 max-w-xs mx-auto shadow-sm" data-reveal data-reveal-delay="240">
     <p class="font-bold text-sm text-gray-700">BANK BCA</p>
-    <p id="rek-num" class="text-lg font-mono font-bold text-[#2B2625] my-2">8830123456</p>
+    <p id="rek-num" class="text-2xl font-mono font-bold text-[#2B2625] my-2 tracking-wider">8830123456</p>
     <p class="text-xs text-gray-500">a.n. Bayu Setiawan</p>
-    <button id="btn-copy" class="mt-4 px-4 py-2 bg-[#2B2625] text-[#EFE7DA] text-xs rounded-lg">SALIN NO. REKENING</button>
+    <button id="btn-copy" class="mt-5 inline-flex items-center gap-2 px-6 py-2.5 bg-[#2B2625] text-[#EFE7DA] text-xs font-semibold rounded-full hover:bg-[#3a3432] transition-colors">
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <rect x="9" y="9" width="11" height="11" rx="2" stroke-width="1.6"/>
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6" d="M5 15V6a2 2 0 012-2h9"/>
+      </svg>
+      SALIN NO. REKENING
+    </button>
   </div>
 </section>
 
+<div id="copy-toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 z-[60] px-5 py-3 rounded-full text-xs font-semibold shadow-2xl opacity-0 pointer-events-none transition-all duration-300"></div>
+
+<style is:global>
+  #copy-toast.toast-show {
+    opacity: 1;
+    transform: translate(-50%, -8px);
+    pointer-events: auto;
+  }
+</style>
+
 <script>
-  document.getElementById('btn-copy')?.addEventListener('click', () => {
-    const rek = document.getElementById('rek-num')?.textContent;
-    if (rek) {
-      navigator.clipboard.writeText(rek);
-      alert('Nomor rekening berhasil disalin!');
+  async function copyText(text: string): Promise<boolean> {
+    if (navigator.clipboard && window.isSecureContext) {
+      try {
+        await navigator.clipboard.writeText(text);
+        return true;
+      } catch {
+        /* lanjut ke fallback */
+      }
     }
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.position = 'fixed';
+    ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.focus();
+    ta.select();
+    let ok = false;
+    try {
+      ok = document.execCommand('copy');
+    } catch {
+      ok = false;
+    }
+    document.body.removeChild(ta);
+    return ok;
+  }
+
+  function showToast(message: string, ok: boolean) {
+    const toast = document.getElementById('copy-toast');
+    if (!toast) return;
+    toast.textContent = message;
+    toast.className += ' toast-show';
+    toast.style.background = ok ? '#2B2625' : '#B33A3A';
+    toast.style.color = '#EFE7DA';
+    setTimeout(() => {
+      toast.classList.remove('toast-show');
+    }, 2400);
+  }
+
+  document.getElementById('btn-copy')?.addEventListener('click', async () => {
+    const rek = document.getElementById('rek-num')?.textContent?.trim();
+    if (!rek) return;
+    const ok = await copyText(rek);
+    showToast(ok ? 'Nomor rekening berhasil disalin!' : 'Gagal menyalin. Salin manual: ' + rek, ok);
   });
 </script>

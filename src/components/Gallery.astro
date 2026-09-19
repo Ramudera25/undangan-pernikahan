@@ -1,9 +1,12 @@
 ---
 const makeUrl = (p: string) => `${import.meta.env.BASE_URL}/${p}`.replace(/(?<!:)\/\/+/g, '/');
 const photos = [
-  makeUrl('gallery-1.jpg'),
-  makeUrl('gallery-2.jpg'),
-  makeUrl('gallery-3.jpg')
+  { url: makeUrl('gallery-1.jpg'), cap: 'Kebersamaan yang hangat', w: 1537, h: 1023 },
+  { url: makeUrl('gallery-2.jpg'), cap: 'Tawa & cerita kita', w: 1536, h: 1024 },
+  { url: makeUrl('groom.jpg'), cap: 'Bayu Setiawan', w: 1254, h: 1254 },
+  { url: makeUrl('bride.jpg'), cap: 'Winda Anggraeni', w: 1254, h: 1254 },
+  { url: makeUrl('gallery-3.jpg'), cap: 'Janji untuk ke depan', w: 1024, h: 1536 },
+  { url: makeUrl('cover.jpg'), cap: 'Menuju hari bahagia', w: 941, h: 1672 },
 ];
 ---
 <section class="py-16 px-4 text-center max-w-3xl mx-auto">
@@ -11,15 +14,108 @@ const photos = [
   <h2 class="font-serif text-3xl sm:text-4xl text-[#2B2625] mt-1 mb-8" data-reveal data-reveal-delay="80">Galeri Bahagia</h2>
 
   <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
-    {photos.map((url, index) => (
-      <div class="overflow-hidden rounded-2xl border border-[#C5A880]/20 group shadow-sm" data-reveal data-reveal-delay={String(index * 100)}>
-        <img 
-          src={url} 
-          alt={`Gallery ${index + 1}`} 
-          class="w-full h-44 object-cover group-hover:scale-110 transition-transform duration-500 ease-out"
+    {photos.map((photo, index) => (
+      <button
+        type="button"
+        data-lightbox-open={index}
+        class="group relative overflow-hidden rounded-2xl border border-[#C5A880]/20 shadow-sm cursor-zoom-in focus:outline-none focus-visible:ring-2 focus-visible:ring-[#C5A880]"
+        data-reveal
+        data-reveal-delay={String(index * 70)}
+        aria-label={`Buka foto: ${photo.cap}`}
+      >
+        <img
+          src={photo.url}
+          alt={photo.cap}
+          width={photo.w}
+          height={photo.h}
+          class="w-full h-44 object-cover group-hover:scale-110 group-focus:scale-110 transition-transform duration-500 ease-out"
           loading="lazy"
         />
-      </div>
+        <div class="absolute inset-0 bg-gradient-to-t from-[#2B2625]/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-3">
+          <span class="text-[10px] text-[#EFE7DA] font-medium tracking-wide">{photo.cap}</span>
+        </div>
+      </button>
     ))}
   </div>
 </section>
+
+<!-- Lightbox -->
+<div id="lightbox" class="fixed inset-0 z-[70] hidden items-center justify-center bg-[#1a1716]/95 backdrop-blur-sm p-4" role="dialog" aria-modal="true" aria-label="Tampilan foto">
+  <button id="lb-close" class="absolute top-4 right-4 w-11 h-11 rounded-full bg-white/10 hover:bg-white/20 text-[#EFE7DA] flex items-center justify-center transition" aria-label="Tutup">
+    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-width="2" d="M6 6l12 12M18 6L6 18"/></svg>
+  </button>
+  <button id="lb-prev" class="absolute left-3 sm:left-6 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-white/10 hover:bg-white/20 text-[#EFE7DA] flex items-center justify-center transition z-10" aria-label="Foto sebelumnya">
+    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+  </button>
+  <button id="lb-next" class="absolute right-3 sm:right-6 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-white/10 hover:bg-white/20 text-[#EFE7DA] flex items-center justify-center transition z-10" aria-label="Foto berikutnya">
+    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+  </button>
+  <figure class="max-w-3xl w-full max-h-[80vh] flex flex-col items-center gap-3" id="lb-figure">
+    <img id="lb-image" src="" alt="" class="max-h-[68vh] max-w-full rounded-lg shadow-2xl object-contain" />
+    <figcaption id="lb-caption" class="text-xs text-[#C5A880] tracking-wide"></figcaption>
+  </figure>
+</div>
+
+<style is:global>
+  #lightbox.show {
+    display: flex;
+    animation: lb-fade 0.25s ease-out;
+  }
+  #lb-image {
+    animation: lb-zoom 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  @keyframes lb-fade {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  @keyframes lb-zoom {
+    from { transform: scale(0.92); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+  }
+</style>
+
+<script>
+  const imgs = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-lightbox-open]'));
+  const lightbox = document.getElementById('lightbox') as HTMLElement;
+  const lbImage = document.getElementById('lb-image') as HTMLImageElement;
+  const lbCaption = document.getElementById('lb-caption') as HTMLElement;
+  if (!lightbox || !lbImage || !lbCaption) throw new Error('lightbox teardown');
+  const photos = imgs.map((btn) => {
+    const img = btn.querySelector('img');
+    return { url: img?.getAttribute('src') ?? '', cap: img?.getAttribute('alt') ?? '' };
+  });
+  let current = 0;
+
+  function show(index: number) {
+    current = (index + photos.length) % photos.length;
+    if (!photos.length) return;
+    lbImage.src = photos[current].url;
+    lightbox.classList.add('show');
+    document.body.style.overflow = 'hidden';
+    (document.getElementById('lb-close') as HTMLElement)?.focus();
+  }
+
+  function close() {
+    lightbox.classList.remove('show');
+    document.body.style.overflow = '';
+  }
+
+  imgs.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      show(Number(btn.dataset.lightboxOpen));
+    });
+  });
+
+  document.getElementById('lb-close')?.addEventListener('click', close);
+  document.getElementById('lb-prev')?.addEventListener('click', () => show(current - 1));
+  document.getElementById('lb-next')?.addEventListener('click', () => show(current + 1));
+  lightbox.addEventListener('click', (e) => {
+    if (e.target === lightbox) close();
+  });
+  document.addEventListener('keydown', (e) => {
+    if (!lightbox.classList.contains('show')) return;
+    if (e.key === 'Escape') close();
+    if (e.key === 'ArrowLeft') show(current - 1);
+    if (e.key === 'ArrowRight') show(current + 1);
+  });
+</script>

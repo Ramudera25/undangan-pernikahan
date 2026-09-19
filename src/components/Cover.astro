@@ -7,15 +7,28 @@ const makeUrl = (p: string) => `${import.meta.env.BASE_URL}/${p}`.replace(/(?<!:
   <div class="absolute inset-0 z-0">
     <img 
       src={makeUrl('cover.jpg')} 
-      alt="Wedding Cover Background" 
+      alt="Cover Undangan Bayu & Winda" 
+      width="941"
+      height="1672"
+      loading="eager"
       class="w-full h-full object-cover scale-105 animate-pulse"
       style="animation-duration: 10s;"
     />
     <div class="absolute inset-0 bg-gradient-to-b from-[#2B2625]/90 via-[#2B2625]/80 to-[#2B2625]/95"></div>
+    <div class="absolute inset-0 bg-[#C5A880]/5 mix-blend-overlay"></div>
   </div>
 
+  <!-- Bingkai ornamen dalam -->
+  <div class="absolute inset-4 sm:inset-6 border border-[#C5A880]/30 rounded-3xl pointer-events-none z-10"></div>
+  <div class="absolute inset-5 sm:inset-7 border border-[#C5A880]/15 rounded-[1.7rem] pointer-events-none z-10"></div>
+  <!-- Ornamen sudut -->
+  <div class="absolute top-7 left-7 w-6 h-6 border-t-2 border-l-2 border-[#C5A880]/70 rounded-tl-lg pointer-events-none z-10"></div>
+  <div class="absolute top-7 right-7 w-6 h-6 border-t-2 border-r-2 border-[#C5A880]/70 rounded-tr-lg pointer-events-none z-10"></div>
+  <div class="absolute bottom-7 left-7 w-6 h-6 border-b-2 border-l-2 border-[#C5A880]/70 rounded-bl-lg pointer-events-none z-10"></div>
+  <div class="absolute bottom-7 right-7 w-6 h-6 border-b-2 border-r-2 border-[#C5A880]/70 rounded-br-lg pointer-events-none z-10"></div>
+
   <!-- Content Overlay -->
-  <div class="relative z-10 flex flex-col items-center max-w-sm w-full">
+  <div class="relative z-20 flex flex-col items-center max-w-sm w-full">
     <div class="w-12 h-12 mb-3 text-[#C5A880] opacity-90 drop-shadow">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2">
         <path d="M12 2L15 9L22 12L15 15L12 22L9 15L2 12L9 9L12 2Z"/>
@@ -26,6 +39,12 @@ const makeUrl = (p: string) => `${import.meta.env.BASE_URL}/${p}`.replace(/(?<!:
     <h1 class="font-serif text-4xl sm:text-5xl my-2 text-transparent bg-clip-text bg-gradient-to-r from-[#EFE7DA] via-[#C5A880] to-[#EFE7DA] font-normal tracking-wide drop-shadow-sm">
       Bayu & Winda
     </h1>
+    <!-- Pembatas dekoratif -->
+    <div class="flex items-center gap-3 my-3">
+      <span class="w-10 h-px bg-gradient-to-r from-transparent to-[#C5A880]/70"></span>
+      <svg class="w-3.5 h-3.5 text-[#C5A880]" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L15 9L22 12L15 15L12 22L9 15L2 12L9 9L12 2Z"/></svg>
+      <span class="w-10 h-px bg-gradient-to-l from-transparent to-[#C5A880]/70"></span>
+    </div>
     <p class="text-[11px] tracking-[0.2em] text-gray-300 mb-8 font-light">SABTU &middot; 24 OKTOBER 2026</p>
 
     <div class="backdrop-blur-md bg-white/10 border border-[#C5A880]/40 p-5 rounded-2xl w-full mb-8 shadow-2xl">
@@ -33,8 +52,9 @@ const makeUrl = (p: string) => `${import.meta.env.BASE_URL}/${p}`.replace(/(?<!:
       <p id="cover-guest-name" class="font-serif text-lg mt-1 text-[#EFE7DA] font-medium capitalize">Tamu Undangan</p>
     </div>
 
-    <button id="btn-open" class="group relative px-8 py-3.5 bg-gradient-to-r from-[#C5A880] to-[#b5976f] text-[#2B2625] font-semibold text-xs tracking-widest rounded-full shadow-xl hover:scale-105 transition-all duration-300">
-      <span class="flex items-center gap-2">
+    <button id="btn-open" class="group relative px-8 py-3.5 bg-gradient-to-r from-[#C5A880] to-[#b5976f] text-[#2B2625] font-semibold text-xs tracking-widest rounded-full shadow-xl hover:scale-105 transition-all duration-300 overflow-hidden">
+      <span class="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-white/30 skew-x-12"></span>
+      <span class="relative flex items-center gap-2">
         BUKA UNDANGAN
         <svg class="w-4 h-4 transition-transform group-hover:translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
       </span>
@@ -52,10 +72,16 @@ const makeUrl = (p: string) => `${import.meta.env.BASE_URL}/${p}`.replace(/(?<!:
     const btnOpen = document.getElementById('btn-open');
     const coverScreen = document.getElementById('cover-screen');
 
+    // Kunci scroll saat cover masih menutupi
+    document.body.classList.add('overflow-hidden');
+
     btnOpen?.addEventListener('click', () => {
       coverScreen?.classList.add('-translate-y-full');
       document.body.classList.remove('overflow-hidden');
       window.dispatchEvent(new CustomEvent('play-invitation-music'));
+      setTimeout(() => {
+        window.dispatchEvent(new CustomEvent('undangan-opened'));
+      }, 900);
     });
   });
 </script>

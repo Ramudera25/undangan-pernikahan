@@ -41,22 +41,34 @@
       return;
     }
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (!entry.isIntersecting) return;
-          const el = entry.target as HTMLElement;
-          const delay = Number(el.dataset.revealDelay) || 0;
-          if (delay) {
-            el.style.transitionDelay = `${delay}ms`;
-          }
-          el.classList.add('reveal-visible');
-          observer.unobserve(el);
-        });
-      },
-      { threshold: 0.12, rootMargin: '0px 0px -8% 0px' }
-    );
+    const observe = () => {
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (!entry.isIntersecting) return;
+            const el = entry.target as HTMLElement;
+            const delay = Number(el.dataset.revealDelay) || 0;
+            if (delay) {
+              el.style.transitionDelay = `${delay}ms`;
+            }
+            el.classList.add('reveal-visible');
+            observer.unobserve(el);
+          });
+        },
+        { threshold: 0.12, rootMargin: '0px 0px -8% 0px' }
+      );
+      elements.forEach((el) => observer.observe(el));
+    };
 
-    elements.forEach((el) => observer.observe(el));
+    // Tunggu cover undangan terbuka, agar section pertama masih
+    // sempat menampilkan animasi reveal saat cover tersingkap.
+    const cover = document.getElementById('cover-screen');
+    if (cover) {
+      window.addEventListener('undangan-opened', () => {
+        setTimeout(observe, 350);
+      });
+    } else {
+      observe();
+    }
   })();
 </script>

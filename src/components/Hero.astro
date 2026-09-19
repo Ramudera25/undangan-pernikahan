@@ -8,11 +8,13 @@ const makeUrl = (p: string) => `${import.meta.env.BASE_URL}/${p}`.replace(/(?<!:
 
   <div class="space-y-8">
     <!-- Groom Card -->
-    <div class="p-8 bg-white/70 backdrop-blur-md rounded-3xl shadow-sm border border-[#C5A880]/20 hover:border-[#C5A880]/50 transition-all" data-reveal data-reveal-delay="200">
-      <div class="w-24 h-24 mx-auto mb-4 rounded-full p-1 bg-gradient-to-tr from-[#C5A880] to-transparent">
+    <div class="p-8 bg-white/70 backdrop-blur-md rounded-3xl shadow-sm border border-[#C5A880]/20 hover:border-[#C5A880]/50 hover:-translate-y-1 hover:shadow-xl transition-all duration-300" data-reveal data-reveal-delay="200">
+      <div class="w-28 h-28 mx-auto mb-4 rounded-full p-[3px] bg-gradient-to-tr from-[#C5A880] to-transparent">
         <img 
           src={makeUrl('groom.jpg')} 
           alt="Bayu Setiawan" 
+          width="1254"
+          height="1254"
           class="w-full h-full object-cover rounded-full shadow-md"
         />
       </div>
@@ -20,14 +22,20 @@ const makeUrl = (p: string) => `${import.meta.env.BASE_URL}/${p}`.replace(/(?<!:
       <p class="text-xs text-gray-500 mt-2 leading-relaxed">Putra Pertama dari Bapak Bambang Setiawan<br/>& Ibu Ratna Sari</p>
     </div>
     
-    <span class="font-serif text-3xl text-[#C5A880] italic block my-2" data-reveal data-reveal-delay="280">&amp;</span>
+    <div class="flex items-center justify-center gap-4 my-4" data-reveal data-reveal-delay="280">
+      <span class="w-16 h-px bg-gradient-to-r from-transparent to-[#C5A880]/60"></span>
+      <span class="font-serif text-3xl text-[#C5A880] italic"> &amp; </span>
+      <span class="w-16 h-px bg-gradient-to-l from-transparent to-[#C5A880]/60"></span>
+    </div>
 
     <!-- Bride Card -->
-    <div class="p-8 bg-white/70 backdrop-blur-md rounded-3xl shadow-sm border border-[#C5A880]/20 hover:border-[#C5A880]/50 transition-all" data-reveal data-reveal-delay="320">
-      <div class="w-24 h-24 mx-auto mb-4 rounded-full p-1 bg-gradient-to-tr from-[#C5A880] to-transparent">
+    <div class="p-8 bg-white/70 backdrop-blur-md rounded-3xl shadow-sm border border-[#C5A880]/20 hover:border-[#C5A880]/50 hover:-translate-y-1 hover:shadow-xl transition-all duration-300" data-reveal data-reveal-delay="320">
+      <div class="w-28 h-28 mx-auto mb-4 rounded-full p-[3px] bg-gradient-to-tr from-[#C5A880] to-transparent">
         <img 
           src={makeUrl('bride.jpg')} 
           alt="Winda Anggraeni" 
+          width="1254"
+          height="1254"
           class="w-full h-full object-cover rounded-full shadow-md"
         />
       </div>

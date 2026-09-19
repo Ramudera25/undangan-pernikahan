@@ -62,6 +62,11 @@
     const canvas = document.getElementById('petal-canvas') as HTMLCanvasElement;
     if (!canvas) return;
 
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      canvas.style.display = 'none';
+      return;
+    }
+
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
@@ -76,14 +81,29 @@
     const totalPetals = window.innerWidth < 768 ? 20 : 35; // Otomatis menyesuaikan jumlah di HP agar enteng
     const petals: Petal[] = Array.from({ length: totalPetals }, () => new Petal(width, height));
 
+    let rafId = 0;
+    let running = true;
+
     function animate() {
+      if (!running) return;
       ctx?.clearRect(0, 0, width, height);
       petals.forEach((petal) => {
         petal.update();
         petal.draw(ctx!);
       });
-      requestAnimationFrame(animate);
+      rafId = requestAnimationFrame(animate);
     }
+
+    // Jeda animasi saat tab tidak terlihat agar hemat baterai
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) {
+        cancelAnimationFrame(rafId);
+        running = false;
+      } else if (!running) {
+        running = true;
+        animate();
+      }
+    });
 
     animate();
   });

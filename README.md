@@ -13,9 +13,12 @@ Undangan pernikahan digital berbasis web modern yang dibangun menggunakan **Astr
 - **Love Story Timeline**: Linimasa "Perjalanan Kasih" dengan ikon khusus — dari pertama bertemu hingga pernikahan.
 - **Foto Prewedding**: Galeri & potret mempelai menggunakan foto *dummy* prewedding yang hangat dan elegan.
 - **Real-time Countdown Timer**: Fitur hitung mundur menuju tanggal acara pernikahan.
+- **Simpan ke Kalender**: Unduh file `.ics` (Akad & Resepsi) atau tambahkan langsung ke Google Calendar.
 - **RSVP via WhatsApp**: Form konfirmasi kehadiran terintegrasi langsung ke WhatsApp.
 - **Digital Guestbook**: Form ucapan dan doa interaktif dari para tamu.
-- **Digital Envelope & Copy Account**: Informasi nomor rekening dengan tombol *copy-to-clipboard*.
+- **Gallery Lightbox**: Galeri foto dengan tampilan fullscreen, navigasi panah & keyboard.
+- **Digital Envelope & Copy Account**: Informasi nomor rekening dengan tombol *copy-to-clipboard* (dengan fallback aman).
+- **SEO & Social Preview**: Meta Open Graph untuk preview cantik saat dishare di WhatsApp/IG + schema JSON-LD.
 - **CI/CD Auto-Deploy**: Deployment otomatis ke GitHub Pages via GitHub Actions.
 
 ---
