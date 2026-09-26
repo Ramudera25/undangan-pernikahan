@@ -1,31 +1,55 @@
 ---
+import { couple, countdownEvent, scheduleConfirmed } from '../data/wedding';
+import { formatEventDate } from '../utils/schedule';
+import Gunungan from './ornaments/Gunungan.astro';
+import SulurDivider from './ornaments/SulurDivider.astro';
+
+const eventDate = countdownEvent.startISO ? formatEventDate(countdownEvent.startISO) : '';
+const year = new Date().getFullYear();
 ---
-<section class="relative text-center py-20 px-4 overflow-hidden bg-[#FAF8F5]">
-  <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[420px] h-[420px] bg-[#C5A880]/10 rounded-full blur-3xl pointer-events-none"></div>
+
+<section class="relative text-center py-20 px-4 overflow-hidden bg-wedding-100/60">
+  <div class="orn-kawung absolute inset-0 opacity-40 pointer-events-none"></div>
+  <div
+    class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[420px] h-[420px] bg-wedding-200/70 rounded-full blur-3xl pointer-events-none"
+  ></div>
+  <Gunungan class="absolute -bottom-4 left-1/2 -translate-x-1/2 w-40 h-56 text-wedding-300/50 pointer-events-none" />
 
   <div class="relative z-10 max-w-xl mx-auto">
-    <div class="flex items-center justify-center gap-3 mb-6" data-reveal>
-      <span class="w-12 h-px bg-gradient-to-r from-transparent to-[#C5A880]/70"></span>
-      <svg class="w-5 h-5 text-[#C5A880]" viewBox="0 0 24 24" fill="currentColor"><path d="M12 21S4 15.5 4 9.5A4.5 4.5 0 0112 6.6 4.5 4.5 0 0120 9.5c0 6-8 11.5-8 11.5z"/></svg>
-      <span class="w-12 h-px bg-gradient-to-l from-transparent to-[#C5A880]/70"></span>
-    </div>
+    <SulurDivider class="w-48 h-6 mx-auto text-wedding-500 mb-6" data-reveal />
 
-    <blockquote class="font-serif text-xl sm:text-2xl text-[#2B2625] leading-relaxed" data-reveal data-reveal-delay="80">
-      "Dan di antara tanda-tanda kekuasaan-Nya ialah Dia menciptakan untukmu pasangan hidup dari jenismu sendiri, supaya kamu merasa tenteram kepadanya."
+    <blockquote
+      class="font-serif text-xl sm:text-2xl text-ink leading-relaxed"
+      data-reveal
+      data-reveal-delay="80"
+    >
+      "Dan di antara tanda-tanda kekuasaan-Nya ialah Dia menciptakan untukmu pasangan hidup dari
+      jenismu sendiri, supaya kamu merasa tenteram kepadanya."
     </blockquote>
-    <p class="text-[11px] text-gray-500 mt-4 italic" data-reveal data-reveal-delay="160">Qs. Ar-Rum : 21</p>
+    <p class="text-sm text-ink-soft mt-4 italic" data-reveal data-reveal-delay="160">Qs. Ar-Rum : 21</p>
 
     <div class="mt-10" data-reveal data-reveal-delay="240">
-      <p class="text-xs text-gray-600 leading-relaxed">
-        Merupakan suatu kehormatan bagi kami apabila Bapak/Ibu/Saudara/i berkenan hadir untuk memberikan doa restu kepada kami.
+      <p class="text-sm text-ink-soft leading-relaxed">
+        Merupakan suatu kehormatan bagi kami apabila Bapak/Ibu/Saudara/i berkenan hadir untuk
+        memberikan doa restu kepada kami.
       </p>
-      <p class="font-serif text-2xl mt-6 text-[#2B2625]">Bayu & Winda</p>
-      <p class="text-[10px] tracking-[0.3em] text-[#C5A880] uppercase mt-2 font-semibold">24 Oktober 2026</p>
+      <p class="font-script text-5xl mt-6 text-wedding-600 leading-none">{couple.shortName}</p>
+      {eventDate && (
+        <p class="text-[10px] tracking-[0.3em] text-wedding-600 uppercase mt-3 font-semibold">
+          {eventDate}{!scheduleConfirmed ? ' (jadwal contoh)' : ''}
+        </p>
+      )}
+      <p class="text-sm text-ink-soft mt-4 leading-relaxed">
+        {couple.groom.fullName}<br />&amp;<br />
+        {couple.bride.fullName}
+      </p>
     </div>
   </div>
 </section>
 
-<footer class="bg-[#2B2625] text-center py-8 px-4">
-  <p class="text-[10px] text-gray-400 tracking-widest uppercase">Dibuat dengan <span class="text-[#C5A880]">&hearts;</span> untuk hari bahagia kami</p>
-  <p class="text-[10px] text-gray-500 mt-2">&copy; 2026 Bayu &amp; Winda</p>
+<footer class="bg-wedding-800 text-center py-8 px-4">
+  <p class="text-[11px] text-wedding-200 tracking-widest uppercase">
+    Dibuat dengan <span class="text-wedding-200">&hearts;</span> untuk hari bahagia kami
+  </p>
+  <p class="text-[11px] text-wedding-300/70 mt-2">&copy; {year} {couple.shortName}</p>
 </footer>

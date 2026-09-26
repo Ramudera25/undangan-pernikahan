@@ -1,54 +1,125 @@
-import React, { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import {
+  countdownEvent,
+  lastScheduledEvent,
+  scheduleConfirmed,
+} from '../data/wedding';
+import {
+  formatEventDate,
+  getScheduleStatus,
+  getTimeLeft,
+  toTimestamp,
+  type ScheduleStatus,
+  type TimeLeft,
+} from '../utils/schedule';
 
+const LABELS: Record<keyof TimeLeft, string> = {
+  days: 'Hari',
+  hours: 'Jam',
+  minutes: 'Menit',
+  seconds: 'Detik',
+};
+
+/**
+ * Hitung mundur menuju acara pertama.
+ * Zona waktu diambil dari ISO acara (+07:00), jadi hitungannya benar
+ * untuk tamu di zona waktu mana pun.
+ */
 export default function Countdown() {
-  const targetDate = new Date('2026-10-24T08:00:00').getTime();
-  const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
-  const [finished, setFinished] = useState(false);
+  const startISO = countdownEvent.startISO;
+  const endISO = lastScheduledEvent?.endISO ?? countdownEvent.endISO;
+
+  const [now, setNow] = useState<number>(() => Date.now());
+  const [status, setStatus] = useState<ScheduleStatus>(() =>
+    getScheduleStatus(startISO, endISO, Date.now()),
+  );
 
   useEffect(() => {
     const tick = () => {
-      const difference = targetDate - new Date().getTime();
-      if (difference <= 0) {
-        setFinished(true);
-        return;
-      }
-      setTimeLeft({
-        days: Math.floor(difference / (1000 * 60 * 60 * 24)),
-        hours: Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
-        minutes: Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60)),
-        seconds: Math.floor((difference % (1000 * 60)) / 1000),
-      });
+      const t = Date.now();
+      setNow(t);
+      setStatus(getScheduleStatus(startISO, endISO, t));
     };
-
     tick();
     const interval = setInterval(tick, 1000);
     return () => clearInterval(interval);
-  }, []);
+  }, [startISO, endISO]);
 
-  if (finished) {
+  if (status === 'unscheduled') {
     return (
-      <div className="max-w-sm mx-auto my-6 text-center">
-        <p className="font-serif text-xl text-[#C5A880]">Alhamdulillah, telah dilaksanakan</p>
-        <p className="text-xs text-gray-300 mt-2">
+      <div className="max-w-sm mx-auto my-8 text-center">
+        <p className="font-serif text-xl text-wedding-200">Jadwal segera diumumkan</p>
+        <p className="text-sm text-wedding-100/80 mt-2">
+          Mohon ditunggu, detail waktu acara akan kami perbarui di halaman ini.
+        </p>
+      </div>
+    );
+  }
+
+  if (status === 'finished') {
+    return (
+      <div className="max-w-sm mx-auto my-8 text-center">
+        <p className="font-serif text-xl text-wedding-200">Alhamdulillah, telah dilaksanakan</p>
+        <p className="text-sm text-wedding-100/80 mt-2">
           Terima kasih atas kehadiran dan doa restu Bapak/Ibu/Saudara/i.
         </p>
       </div>
     );
   }
 
+  if (status === 'ongoing') {
+    return (
+      <div className="max-w-sm mx-auto my-8 text-center">
+        <p className="font-serif text-xl text-wedding-200">Acara sedang berlangsung</p>
+        <p className="text-sm text-wedding-100/80 mt-2">
+          Semoga langkah Bapak/Ibu/Saudara/i dimudahkan menuju lokasi.
+        </p>
+      </div>
+    );
+  }
+
+  const target = toTimestamp(startISO);
+  if (target === null) return null;
+
+  const timeLeft = getTimeLeft(target, now);
+  const dateText = formatEventDate(startISO as string);
+
   return (
-    <div className="grid grid-cols-4 gap-2 text-center max-w-sm mx-auto my-6">
-      {Object.entries(timeLeft).map(([label, value], i) => (
-        <div
-          key={label}
-          className={'bg-white/5 backdrop-blur-sm p-3 rounded-lg border border-[#C5A880]/40 ' + (i === 3 ? 'ring-1 ring-[#C5A880]/40' : '')}
-        >
-          <span className={'block font-bold text-lg text-[#EFE7DA] ' + (i === 3 ? 'text-[#C5A880]' : '')}>
-            {String(value).padStart(2, '0')}
-          </span>
-          <span className="text-[10px] uppercase text-[#C5A880]">{label}</span>
-        </div>
-      ))}
+    <div className="max-w-sm mx-auto my-8 text-center">
+      <p className="text-[11px] tracking-[0.22em] uppercase text-wedding-200/90 font-semibold">
+        Menuju {countdownEvent.label}
+      </p>
+      {dateText && <p className="text-sm text-wedding-100/80 mt-1">{dateText}</p>}
+
+      <div className="grid grid-cols-4 gap-2 mt-4">
+        {(Object.keys(LABELS) as Array<keyof TimeLeft>).map((key) => (
+          <div
+            key={key}
+            className={
+              'bg-white/10 backdrop-blur-sm p-3 rounded-xl border border-wedding-300/40 ' +
+              (key === 'seconds' ? 'ring-1 ring-wedding-300/50' : '')
+            }
+          >
+            <span
+              className={
+                'block font-bold text-xl text-white tabular-nums ' +
+                (key === 'seconds' ? 'text-wedding-200' : '')
+              }
+            >
+              {String(timeLeft[key]).padStart(2, '0')}
+            </span>
+            <span className="text-[10px] uppercase tracking-wider text-wedding-200">
+              {LABELS[key]}
+            </span>
+          </div>
+        ))}
+      </div>
+
+      {!scheduleConfirmed && (
+        <p className="mt-4 text-[11px] text-wedding-200/75 italic">
+          Jadwal di atas masih contoh dan belum dikonfirmasi.
+        </p>
+      )}
     </div>
   );
 }

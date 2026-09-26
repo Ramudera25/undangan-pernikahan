@@ -1,61 +1,74 @@
 ---
+import '../styles/theme.css';
+import { couple, events, seo } from '../data/wedding';
+
 interface Props {
   title: string;
   description?: string;
 }
-const { title, description = 'Dengan memohon rahmat dan ridho Allah SWT, kami mengundang Bapak/Ibu/Saudara/i untuk hadir pada pernikahan Bayu Setiawan & Winda Anggraeni, Sabtu 24 Oktober 2026 di Bojonegoro.' } = Astro.props;
+const { title, description = seo.description } = Astro.props;
 
 const makeUrl = (p: string) => `${import.meta.env.BASE_URL}/${p}`.replace(/(?<!:)\/\/+/g, '/');
 const site = import.meta.env.SITE;
 const absolute = (p: string) => `${site}${makeUrl(p)}`.replace(/(?<!:)\/\/+/g, '/');
-const coverImage = absolute('cover.jpg');
+const coverImage = absolute(seo.coverImage);
+
+const scheduled = events.filter((e) => e.startISO !== null);
+const firstStart = scheduled[0]?.startISO ?? null;
+const lastEnd = scheduled[scheduled.length - 1]?.endISO ?? null;
 
 const weddingEvent = {
   '@context': 'https://schema.org',
   '@type': 'Event',
-  name: 'Pernikahan Bayu & Winda',
-  description: 'Akad Nikah dan Resepsi Pernikahan Bayu Setiawan & Winda Anggraeni.',
-  startDate: '2026-10-24T08:00:00+07:00',
-  endDate: '2026-10-24T14:00:00+07:00',
+  name: `Pernikahan ${couple.shortName}`,
+  description: `Akad Nikah, Resepsi, dan Ngunduh Mantu pernikahan ${couple.groom.fullName} & ${couple.bride.fullName}.`,
+  ...(firstStart ? { startDate: firstStart } : {}),
+  ...(lastEnd ? { endDate: lastEnd } : {}),
   eventStatus: 'https://schema.org/EventScheduled',
   eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
-  location: [
-    {
-      '@type': 'Place',
-      name: 'Masjid Agung Darussalam Bojonegoro',
-      address: 'Jl. Jenderal Sudirman No. 1, Bojonegoro',
-    },
-    {
-      '@type': 'Place',
-      name: 'Kediaman Mempelai Wanita',
-      address: 'RT 04 / RW 02, Desa Kauman, Kec. Bojonegoro',
-    },
-  ],
+  location: events.map((e) => ({
+    '@type': 'Place',
+    name: e.venue,
+    address: e.address,
+  })),
   image: coverImage,
-  organizer: { '@type': 'Person', name: 'Bayu Setiawan' },
+  organizer: [
+    { '@type': 'Person', name: couple.groom.fullName },
+    { '@type': 'Person', name: couple.bride.fullName },
+  ],
 };
+
+const tabTitle = `${couple.shortName} \u00b7 `;
 ---
+
 <!DOCTYPE html>
 <html lang="id" class="scroll-smooth">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#2B2625" />
+    <meta name="theme-color" content="#F5FAFE" />
     <meta name="description" content={description} />
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%232B2625'/%3E%3Ctext x='50' y='68' font-size='54' font-family='Georgia,serif' fill='%23C5A880' text-anchor='middle'%3EBW%3C/text%3E%3C/svg%3E" />
+    <link
+      rel="icon"
+      type="image/svg+xml"
+      href={`data:image/svg+xml,${encodeURIComponent(`<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='#243E50'/><path d='M50 14c7 10 20 20 23 40 2 17-7 30-23 38-16-8-25-21-23-38 3-20 16-30 23-40Z' fill='none' stroke='#8FB6CE' stroke-width='3'/><text x='50' y='63' font-size='30' font-family='Georgia,serif' fill='#DCEEF8' text-anchor='middle'>${couple.initials}</text></svg>`)}`}
+    />
     <link rel="canonical" href={absolute('')} />
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..700;1,400..700&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..700;1,400..700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Sacramento&display=swap"
+      rel="stylesheet"
+    />
 
     <meta property="og:type" content="website" />
-    <meta property="og:site_name" content="Bayu &amp; Winda" />
+    <meta property="og:site_name" content={couple.shortName} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:image" content={coverImage} />
-    <meta property="og:image:width" content="941" />
-    <meta property="og:image:height" content="1672" />
+    <meta property="og:image:width" content={String(seo.coverWidth)} />
+    <meta property="og:image:height" content={String(seo.coverHeight)} />
     <meta property="og:url" content={absolute('')} />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
@@ -66,7 +79,7 @@ const weddingEvent = {
 
     <title>{title}</title>
 
-    <script is:inline>
+    <script is:inline define:vars={{ tabTitle }}>
       (function () {
         var params = new URLSearchParams(window.location.search);
         var name = params.get('to') || params.get('kpd') || params.get('untuk');
@@ -75,20 +88,25 @@ const weddingEvent = {
             name = decodeURIComponent(name).replace(/\+/g, ' ').trim();
           } catch (e) {}
           if (name) {
-            document.title = 'Bayu & Winda \u00b7 ' + name;
+            document.title = tabTitle + name;
           }
         }
       })();
     </script>
   </head>
-  <body class="bg-[#FAF8F5] text-[#2B2625] font-sans antialiased selection:bg-[#C5A880] selection:text-white relative">
-    
-    <!-- Pattern Background Tekstur Lembut -->
-    <div class="fixed inset-0 pointer-events-none opacity-40 z-0 bg-[radial-gradient(#C5A880_0.75px,transparent_0.75px)] [background-size:24px_24px]"></div>
-    
-    <!-- Ambient Light Glow Ambient (Emas & Warm) -->
-    <div class="fixed top-[-10%] left-[-10%] w-[50vw] h-[50vw] bg-[#C5A880]/10 rounded-full blur-[120px] pointer-events-none z-0"></div>
-    <div class="fixed bottom-[-10%] right-[-10%] w-[50vw] h-[50vw] bg-[#C5A880]/10 rounded-full blur-[120px] pointer-events-none z-0"></div>
+  <body
+    class="bg-wedding-50 text-ink font-sans antialiased selection:bg-wedding-300 selection:text-ink relative"
+  >
+    <!-- Tekstur motif kawung beropasitas rendah -->
+    <div class="orn-kawung fixed inset-0 pointer-events-none opacity-[0.35] z-0"></div>
+
+    <!-- Cahaya ambient biru muda -->
+    <div
+      class="fixed top-[-12%] left-[-12%] w-[55vw] h-[55vw] bg-wedding-200/60 rounded-full blur-[130px] pointer-events-none z-0"
+    ></div>
+    <div
+      class="fixed bottom-[-12%] right-[-12%] w-[55vw] h-[55vw] bg-wedding-300/40 rounded-full blur-[130px] pointer-events-none z-0"
+    ></div>
 
     <div class="relative z-10">
       <slot />
@@ -99,8 +117,16 @@ const weddingEvent = {
 <style is:global>
   body {
     font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 15px;
   }
-  h1, h2, h3, .font-serif {
+  h1,
+  h2,
+  h3,
+  .font-serif {
     font-family: 'Playfair Display', serif;
   }
+  .font-script {
+    font-family: 'Sacramento', cursive;
+  }
 </style>
+

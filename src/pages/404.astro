@@ -1,10 +1,18 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import Gunungan from '../components/ornaments/Gunungan.astro';
 ---
+
 <Layout title="Halaman Tidak Ditemukan">
   <div class="min-h-screen flex flex-col items-center justify-center text-center p-4">
-    <h1 class="text-4xl font-serif text-[#2B2625]">404</h1>
-    <p class="text-xs text-gray-500 mt-2">Halaman yang Anda cari tidak ditemukan.</p>
-    <a href={import.meta.env.BASE_URL} class="mt-4 px-4 py-2 bg-[#C5A880] text-[#2B2625] text-xs rounded-full">Kembali ke Undangan</a>
+    <Gunungan class="w-16 h-24 text-wedding-300 mb-4" />
+    <h1 class="text-4xl font-serif text-ink">404</h1>
+    <p class="text-sm text-ink-soft mt-2">Halaman yang Anda cari tidak ditemukan.</p>
+    <a
+      href={import.meta.env.BASE_URL}
+      class="mt-5 px-5 py-2.5 bg-wedding-600 text-white text-xs font-semibold rounded-full hover:bg-wedding-700 transition-colors"
+    >
+      Kembali ke Undangan
+    </a>
   </div>
 </Layout>

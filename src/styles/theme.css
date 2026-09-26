@@ -1,0 +1,96 @@
+/* ==========================================================================
+   Tema & ornamen Jawa — biru muda lembut dengan garis tipis.
+   Diimpor sekali di `src/layouts/Layout.astro`.
+   ========================================================================== */
+
+:root {
+  --wedding-bg: #f5fafe;
+  --wedding-pastel: #dceef8;
+  --wedding-line: #bdd7e8;
+  --wedding-accent: #426b87;
+  --wedding-ink: #243e50;
+
+  /* Tinggi toolbar bawah + ruang aman ponsel */
+  --nav-height: 74px;
+  --nav-safe-bottom: env(safe-area-inset-bottom, 0px);
+  /* Jarak aman untuk elemen melayang (musik, toast) di atas toolbar */
+  --float-offset: calc(var(--nav-height) + var(--nav-safe-bottom) + 20px);
+}
+
+/* ---------- Tekstur motif kawung (opasitas rendah, tidak mengganggu) ------- */
+.orn-kawung {
+  background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20width%3D'44'%20height%3D'44'%20viewBox%3D'0%200%2044%2044'%3E%3Cg%20fill%3D'none'%20stroke%3D'%23BDD7E8'%20stroke-width%3D'1'%3E%3Cellipse%20cx%3D'22'%20cy%3D'22'%20rx%3D'6.5'%20ry%3D'11.5'%20transform%3D'rotate(45%2022%2022)'%2F%3E%3Cellipse%20cx%3D'22'%20cy%3D'22'%20rx%3D'6.5'%20ry%3D'11.5'%20transform%3D'rotate(-45%2022%2022)'%2F%3E%3Ccircle%20cx%3D'0'%20cy%3D'0'%20r%3D'2.6'%2F%3E%3Ccircle%20cx%3D'44'%20cy%3D'0'%20r%3D'2.6'%2F%3E%3Ccircle%20cx%3D'0'%20cy%3D'44'%20r%3D'2.6'%2F%3E%3Ccircle%20cx%3D'44'%20cy%3D'44'%20r%3D'2.6'%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E");
+  background-size: 44px 44px;
+}
+
+/* Varian untuk section gelap (garis biru pucat di atas latar biru tua). */
+.orn-kawung-dark {
+  background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20width%3D'44'%20height%3D'44'%20viewBox%3D'0%200%2044%2044'%3E%3Cg%20fill%3D'none'%20stroke%3D'%238FB6CE'%20stroke-width%3D'1'%3E%3Cellipse%20cx%3D'22'%20cy%3D'22'%20rx%3D'6.5'%20ry%3D'11.5'%20transform%3D'rotate(45%2022%2022)'%2F%3E%3Cellipse%20cx%3D'22'%20cy%3D'22'%20rx%3D'6.5'%20ry%3D'11.5'%20transform%3D'rotate(-45%2022%2022)'%2F%3E%3Ccircle%20cx%3D'0'%20cy%3D'0'%20r%3D'2.6'%2F%3E%3Ccircle%20cx%3D'44'%20cy%3D'0'%20r%3D'2.6'%2F%3E%3Ccircle%20cx%3D'0'%20cy%3D'44'%20r%3D'2.6'%2F%3E%3Ccircle%20cx%3D'44'%20cy%3D'44'%20r%3D'2.6'%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E");
+  background-size: 44px 44px;
+}
+
+/* ---------- Bingkai foto mempelai: lingkaran garis ganda + bayangan ------- */
+.photo-frame {
+  position: relative;
+  border-radius: 9999px;
+  padding: 4px;
+  background: linear-gradient(160deg, #ffffff 0%, #dceef8 55%, #bdd7e8 100%);
+  box-shadow:
+    0 0 0 1px #bdd7e8,
+    0 14px 30px -14px rgba(36, 62, 80, 0.35);
+}
+.photo-frame::after {
+  content: '';
+  position: absolute;
+  inset: 9px;
+  border-radius: 9999px;
+  border: 1px solid rgba(189, 215, 232, 0.9);
+  pointer-events: none;
+}
+.photo-frame img {
+  border-radius: 9999px;
+  display: block;
+}
+
+/* ---------- Animasi masuk foto mempelai (sekali, saat masuk layar) -------- */
+/* Pria masuk dari kanan, wanita dari kiri. Durasi ±900ms dengan perlambatan. */
+[data-reveal][data-reveal-from='right'],
+[data-reveal][data-reveal-from='left'] {
+  transition-duration: 900ms;
+  transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+}
+[data-reveal][data-reveal-from='right'] {
+  transform: translateX(64px);
+}
+[data-reveal][data-reveal-from='left'] {
+  transform: translateX(-64px);
+}
+[data-reveal][data-reveal-from].reveal-visible {
+  transform: translateX(0);
+}
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal][data-reveal-from] {
+    transform: none !important;
+  }
+}
+
+/* ---------- Ruang bawah untuk toolbar melayang ---------------------------- */
+.has-bottom-nav {
+  padding-bottom: calc(var(--nav-height) + var(--nav-safe-bottom));
+}
+.float-above-nav {
+  bottom: var(--float-offset);
+}
+
+/* ---------- Kartu permukaan ------------------------------------------------ */
+.surface {
+  background-color: #ffffff;
+  border: 1px solid #bdd7e8;
+  box-shadow: 0 10px 30px -20px rgba(36, 62, 80, 0.35);
+}
+
+/* ---------- Garis fokus yang konsisten ------------------------------------ */
+:focus-visible {
+  outline: 2px solid #426b87;
+  outline-offset: 2px;
+}

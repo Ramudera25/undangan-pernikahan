@@ -1,25 +1,59 @@
 ---
+import { bankAccounts } from '../data/wedding';
+import SulurDivider from './ornaments/SulurDivider.astro';
 ---
-<section class="bg-gray-50 py-12 px-4 text-center">
-  <p class="text-xs text-[#C5A880] tracking-widest uppercase" data-reveal>TANDA KASIH</p>
-  <h2 class="font-serif text-3xl text-[#2B2625] my-2" data-reveal data-reveal-delay="80">Amplop Digital</h2>
-  <p class="text-xs text-gray-600 max-w-sm mx-auto mb-6" data-reveal data-reveal-delay="160">Doa restu Anda merupakan hadiah terindah. Bagi yang ingin memberikan tanda kasih, dapat melalui rekening berikut:</p>
 
-  <div class="bg-white p-8 rounded-2xl border border-gray-200 max-w-xs mx-auto shadow-sm" data-reveal data-reveal-delay="240">
-    <p class="font-bold text-sm text-gray-700">BANK BCA</p>
-    <p id="rek-num" class="text-2xl font-mono font-bold text-[#2B2625] my-2 tracking-wider">8830123456</p>
-    <p class="text-xs text-gray-500">a.n. Bayu Setiawan</p>
-    <button id="btn-copy" class="mt-5 inline-flex items-center gap-2 px-6 py-2.5 bg-[#2B2625] text-[#EFE7DA] text-xs font-semibold rounded-full hover:bg-[#3a3432] transition-colors">
-      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <rect x="9" y="9" width="11" height="11" rx="2" stroke-width="1.6"/>
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6" d="M5 15V6a2 2 0 012-2h9"/>
-      </svg>
-      SALIN NO. REKENING
-    </button>
+<section id="amplop" class="py-16 px-4 text-center max-w-2xl mx-auto scroll-mt-24">
+  <p class="text-[10px] text-wedding-600 tracking-[0.25em] uppercase font-semibold" data-reveal>
+    Tanda Kasih
+  </p>
+  <h2 class="font-serif text-3xl sm:text-4xl text-ink my-2" data-reveal data-reveal-delay="80">
+    Amplop Digital
+  </h2>
+  <p class="text-sm text-ink-soft max-w-sm mx-auto mb-4 leading-relaxed" data-reveal data-reveal-delay="160">
+    Doa restu Anda merupakan hadiah terindah. Bagi yang ingin memberikan tanda kasih, dapat melalui
+    rekening berikut:
+  </p>
+  <SulurDivider class="w-48 h-6 mx-auto text-wedding-400 mb-8" data-reveal data-reveal-delay="200" />
+
+  <div class="grid gap-4 sm:grid-cols-2">
+    {bankAccounts.map((rek, i) => (
+      <div
+        class="surface p-6 rounded-2xl max-w-xs w-full mx-auto"
+        data-reveal
+        data-reveal-delay={String(240 + i * 90)}
+      >
+        <p class="font-bold text-sm tracking-wider text-wedding-600 uppercase">{rek.bank}</p>
+        <p
+          class="text-xl sm:text-2xl font-mono font-bold text-ink my-2 tracking-wider break-all"
+          data-rek-number
+        >
+          {rek.number}
+        </p>
+        <p class="text-sm text-ink-soft">a.n. {rek.holder}</p>
+        <button
+          type="button"
+          data-copy-target={rek.number}
+          class="mt-5 inline-flex items-center gap-2 px-6 py-2.5 bg-wedding-600 text-white text-xs font-semibold rounded-full hover:bg-wedding-700 transition-colors"
+        >
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <rect x="9" y="9" width="11" height="11" rx="2" stroke-width="1.6"></rect>
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6" d="M5 15V6a2 2 0 012-2h9"></path>
+          </svg>
+          SALIN NO. REKENING
+        </button>
+      </div>
+    ))}
   </div>
 </section>
 
-<div id="copy-toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 z-[60] px-5 py-3 rounded-full text-xs font-semibold shadow-2xl opacity-0 pointer-events-none transition-all duration-300"></div>
+<!-- Notifikasi salin: diposisikan di atas toolbar bawah -->
+<div
+  id="copy-toast"
+  role="status"
+  aria-live="polite"
+  class="float-above-nav fixed left-1/2 -translate-x-1/2 z-[60] px-5 py-3 rounded-full text-xs font-semibold shadow-2xl opacity-0 pointer-events-none transition-all duration-300"
+></div>
 
 <style is:global>
   #copy-toast.toast-show {
@@ -56,22 +90,25 @@
     return ok;
   }
 
+  let toastTimer = 0;
   function showToast(message: string, ok: boolean) {
     const toast = document.getElementById('copy-toast');
     if (!toast) return;
     toast.textContent = message;
-    toast.className += ' toast-show';
-    toast.style.background = ok ? '#2B2625' : '#B33A3A';
-    toast.style.color = '#EFE7DA';
-    setTimeout(() => {
-      toast.classList.remove('toast-show');
-    }, 2400);
+    toast.style.background = ok ? '#243E50' : '#B33A3A';
+    toast.style.color = '#F5FAFE';
+    toast.classList.add('toast-show');
+    window.clearTimeout(toastTimer);
+    toastTimer = window.setTimeout(() => toast.classList.remove('toast-show'), 2400);
   }
 
-  document.getElementById('btn-copy')?.addEventListener('click', async () => {
-    const rek = document.getElementById('rek-num')?.textContent?.trim();
-    if (!rek) return;
-    const ok = await copyText(rek);
-    showToast(ok ? 'Nomor rekening berhasil disalin!' : 'Gagal menyalin. Salin manual: ' + rek, ok);
+  // Satu tombol salin untuk tiap rekening.
+  document.querySelectorAll<HTMLButtonElement>('[data-copy-target]').forEach((btn) => {
+    btn.addEventListener('click', async () => {
+      const rek = btn.dataset.copyTarget?.trim();
+      if (!rek) return;
+      const ok = await copyText(rek);
+      showToast(ok ? `Nomor rekening ${rek} berhasil disalin!` : `Gagal menyalin. Salin manual: ${rek}`, ok);
+    });
   });
 </script>

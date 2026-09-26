@@ -9,15 +9,17 @@ import GuestBook from '../components/GuestBook';
 import GiftInfo from '../components/GiftInfo.astro';
 import Footer from '../components/Footer.astro';
 import MusicPlayer from '../components/MusicPlayer';
+import BottomNav from '../components/BottomNav';
 import PetalsAnimation from '../components/PetalsAnimation.astro';
 import RevealOnScroll from '../components/RevealOnScroll.astro';
+import { seo } from '../data/wedding';
 ---
 
-<Layout title="Undangan Pernikahan Bayu & Winda">
+<Layout title={seo.title}>
   <RevealOnScroll />
   <PetalsAnimation />
   <Cover />
-  <main class="w-full overflow-hidden">
+  <main id="home" class="w-full overflow-hidden has-bottom-nav">
     <Hero />
     <LoveStory />
     <EventDetail />
@@ -27,4 +29,5 @@ import RevealOnScroll from '../components/RevealOnScroll.astro';
     <Footer />
   </main>
   <MusicPlayer client:load />
+  <BottomNav client:load />
 </Layout>
