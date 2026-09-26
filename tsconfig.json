@@ -1,4 +1,5 @@
 {
+  "extends": "astro/tsconfigs/strict",
   "compilerOptions": {
     "target": "es2022",
     "module": "esnext",
@@ -7,12 +8,12 @@
     "jsxImportSource": "react",
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "strict": true,
     "forceConsistentCasingInFileNames": true,
+    "types": ["astro/client"],
     "baseUrl": ".",
     "paths": {
       "@/*": ["src/*"]
     }
   },
-  "include": ["src/**/*"]
+  "include": ["src/**/*", "tests/**/*"]
 }

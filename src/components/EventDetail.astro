@@ -1,90 +1,155 @@
 ---
 import Countdown from './Countdown';
-import { buildICS, downloadICS, googleCalendarUrl } from '../utils/calendar';
+import { events, scheduleConfirmed } from '../data/wedding';
+import { formatEventDate, formatEventRange } from '../utils/schedule';
+import { calendarEvents, googleCalendarUrl, mapsUrl } from '../utils/calendar';
+import SulurDivider from './ornaments/SulurDivider.astro';
 
-const akadMap = 'https://maps.google.com/?q=Masjid Agung Darussalam Bojonegoro';
-const resepsiMap = 'https://maps.google.com/?q=Kauman, Bojonegoro';
+// Tautan Google Calendar dibuat saat build sehingga tidak ada tautan mati.
+const gcalByEventId = new Map(
+  calendarEvents().map((e) => [e.id, googleCalendarUrl(e)]),
+);
+
+const cards = events.map((e) => ({
+  id: e.id,
+  label: e.label,
+  icon: e.icon,
+  venue: e.venue,
+  address: e.address,
+  date: e.startISO ? formatEventDate(e.startISO) : e.dateLabel,
+  time: formatEventRange(e.startISO, e.endISO, e.timeLabel),
+  map: mapsUrl(`${e.venue}, ${e.address}`),
+  scheduled: e.startISO !== null,
+  gcal: gcalByEventId.get(e.id) ?? null,
+}));
+
+const scheduledCount = cards.filter((c) => c.scheduled).length;
 ---
-<section class="bg-[#2B2625] text-[#EFE7DA] py-16 px-4 text-center relative overflow-hidden">
-  <div class="absolute top-0 left-1/2 -translate-x-1/2 w-96 h-96 bg-[#C5A880]/5 rounded-full blur-3xl pointer-events-none"></div>
 
-  <p class="text-[10px] text-[#C5A880] tracking-[0.25em] uppercase font-semibold" data-reveal>SIMPAN TANGGALNYA</p>
-  <h2 class="font-serif text-3xl sm:text-4xl my-2 text-[#EFE7DA]" data-reveal data-reveal-delay="80">Waktu & Lokasi</h2>
+<section
+  id="tanggal"
+  class="bg-wedding-800 text-wedding-50 py-16 px-4 text-center relative overflow-hidden scroll-mt-24"
+>
+  <div class="orn-kawung-dark absolute inset-0 opacity-25 pointer-events-none"></div>
+  <div
+    class="absolute top-0 left-1/2 -translate-x-1/2 w-96 h-96 bg-wedding-500/20 rounded-full blur-3xl pointer-events-none"
+  ></div>
 
-  <Countdown client:visible />
+  <div class="relative">
+    <p class="text-[10px] text-wedding-200 tracking-[0.25em] uppercase font-semibold" data-reveal>
+      Simpan Tanggalnya
+    </p>
+    <h2 class="font-serif text-3xl sm:text-4xl my-2 text-white" data-reveal data-reveal-delay="80">
+      Waktu &amp; Lokasi
+    </h2>
+    <SulurDivider class="w-48 h-6 mx-auto text-wedding-300/70 mt-2" data-reveal data-reveal-delay="120" />
 
-  <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-2xl mx-auto mt-10">
-    <!-- Akad -->
-    <div class="p-8 border border-[#C5A880]/30 rounded-2xl bg-gradient-to-b from-white/5 to-transparent backdrop-blur-sm" data-reveal data-reveal-delay="120">
-      <h3 class="font-serif text-xl text-[#C5A880] mb-1">Akad Nikah</h3>
-      <p class="text-xs text-gray-300 font-medium mb-4">08.00 – 10.00 WIB</p>
-      <div class="w-8 h-[1px] bg-[#C5A880]/40 mx-auto mb-4"></div>
-      <p class="text-xs text-gray-400 leading-relaxed">
-        <strong class="text-gray-200 font-medium block mb-1">Masjid Agung Darussalam Bojonegoro</strong>
-        Jl. Jenderal Sudirman No. 1, Kauman, Bojonegoro
-      </p>
-      <a href={akadMap} target="_blank" class="inline-flex items-center gap-1.5 mt-5 text-[10px] text-[#C5A880] font-semibold uppercase tracking-wider hover:text-[#EFE7DA] transition-colors">
-        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-        Petunjuk Lokasi
-      </a>
+    <Countdown client:visible />
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-5 max-w-4xl mx-auto mt-8">
+      {cards.map((card, i) => (
+        <div
+          class="p-7 border border-wedding-300/35 rounded-2xl bg-gradient-to-b from-white/10 to-transparent backdrop-blur-sm text-left"
+          data-reveal
+          data-reveal-delay={String(140 + i * 90)}
+        >
+          <div class="flex items-center gap-2 text-wedding-200">
+            {card.icon === 'ring' && (
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24">
+                <circle cx="12" cy="15" r="5.5"></circle>
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 9l3-5 3 5"></path>
+              </svg>
+            )}
+            {card.icon === 'party' && (
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M4 20l3-11 8 8-11 3zM14 5l1 3M19 8l-3 1M18 3l.7 2.3L21 6l-2.3.7L18 9l-.7-2.3L15 6l2.3-.7L18 3z"></path>
+              </svg>
+            )}
+            {card.icon === 'home' && (
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M4 11l8-6 8 6v8a1 1 0 01-1 1h-4v-6H9v6H5a1 1 0 01-1-1v-8z"></path>
+              </svg>
+            )}
+            <h3 class="font-serif text-lg text-wedding-200">{card.label}</h3>
+          </div>
+
+          <p class="text-sm text-wedding-100 font-medium mt-4">{card.date}</p>
+          <p class="text-sm text-wedding-200/90">{card.time}</p>
+
+          <div class="w-10 h-px bg-wedding-300/40 my-4"></div>
+
+          <p class="text-sm text-wedding-100/80 leading-relaxed">
+            <strong class="text-white font-medium block mb-1">{card.venue}</strong>
+            {card.address}
+          </p>
+
+          {!card.scheduled && (
+            <p class="mt-3 inline-block text-[11px] px-2.5 py-1 rounded-full bg-wedding-200/15 text-wedding-200 border border-wedding-300/30">
+              Jadwal belum dikonfirmasi
+            </p>
+          )}
+
+          <div class="flex flex-wrap items-center gap-x-4 gap-y-2 mt-5">
+            <a
+              href={card.map}
+              target="_blank"
+              rel="noopener"
+              class="inline-flex items-center gap-1.5 text-[11px] text-wedding-200 font-semibold uppercase tracking-wider hover:text-white transition-colors"
+            >
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+              </svg>
+              Petunjuk Lokasi
+            </a>
+            {card.scheduled && (
+              <a
+                href={card.gcal ?? '#'}
+                target="_blank"
+                rel="noopener"
+                class="inline-flex items-center gap-1.5 text-[11px] text-wedding-200 font-semibold uppercase tracking-wider hover:text-white transition-colors"
+              >
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M8 7V3m8 4V3M5 5h14a1 1 0 011 1v14a1 1 0 01-1 1H5a1 1 0 01-1-1V6a1 1 0 011-1zM3 9h18"></path>
+                </svg>
+                Google Calendar
+              </a>
+            )}
+          </div>
+        </div>
+      ))}
     </div>
 
-    <!-- Resepsi -->
-    <div class="p-8 border border-[#C5A880]/30 rounded-2xl bg-gradient-to-b from-white/5 to-transparent backdrop-blur-sm" data-reveal data-reveal-delay="220">
-      <h3 class="font-serif text-xl text-[#C5A880] mb-1">Resepsi Pernikahan</h3>
-      <p class="text-xs text-gray-300 font-medium mb-4">11.00 – 14.00 WIB</p>
-      <div class="w-8 h-[1px] bg-[#C5A880]/40 mx-auto mb-4"></div>
-      <p class="text-xs text-gray-400 leading-relaxed">
-        <strong class="text-gray-200 font-medium block mb-1">Kediaman Mempelai Wanita</strong>
-        RT 04 / RW 02, Desa Kauman, Kec. Bojonegoro, Kab. Bojonegoro
-      </p>
-      <a href={resepsiMap} target="_blank" class="inline-flex items-center gap-1.5 mt-5 text-[10px] text-[#C5A880] font-semibold uppercase tracking-wider hover:text-[#EFE7DA] transition-colors">
-        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-        Petunjuk Lokasi
-      </a>
-    </div>
-  </div>
+    <div class="mt-10 space-y-3" data-reveal data-reveal-delay="420">
+      {!scheduleConfirmed && (
+        <p class="max-w-md mx-auto text-[11px] leading-relaxed text-wedding-200/80 bg-wedding-200/10 border border-wedding-300/30 rounded-xl px-4 py-2.5">
+          Jadwal pada halaman ini masih <strong>data contoh</strong> dan belum dikonfirmasi. Periksa
+          kembali sebelum menyimpannya ke kalender Anda.
+        </p>
+      )}
 
-  <div class="flex flex-wrap items-center justify-center gap-4 mt-10" data-reveal data-reveal-delay="320">
-    <button id="btn-save-cal" class="inline-flex items-center gap-2 px-8 py-3.5 bg-[#C5A880] text-[#2B2625] font-semibold text-xs tracking-wider rounded-full hover:bg-[#b5976f] transition-all shadow-lg">
-      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M8 7V3m8 4V3M5 5h14a1 1 0 011 1v14a1 1 0 01-1 1H5a1 1 0 01-1-1V6a1 1 0 011-1zM3 9h18"/></svg>
-      SIMPAN KE KALENDER
-    </button>
-    <a id="btn-gcal" href="#" target="_blank" class="inline-flex items-center gap-2 px-8 py-3.5 bg-white/10 border border-[#C5A880]/40 text-[#C5A880] font-semibold text-xs tracking-wider rounded-full hover:bg-white/20 transition-all">
-      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2z"/></svg>
-      GOOGLE CALENDAR
-    </a>
+      <button
+        id="btn-save-cal"
+        class="inline-flex items-center gap-2 px-8 py-3.5 bg-wedding-200 text-wedding-800 font-semibold text-xs tracking-wider rounded-full hover:bg-white transition-all shadow-lg"
+      >
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M8 7V3m8 4V3M5 5h14a1 1 0 011 1v14a1 1 0 01-1 1H5a1 1 0 01-1-1V6a1 1 0 011-1zM3 9h18"></path>
+        </svg>
+        SIMPAN {scheduledCount} ACARA KE KALENDER
+      </button>
+    </div>
   </div>
 </section>
 
 <script>
-  import { buildICS, downloadICS, googleCalendarUrl } from '../utils/calendar';
+  import { buildICS, calendarEvents, downloadICS } from '../utils/calendar';
+  import { calendarIdentity } from '../data/wedding';
 
-  const events = [
-    {
-      uid: 'akad-2026-10-24',
-      summary: 'Akad Nikah Bayu & Winda',
-      description: 'Akad Nikah Bayu Setiawan & Winda Anggraeni, Sabtu 24 Oktober 2026. Mohon doa restu.',
-      location: 'Masjid Agung Darussalam Bojonegoro, Jl. Jenderal Sudirman No. 1, Bojonegoro',
-      start: '20261024T010000Z',
-      end: '20261024T030000Z',
-    },
-    {
-      uid: 'resepsi-2026-10-24',
-      summary: 'Resepsi Pernikahan Bayu & Winda',
-      description: 'Resepsi Pernikahan Bayu Setiawan & Winda Anggraeni, Sabtu 24 Oktober 2026. Mohon doa restu.',
-      location: 'Kediaman Mempelai Wanita, RT 04/RW 02, Desa Kauman, Bojonegoro',
-      start: '20261024T040000Z',
-      end: '20261024T070000Z',
-    },
-  ];
+  const events = calendarEvents();
 
   document.getElementById('btn-save-cal')?.addEventListener('click', () => {
-    downloadICS('undangan-bayu-winda.ics', buildICS(events));
+    if (!events.length) return;
+    downloadICS(calendarIdentity.fileName, buildICS(events, calendarIdentity));
   });
 
-  const gcal = document.getElementById('btn-gcal') as HTMLAnchorElement | null;
-  if (gcal) {
-    gcal.href = googleCalendarUrl(events[1]);
-  }
 </script>

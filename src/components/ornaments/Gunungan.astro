@@ -1,0 +1,27 @@
+---
+/**
+ * Siluet gunungan/kayon wayang, digambar sebagai garis tipis.
+ * Warna mengikuti `currentColor`.
+ */
+const { class: className = '', ...rest } = Astro.props;
+---
+
+<svg viewBox="0 0 100 140" fill="none" stroke="currentColor" class={className} aria-hidden="true" {...rest}>
+  <!-- Siluet luar -->
+  <path
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    d="M50 3C60 20 82 38 87 72c4 28-5 52-21 64H34C18 124 9 100 13 72 18 38 40 20 50 3Z"
+  ></path>
+  <!-- Garis dalam -->
+  <path
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    d="M50 15c8 14 24 29 28 57 3 23-4 43-17 55H39c-13-12-20-32-17-55 4-28 20-43 28-57Z"
+  ></path>
+  <!-- Gapura di kaki gunungan -->
+  <path stroke-linecap="round" d="M42 136v-19c0-6 16-6 16 0v19"></path>
+  <!-- Motif tengah -->
+  <path d="M50 40c5 8 8 14 8 21 0 8-4 12-8 12s-8-4-8-12c0-7 3-13 8-21Z"></path>
+  <circle cx="50" cy="28" r="3"></circle>
+</svg>

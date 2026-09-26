@@ -1,24 +1,31 @@
 ---
+import { gallery } from '../data/wedding';
+import SulurDivider from './ornaments/SulurDivider.astro';
+
 const makeUrl = (p: string) => `${import.meta.env.BASE_URL}/${p}`.replace(/(?<!:)\/\/+/g, '/');
-const photos = [
-  { url: makeUrl('gallery-1.jpg'), cap: 'Kebersamaan yang hangat', w: 1537, h: 1023 },
-  { url: makeUrl('gallery-2.jpg'), cap: 'Tawa & cerita kita', w: 1536, h: 1024 },
-  { url: makeUrl('groom.jpg'), cap: 'Bayu Setiawan', w: 1254, h: 1254 },
-  { url: makeUrl('bride.jpg'), cap: 'Winda Anggraeni', w: 1254, h: 1254 },
-  { url: makeUrl('gallery-3.jpg'), cap: 'Janji untuk ke depan', w: 1024, h: 1536 },
-  { url: makeUrl('cover.jpg'), cap: 'Menuju hari bahagia', w: 941, h: 1672 },
-];
+const photos = gallery.map((g) => ({
+  url: makeUrl(g.photo),
+  cap: g.caption,
+  w: g.width,
+  h: g.height,
+}));
 ---
-<section class="py-16 px-4 text-center max-w-3xl mx-auto">
-  <p class="text-[10px] text-[#C5A880] tracking-[0.25em] uppercase font-semibold" data-reveal>MOMEN KAMI</p>
-  <h2 class="font-serif text-3xl sm:text-4xl text-[#2B2625] mt-1 mb-8" data-reveal data-reveal-delay="80">Galeri Bahagia</h2>
+
+<section id="galeri" class="py-16 px-4 text-center max-w-3xl mx-auto scroll-mt-24">
+  <p class="text-[10px] text-wedding-600 tracking-[0.25em] uppercase font-semibold" data-reveal>
+    Momen Kami
+  </p>
+  <h2 class="font-serif text-3xl sm:text-4xl text-ink mt-1 mb-3" data-reveal data-reveal-delay="80">
+    Galeri Bahagia
+  </h2>
+  <SulurDivider class="w-48 h-6 mx-auto text-wedding-400 mb-8" data-reveal data-reveal-delay="120" />
 
   <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
     {photos.map((photo, index) => (
       <button
         type="button"
         data-lightbox-open={index}
-        class="group relative overflow-hidden rounded-2xl border border-[#C5A880]/20 shadow-sm cursor-zoom-in focus:outline-none focus-visible:ring-2 focus-visible:ring-[#C5A880]"
+        class="group relative overflow-hidden rounded-2xl border border-wedding-300 shadow-sm cursor-zoom-in focus:outline-none focus-visible:ring-2 focus-visible:ring-wedding-600 bg-white"
         data-reveal
         data-reveal-delay={String(index * 70)}
         aria-label={`Buka foto: ${photo.cap}`}
@@ -31,8 +38,10 @@ const photos = [
           class="w-full h-44 object-cover group-hover:scale-110 group-focus:scale-110 transition-transform duration-500 ease-out"
           loading="lazy"
         />
-        <div class="absolute inset-0 bg-gradient-to-t from-[#2B2625]/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-3">
-          <span class="text-[10px] text-[#EFE7DA] font-medium tracking-wide">{photo.cap}</span>
+        <div
+          class="absolute inset-0 bg-gradient-to-t from-wedding-800/75 via-transparent to-transparent opacity-0 group-hover:opacity-100 group-focus:opacity-100 transition-opacity duration-300 flex items-end p-3"
+        >
+          <span class="text-[11px] text-white font-medium tracking-wide">{photo.cap}</span>
         </div>
       </button>
     ))}
@@ -40,19 +49,43 @@ const photos = [
 </section>
 
 <!-- Lightbox -->
-<div id="lightbox" class="fixed inset-0 z-[70] hidden items-center justify-center bg-[#1a1716]/95 backdrop-blur-sm p-4" role="dialog" aria-modal="true" aria-label="Tampilan foto">
-  <button id="lb-close" class="absolute top-4 right-4 w-11 h-11 rounded-full bg-white/10 hover:bg-white/20 text-[#EFE7DA] flex items-center justify-center transition" aria-label="Tutup">
-    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-width="2" d="M6 6l12 12M18 6L6 18"/></svg>
+<div
+  id="lightbox"
+  class="fixed inset-0 z-[70] hidden items-center justify-center bg-wedding-800/95 backdrop-blur-sm p-4"
+  role="dialog"
+  aria-modal="true"
+  aria-label="Tampilan foto"
+>
+  <button
+    id="lb-close"
+    class="absolute top-4 right-4 w-11 h-11 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition"
+    aria-label="Tutup"
+  >
+    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-width="2" d="M6 6l12 12M18 6L6 18"></path>
+    </svg>
   </button>
-  <button id="lb-prev" class="absolute left-3 sm:left-6 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-white/10 hover:bg-white/20 text-[#EFE7DA] flex items-center justify-center transition z-10" aria-label="Foto sebelumnya">
-    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+  <button
+    id="lb-prev"
+    class="absolute left-3 sm:left-6 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition z-10"
+    aria-label="Foto sebelumnya"
+  >
+    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+    </svg>
   </button>
-  <button id="lb-next" class="absolute right-3 sm:right-6 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-white/10 hover:bg-white/20 text-[#EFE7DA] flex items-center justify-center transition z-10" aria-label="Foto berikutnya">
-    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+  <button
+    id="lb-next"
+    class="absolute right-3 sm:right-6 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition z-10"
+    aria-label="Foto berikutnya"
+  >
+    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+    </svg>
   </button>
   <figure class="max-w-3xl w-full max-h-[80vh] flex flex-col items-center gap-3" id="lb-figure">
     <img id="lb-image" src="" alt="" class="max-h-[68vh] max-w-full rounded-lg shadow-2xl object-contain" />
-    <figcaption id="lb-caption" class="text-xs text-[#C5A880] tracking-wide"></figcaption>
+    <figcaption id="lb-caption" class="text-sm text-wedding-200 tracking-wide"></figcaption>
   </figure>
 </div>
 
@@ -65,43 +98,64 @@ const photos = [
     animation: lb-zoom 0.3s cubic-bezier(0.22, 1, 0.36, 1);
   }
   @keyframes lb-fade {
-    from { opacity: 0; }
-    to { opacity: 1; }
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
   }
   @keyframes lb-zoom {
-    from { transform: scale(0.92); opacity: 0; }
-    to { transform: scale(1); opacity: 1; }
+    from {
+      transform: scale(0.92);
+      opacity: 0;
+    }
+    to {
+      transform: scale(1);
+      opacity: 1;
+    }
   }
 </style>
 
 <script>
-  const imgs = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-lightbox-open]'));
-  const lightbox = document.getElementById('lightbox') as HTMLElement;
-  const lbImage = document.getElementById('lb-image') as HTMLImageElement;
-  const lbCaption = document.getElementById('lb-caption') as HTMLElement;
+  const triggers = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-lightbox-open]'));
+  const lightbox = document.getElementById('lightbox') as HTMLElement | null;
+  const lbImage = document.getElementById('lb-image') as HTMLImageElement | null;
+  const lbCaption = document.getElementById('lb-caption') as HTMLElement | null;
   if (!lightbox || !lbImage || !lbCaption) throw new Error('lightbox teardown');
-  const photos = imgs.map((btn) => {
+
+  const photos = triggers.map((btn) => {
     const img = btn.querySelector('img');
     return { url: img?.getAttribute('src') ?? '', cap: img?.getAttribute('alt') ?? '' };
   });
+
   let current = 0;
+  /** Elemen pemicu, supaya fokus bisa dikembalikan setelah lightbox ditutup. */
+  let lastTrigger: HTMLElement | null = null;
 
   function show(index: number) {
-    current = (index + photos.length) % photos.length;
     if (!photos.length) return;
-    lbImage.src = photos[current].url;
-    lightbox.classList.add('show');
+    current = (index + photos.length) % photos.length;
+    const photo = photos[current];
+    lbImage!.src = photo.url;
+    // Caption & alt ikut disinkronkan dengan foto yang sedang dibuka.
+    lbImage!.alt = photo.cap;
+    lbCaption!.textContent = photo.cap;
+    lightbox!.classList.add('show');
     document.body.style.overflow = 'hidden';
-    (document.getElementById('lb-close') as HTMLElement)?.focus();
+    (document.getElementById('lb-close') as HTMLElement | null)?.focus();
   }
 
   function close() {
-    lightbox.classList.remove('show');
+    lightbox!.classList.remove('show');
     document.body.style.overflow = '';
+    lastTrigger?.focus();
+    lastTrigger = null;
   }
 
-  imgs.forEach((btn) => {
+  triggers.forEach((btn) => {
     btn.addEventListener('click', () => {
+      lastTrigger = btn;
       show(Number(btn.dataset.lightboxOpen));
     });
   });

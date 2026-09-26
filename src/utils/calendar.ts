@@ -1,4 +1,9 @@
+import { events as weddingEvents, calendarIdentity, couple } from '../data/wedding';
+import { formatEventDate, formatEventRange, icsTimestamp } from './schedule';
+
 export type CalEvent = {
+  /** Id acara dari `data/wedding.ts` — dipakai UI untuk menautkan kartu ke kalender. */
+  id: string;
   uid: string;
   summary: string;
   description: string;
@@ -10,18 +15,22 @@ export type CalEvent = {
 const esc = (s: string) =>
   s.replace(/\\/g, '\\\\').replace(/\n/g, '\\n').replace(/,/g, '\\,').replace(/;/g, '\\;');
 
-export function buildICS(events: CalEvent[]): string {
+/**
+ * Bangun isi file .ics. `start`/`end` memakai format UTC dasar ICS
+ * (lihat `icsTimestamp`), jadi zona waktu acara tidak ikut bergeser.
+ */
+export function buildICS(events: CalEvent[], identity = calendarIdentity): string {
   const lines = [
     'BEGIN:VCALENDAR',
     'VERSION:2.0',
-    'PRODID:-//Bayu & Winda Wedding//ID',
+    `PRODID:${esc(identity.productId)}`,
     'CALSCALE:GREGORIAN',
     'METHOD:PUBLISH',
   ];
   events.forEach((e) => {
     lines.push(
       'BEGIN:VEVENT',
-      `UID:${e.uid}@bayuwinda-undangan`,
+      `UID:${e.uid}@${identity.uidDomain}`,
       `DTSTAMP:${freshStamp()}`,
       `DTSTART:${e.start}`,
       `DTEND:${e.end}`,
@@ -64,4 +73,28 @@ export function googleCalendarUrl(e: CalEvent): string {
     location: e.location,
   });
   return `https://calendar.google.com/calendar/render?${params.toString()}`;
+}
+
+/**
+ * Ubah data acara undangan menjadi entri kalender.
+ * Acara yang jadwalnya belum ditetapkan (`startISO === null`) dilewati,
+ * bukan diisi tanggal karangan.
+ */
+export function calendarEvents(): CalEvent[] {
+  return weddingEvents
+    .filter((e) => e.startISO !== null && e.endISO !== null)
+    .map((e) => ({
+      id: e.id,
+      uid: `${e.id}-${(e.startISO as string).slice(0, 10)}`,
+      summary: `${e.label} — ${couple.shortName}`,
+      description: `${e.label} pernikahan ${couple.groom.fullName} & ${couple.bride.fullName}. ${formatEventDate(e.startISO as string)}, ${formatEventRange(e.startISO, e.endISO, e.timeLabel)}. Mohon doa restu.`,
+      location: `${e.venue}, ${e.address}`,
+      start: icsTimestamp(e.startISO as string),
+      end: icsTimestamp(e.endISO as string),
+    }));
+}
+
+/** Tautan peta berbasis alamat acara — bukan pin rumah yang dikarang. */
+export function mapsUrl(address: string): string {
+  return `https://maps.google.com/?q=${encodeURIComponent(address)}`;
 }

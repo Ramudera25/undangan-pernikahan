@@ -1,0 +1,15 @@
+---
+/**
+ * Sulur sudut untuk membingkai kartu/cover. Digambar di sudut kiri-atas;
+ * putar/balik dengan class Tailwind (mis. `-scale-x-100`) untuk sudut lain.
+ */
+const { class: className = '', ...rest } = Astro.props;
+---
+
+<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" class={className} aria-hidden="true" {...rest}>
+  <path stroke-linecap="round" d="M2 34C2 16 16 2 34 2"></path>
+  <path stroke-linecap="round" d="M9 34c0-14 11-25 25-25"></path>
+  <path stroke-linecap="round" d="M34 9c7 0 11 5 8 10-2.5 4-8 3-8-2"></path>
+  <path stroke-linecap="round" d="M9 34c0 7 5 11 10 8 4-2.5 3-8-2-8"></path>
+  <circle cx="24" cy="24" r="1.6"></circle>
+</svg>

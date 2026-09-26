@@ -20,10 +20,11 @@
       this.canvasHeight = canvasHeight;
       this.x = Math.random() * canvasWidth;
       this.y = Math.random() * -canvasHeight;
-      this.size = Math.random() * 8 + 6;
-      this.speedY = Math.random() * 1.2 + 0.8;
+      this.size = Math.random() * 6 + 4;
+      this.speedY = Math.random() * 1 + 0.6;
       this.speedX = Math.random() * 0.8 - 0.4;
-      this.opacity = Math.random() * 0.5 + 0.3;
+      // Opasitas diturunkan agar tidak mengganggu keterbacaan teks
+      this.opacity = Math.random() * 0.22 + 0.12;
       this.rotation = Math.random() * 360;
       this.rotationSpeed = Math.random() * 2 - 1;
     }
@@ -47,7 +48,7 @@
 
       // Menggambar bentuk daun / kelopak bunga elegan
       ctx.beginPath();
-      ctx.fillStyle = '#C5A880'; // Warna emas matching theme
+      ctx.fillStyle = '#8FB6CE'; // Biru pucat, senada dengan tema
       ctx.moveTo(0, 0);
       ctx.quadraticCurveTo(this.size, -this.size / 2, this.size, -this.size);
       ctx.quadraticCurveTo(0, -this.size * 1.5, -this.size, -this.size);
@@ -78,7 +79,7 @@
       height = canvas.height = window.innerHeight;
     });
 
-    const totalPetals = window.innerWidth < 768 ? 20 : 35; // Otomatis menyesuaikan jumlah di HP agar enteng
+    const totalPetals = window.innerWidth < 768 ? 14 : 22; // Otomatis menyesuaikan jumlah di HP agar enteng
     const petals: Petal[] = Array.from({ length: totalPetals }, () => new Petal(width, height));
 
     let rafId = 0;
