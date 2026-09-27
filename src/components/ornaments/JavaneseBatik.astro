@@ -1,0 +1,23 @@
+---
+/**
+ * Ornamen motif Jawa mewah: kombinasi kawung, batik geometris halus, dan garis siluet elegan.
+ */
+const { class: className = '', ...rest } = Astro.props;
+---
+
+<svg viewBox="0 0 200 200" fill="none" stroke="currentColor" class={className} aria-hidden="true" {...rest}>
+  <!-- Lingkaran Geometris Batik -->
+  <circle cx="100" cy="100" r="90" stroke-width="0.75" stroke-dasharray="4 4" opacity="0.6"/>
+  <circle cx="100" cy="100" r="75" stroke-width="1" opacity="0.8"/>
+  <circle cx="100" cy="100" r="60" stroke-width="0.5" opacity="0.5"/>
+
+  <!-- Ornamen Kawung & Estetik Sudut -->
+  <path d="M100 10 Q130 50 100 90 Q70 50 100 10 Z" stroke-width="0.8" opacity="0.7"/>
+  <path d="M100 110 Q130 150 100 190 Q70 150 100 110 Z" stroke-width="0.8" opacity="0.7"/>
+  <path d="M10 100 Q50 130 90 100 Q50 70 10 100 Z" stroke-width="0.8" opacity="0.7"/>
+  <path d="M110 100 Q150 130 190 100 Q150 70 110 100 Z" stroke-width="0.8" opacity="0.7"/>
+
+  <!-- Pusat -->
+  <circle cx="100" cy="100" r="8" stroke-width="1.2"/>
+  <circle cx="100" cy="100" r="3" fill="currentColor"/>
+</svg>

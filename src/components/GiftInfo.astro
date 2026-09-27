@@ -5,16 +5,23 @@ import SulurDivider from './ornaments/SulurDivider.astro';
 
 <section id="amplop" class="py-16 px-4 text-center max-w-2xl mx-auto scroll-mt-24">
   <p class="text-[10px] text-wedding-600 tracking-[0.25em] uppercase font-semibold" data-reveal>
-    Tanda Kasih
+    Tanda Kasih &amp; Kirim Kado
   </p>
   <h2 class="font-serif text-3xl sm:text-4xl text-ink my-2" data-reveal data-reveal-delay="80">
-    Amplop Digital
+    Amplop Digital &amp; Kado Fisik
   </h2>
-  <p class="text-sm text-ink-soft max-w-sm mx-auto mb-4 leading-relaxed" data-reveal data-reveal-delay="160">
-    Doa restu Anda merupakan hadiah terindah. Bagi yang ingin memberikan tanda kasih, dapat melalui
-    rekening berikut:
+  <p class="text-sm text-ink-soft max-w-md mx-auto mb-4 leading-relaxed" data-reveal data-reveal-delay="160">
+    Doa restu Anda merupakan hadiah terindah bagi kami. Bagi yang ingin mengirimkan tanda kasih berupa amplop digital atau kado fisik (alamat sama dengan lokasi akad):
   </p>
   <SulurDivider class="w-48 h-6 mx-auto text-wedding-400 mb-8" data-reveal data-reveal-delay="200" />
+
+  <div class="mb-8 p-5 bg-wedding-100/60 border border-wedding-300 rounded-2xl text-left shadow-sm" data-reveal data-reveal-delay="220">
+    <h3 class="font-serif text-base font-bold text-ink mb-1">Alamat Pengiriman Kado Fisik:</h3>
+    <p class="text-sm text-ink-soft leading-relaxed">
+      <strong>Kediaman Mempelai Wanita / Lokasi Akad</strong><br/>
+      Dk. Butoh Lor RT 06 RW 03, Desa Butoh, Kecamatan Sumberrejo, Kab. Bojonegoro, Jawa Timur
+    </p>
+  </div>
 
   <div class="grid gap-4 sm:grid-cols-2">
     {bankAccounts.map((rek, i) => (
