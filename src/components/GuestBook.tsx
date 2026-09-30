@@ -1,11 +1,13 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import Avatar from './Avatar';
 import { couple, rsvpEventChoices, rsvpWhatsApp, storageKeys } from '../data/wedding';
+import { seedComments } from '../data/seedComments';
 import { getGuestName } from '../utils/getGuestName';
 import {
   formatCommentDate,
   parseComment,
   readComments,
+  sortComments,
   writeComments,
   type Attendance,
   type Gender,
@@ -19,33 +21,78 @@ const GENDER_OPTIONS: Array<{ value: Gender; label: string }> = [
 
 const ATTENDANCE_OPTIONS: Attendance[] = ['Hadir', 'Tidak Hadir', 'Masih Ragu'];
 
+/** Kunci penyimpanan konfirmasi kehadiran (RSVP) di browser. */
+const RSVP_STORAGE_KEY = 'undangan-bayu-lilik-rsvp';
+
+type RsvpEntry = {
+  name: string;
+  attendance: Attendance;
+  guests: number;
+  event: string;
+  createdAt: string;
+};
+
+function readRsvps(): RsvpEntry[] {
+  if (typeof window === 'undefined') return [];
+  try {
+    const raw = window.localStorage.getItem(RSVP_STORAGE_KEY);
+    if (!raw) return [];
+    const parsed: unknown = JSON.parse(raw);
+    if (!Array.isArray(parsed)) return [];
+    return parsed.filter(
+      (e): e is RsvpEntry =>
+        typeof e === 'object' &&
+        e !== null &&
+        typeof (e as RsvpEntry).name === 'string' &&
+        typeof (e as RsvpEntry).createdAt === 'string',
+    );
+  } catch {
+    return [];
+  }
+}
+
 /**
  * Kolom komentar tamu — tanpa login dan tanpa backend.
  *
  * Avatar mengikuti jenis kelamin yang dipilih pengirim, lalu nama dan isi
  * komentar tampil di bawahnya. Karena tidak ada server, komentar disimpan di
  * `localStorage` perangkat pengirim (lihat catatan di bagian bawah komponen).
+ * Komentar bawaan (`seedComments`) hanya untuk tampilan awal: tidak disimpan
+ * ke `localStorage` dan tidak ikut tertulis saat pengguna mengirim ucapan.
  */
 export default function GuestBook() {
   const [name, setName] = useState('');
   const [gender, setGender] = useState<Gender>('L');
   const [attendance, setAttendance] = useState<Attendance>('Hadir');
   const [chosenEvent, setChosenEvent] = useState<string>(rsvpEventChoices[0] ?? '');
+  const [guests, setGuests] = useState(1);
   const [message, setMessage] = useState('');
-  const [comments, setComments] = useState<GuestComment[]>([]);
+  const [userComments, setUserComments] = useState<GuestComment[]>([]);
   const [notice, setNotice] = useState<string | null>(null);
+  const [rsvpNotice, setRsvpNotice] = useState<string | null>(null);
 
   useEffect(() => {
     setName(getGuestName());
-    setComments(readComments());
+    setUserComments(readComments());
 
     // Ikut memperbarui bila tab lain menulis komentar.
     const onStorage = (e: StorageEvent) => {
-      if (e.key === storageKeys.comments) setComments(readComments());
+      if (e.key === storageKeys.comments) setUserComments(readComments());
     };
     window.addEventListener('storage', onStorage);
     return () => window.removeEventListener('storage', onStorage);
   }, []);
+
+  /** Gabungan komentar bawaan + komentar pengguna: dedupe by id, terbaru dulu. */
+  const comments = useMemo(() => {
+    const seen = new Set<string>();
+    const all = [...seedComments, ...userComments].filter((c) => {
+      if (seen.has(c.id)) return false;
+      seen.add(c.id);
+      return true;
+    });
+    return sortComments(all);
+  }, [userComments]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -62,8 +109,9 @@ export default function GuestBook() {
       return;
     }
 
-    const next = [draft, ...comments];
-    setComments(next);
+    // Hanya komentar pengguna yang ditulis ke penyimpanan; seed tidak ikut.
+    const next = [draft, ...userComments];
+    setUserComments(next);
     const saved = writeComments(next);
     setNotice(
       saved
@@ -75,11 +123,36 @@ export default function GuestBook() {
 
   const handleRSVP = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!rsvpWhatsApp) return;
     const who = name.trim() || 'Tamu Undangan';
+    const count = Math.min(10, Math.max(1, Math.floor(Number(guests)) || 1));
     const acara = chosenEvent ? ` pada acara ${chosenEvent}` : '';
-    const text = `Halo, saya ${who} mengonfirmasi ${attendance}${acara} untuk pernikahan ${couple.shortName}.`
-    window.open(`https://wa.me/${rsvpWhatsApp}?text=${encodeURIComponent(text)}`, '_blank');
+
+    if (rsvpWhatsApp) {
+      const text =
+        `Halo, saya ${who} mengonfirmasi ${attendance}${acara} untuk pernikahan ` +
+        `${couple.shortName}. Jumlah tamu: ${count} orang.`;
+      window.open(`https://wa.me/${rsvpWhatsApp}?text=${encodeURIComponent(text)}`, '_blank');
+      return;
+    }
+
+    // Nomor WhatsApp belum diisi: simpan konfirmasi di perangkat ini, jangan
+    // buka WhatsApp dan jangan mengarang nomor tujuan.
+    const entry: RsvpEntry = {
+      name: who,
+      attendance,
+      guests: count,
+      event: chosenEvent,
+      createdAt: new Date().toISOString(),
+    };
+    try {
+      const prev = readRsvps();
+      window.localStorage.setItem(RSVP_STORAGE_KEY, JSON.stringify([...prev, entry]));
+      setRsvpNotice(
+        `Terima kasih, ${who}! Konfirmasi kehadiran untuk ${count} tamu sudah tersimpan di perangkat ini.`,
+      );
+    } catch {
+      setRsvpNotice('Konfirmasi tidak dapat disimpan karena penyimpanan browser tidak tersedia.');
+    }
   };
 
   const total = comments.length;
@@ -136,29 +209,39 @@ export default function GuestBook() {
           </select>
         </label>
 
-        {rsvpWhatsApp ? (
-          <button
-            type="submit"
-            className="w-full py-3 bg-wedding-600 text-white text-xs font-semibold rounded-lg hover:bg-wedding-700 transition-colors"
-          >
-            KIRIM KONFIRMASI VIA WHATSAPP
-          </button>
-        ) : (
-          <div className="space-y-2">
-            <button
-              type="button"
-              disabled
-              aria-disabled="true"
-              title="Nomor WhatsApp tujuan belum diisi"
-              className="w-full py-3 bg-wedding-300 text-ink/50 text-xs font-semibold rounded-lg cursor-not-allowed"
-            >
-              KIRIM KONFIRMASI VIA WHATSAPP
-            </button>
-            <p className="text-[11px] leading-relaxed text-ink-muted text-center">
-              Nomor WhatsApp tujuan belum diisi, jadi pengiriman dinonaktifkan agar Anda tidak
-              diarahkan ke nomor yang salah. Silakan tuliskan ucapan pada kolom di bawah.
-            </p>
-          </div>
+        <label className="block">
+          <span className="text-xs font-medium text-ink-soft">Jumlah tamu</span>
+          <input
+            type="number"
+            min={1}
+            max={10}
+            value={guests}
+            onChange={(e) => setGuests(Number(e.target.value))}
+            className="mt-1 w-full p-3 border border-wedding-300 rounded-lg text-sm focus:ring-2 focus:ring-wedding-600 focus:border-transparent outline-none"
+          />
+          <span className="block text-[10px] text-ink-muted mt-1">
+            Termasuk Anda sendiri (maksimal 10).
+          </span>
+        </label>
+
+        <button
+          type="submit"
+          className="w-full py-3 bg-wedding-600 text-white text-xs font-semibold rounded-lg hover:bg-wedding-700 transition-colors"
+        >
+          {rsvpWhatsApp ? 'KIRIM KONFIRMASI VIA WHATSAPP' : 'SIMPAN KONFIRMASI'}
+        </button>
+
+        {!rsvpWhatsApp && (
+          <p className="text-[11px] leading-relaxed text-ink-muted text-center">
+            Konfirmasi disimpan di peramban perangkat ini karena nomor WhatsApp tujuan belum
+            tersedia.
+          </p>
+        )}
+
+        {rsvpNotice && (
+          <p role="status" className="text-[11px] leading-relaxed text-center text-wedding-600">
+            {rsvpNotice}
+          </p>
         )}
       </form>
 

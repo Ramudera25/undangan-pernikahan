@@ -21,6 +21,11 @@ export default {
           soft: '#55708A',
           muted: '#8296A8',
         },
+        /* Emas — aksen hemat di atas dasar biru muda */
+        gold: {
+          DEFAULT: '#c9a24b',
+          light: '#e8cf8f',
+        },
       },
       fontFamily: {
         sans: ['"Plus Jakarta Sans"', 'system-ui', 'sans-serif'],

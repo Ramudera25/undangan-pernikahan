@@ -163,6 +163,25 @@ const photos = gallery.map((g) => ({
   document.getElementById('lb-close')?.addEventListener('click', close);
   document.getElementById('lb-prev')?.addEventListener('click', () => show(current - 1));
   document.getElementById('lb-next')?.addEventListener('click', () => show(current + 1));
+
+  // Geser (swipe) kiri/kanan > 50px untuk pindah foto di perangkat sentuh.
+  let touchStartX: number | null = null;
+  lightbox.addEventListener(
+    'touchstart',
+    (e) => {
+      touchStartX = e.touches[0]?.clientX ?? null;
+    },
+    { passive: true },
+  );
+  lightbox.addEventListener('touchend', (e) => {
+    if (touchStartX === null) return;
+    const dx = (e.changedTouches[0]?.clientX ?? touchStartX) - touchStartX;
+    touchStartX = null;
+    if (Math.abs(dx) <= 50) return;
+    if (dx < 0) show(current + 1);
+    else show(current - 1);
+  });
+
   lightbox.addEventListener('click', (e) => {
     if (e.target === lightbox) close();
   });

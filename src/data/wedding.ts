@@ -81,17 +81,6 @@ export const events: WeddingEvent[] = [
     startISO: '2026-10-25T11:00:00+07:00',
     endISO: '2026-10-25T14:00:00+07:00',
   },
-  {
-    id: 'ngunduh-mantu',
-    label: 'Ngunduh Mantu',
-    icon: 'home',
-    venue: 'Kediaman Mempelai Pria',
-    address: 'Dk. Butoh Lor RT 06 RW 03, Desa Butoh, Kecamatan Sumberrejo, Kab. Bojonegoro, Jawa Timur',
-    dateLabel: 'Menyusul',
-    timeLabel: 'Menyusul',
-    startISO: null,
-    endISO: null,
-  },
 ];
 
 /** Acara yang dipakai sebagai target hitung mundur (acara terjadwal paling awal). */
@@ -191,6 +180,8 @@ export const seo = {
 export const storageKeys = {
   comments: `undangan-${couple.slug}-ucapan`,
   legacyComments: ['undangan-bayu-winda-ucapan'],
+  /** Kunci penyimpanan konfirmasi kehadiran (RSVP) lokal di browser tamu. */
+  rsvp: 'undangan-bayu-lilik-rsvp',
 };
 
 /** Identitas kalender (.ics). */

@@ -21,16 +21,15 @@ const eventDate = countdownEvent.startISO ? formatEventDate(countdownEvent.start
       width="941"
       height="1672"
       loading="eager"
-      class="w-full h-full object-cover scale-105 animate-pulse brightness-105 saturate-[0.85]"
-      style="animation-duration: 12s;"
+      class="w-full h-full object-cover kenburns brightness-105 saturate-[0.85]"
     />
     <div class="absolute inset-0 bg-gradient-to-b from-wedding-50/90 via-wedding-50/72 to-wedding-200/88"></div>
     <div class="orn-kawung absolute inset-0 opacity-40"></div>
   </div>
 
   <!-- Bingkai ornamen dalam -->
-  <div class="absolute inset-4 sm:inset-6 border border-wedding-300/70 rounded-3xl pointer-events-none z-10"></div>
-  <div class="absolute inset-5 sm:inset-7 border border-wedding-300/40 rounded-[1.7rem] pointer-events-none z-10"></div>
+  <div class="absolute inset-4 sm:inset-6 border border-gold/60 rounded-3xl pointer-events-none z-10"></div>
+  <div class="absolute inset-5 sm:inset-7 border border-gold/30 rounded-[1.7rem] pointer-events-none z-10"></div>
 
   <!-- Sulur sudut -->
   <CornerSulur class="absolute top-6 left-6 w-12 h-12 text-wedding-500/70 pointer-events-none z-10" />
@@ -45,17 +44,29 @@ const eventDate = countdownEvent.startISO ? formatEventDate(countdownEvent.start
     <p class="text-[10px] tracking-[0.3em] text-wedding-600 uppercase font-semibold mb-1">
       Undangan Pernikahan
     </p>
-    <h1 class="font-script text-6xl sm:text-7xl my-1 leading-tight text-ink drop-shadow-sm">
+    <h1 class="font-script gold-shimmer text-6xl sm:text-7xl my-1 leading-tight drop-shadow-sm">
       {couple.shortName}
     </h1>
 
-    <SulurDivider class="w-56 h-7 my-2 text-wedding-500" />
+    <SulurDivider class="w-56 h-7 my-2 text-gold" />
 
     {eventDate && (
-      <p class="text-[11px] tracking-[0.22em] text-ink-soft mb-8 font-light uppercase">
+      <p class="text-[11px] tracking-[0.22em] text-ink-soft mb-6 font-light uppercase">
         {eventDate}
       </p>
     )}
+
+    <!-- Amplop undangan: flap segitiga + segel emas, terbuka saat tombol diklik -->
+    <div id="cover-envelope" class="env-scene relative w-60 h-36 mx-auto mb-8" aria-hidden="true">
+      <div class="env-body"></div>
+      <div class="env-pocket"></div>
+      <div class="env-flap"></div>
+      <div class="env-seal">
+        <svg class="w-4 h-4 text-[#8a6d1c]" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M12 21S4 15.5 4 9.5A4.5 4.5 0 0112 6.6 4.5 4.5 0 0120 9.5c0 6-8 11.5-8 11.5z"></path>
+        </svg>
+      </div>
+    </div>
 
     <div class="backdrop-blur-md bg-white/75 border border-wedding-300 p-5 rounded-2xl w-full mb-8 shadow-lg">
       <p class="text-[9px] tracking-[0.22em] text-wedding-600 uppercase font-semibold">
@@ -83,6 +94,76 @@ const eventDate = countdownEvent.startISO ? formatEventDate(countdownEvent.start
   </div>
 </div>
 
+<style>
+  /* ---------- Animasi amplop cover ---------- */
+  .env-scene {
+    perspective: 700px;
+  }
+  .env-body {
+    position: absolute;
+    inset: 0;
+    border-radius: 12px;
+    background: linear-gradient(180deg, #f8eed6 0%, #efdfba 60%, #e6d0a0 100%);
+    border: 1px solid #d4b76a;
+    box-shadow: 0 14px 30px -10px rgba(120, 90, 30, 0.45);
+  }
+  .env-pocket {
+    position: absolute;
+    inset: 0;
+    border-radius: 12px;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.35), rgba(190, 160, 100, 0.18));
+    clip-path: polygon(0 0, 50% 46%, 100% 0, 100% 100%, 0 100%);
+  }
+  .env-flap {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 52%;
+    background: linear-gradient(180deg, #f3e3b8, #e2c689);
+    border: 1px solid #d4b76a;
+    border-radius: 12px 12px 0 0;
+    clip-path: polygon(0 0, 100% 0, 50% 100%);
+    transform-origin: top center;
+    transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 2;
+  }
+  #cover-envelope.env-open .env-flap {
+    transform: rotateX(-180deg);
+    z-index: 0;
+  }
+  .env-seal {
+    position: absolute;
+    top: calc(52% - 22px);
+    left: calc(50% - 22px);
+    width: 44px;
+    height: 44px;
+    border-radius: 9999px;
+    z-index: 3;
+    background: radial-gradient(circle at 35% 30%, #f9e7a8, #e9c860 55%, #b8860b);
+    border: 2px solid #a67c1a;
+    box-shadow:
+      0 4px 10px rgba(120, 90, 20, 0.5),
+      inset 0 0 0 3px rgba(255, 255, 255, 0.35);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition:
+      transform 0.6s ease 0.15s,
+      opacity 0.6s ease 0.3s;
+  }
+  #cover-envelope.env-open .env-seal {
+    transform: translateY(-14px) scale(1.06);
+    opacity: 0;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .env-flap,
+    .env-seal {
+      transition: none;
+    }
+  }
+</style>
+
 <script>
   import { getGuestName } from '../utils/getGuestName';
 
@@ -97,12 +178,18 @@ const eventDate = countdownEvent.startISO ? formatEventDate(countdownEvent.start
     document.body.classList.add('overflow-hidden');
 
     btnOpen?.addEventListener('click', () => {
-      coverScreen?.classList.add('-translate-y-full');
-      document.body.classList.remove('overflow-hidden');
-      window.dispatchEvent(new CustomEvent('play-invitation-music'));
+      // (a) Flap amplop terbuka, (b) segel terangkat, lalu (c) cover slide-up.
+      const envelope = document.getElementById('cover-envelope');
+      (btnOpen as HTMLButtonElement | null)?.setAttribute('disabled', '');
+      envelope?.classList.add('env-open');
       setTimeout(() => {
-        window.dispatchEvent(new CustomEvent('undangan-opened'));
-      }, 900);
+        coverScreen?.classList.add('-translate-y-full');
+        document.body.classList.remove('overflow-hidden');
+        window.dispatchEvent(new CustomEvent('play-invitation-music'));
+        setTimeout(() => {
+          window.dispatchEvent(new CustomEvent('undangan-opened'));
+        }, 900);
+      }, 850);
     });
   });
 </script>
