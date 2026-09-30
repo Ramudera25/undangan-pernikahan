@@ -156,14 +156,14 @@ export const milestones = [
   },
 ];
 
-/** Galeri foto. Ganti `photo` dengan nama file asli saat foto tersedia. */
+/** Galeri foto — foto asli pasangan (foto prewedding). */
 export const gallery = [
-  { photo: 'gallery-1.jpg', caption: 'Kebersamaan yang hangat', width: 1537, height: 1023 },
-  { photo: 'gallery-2.jpg', caption: 'Tawa & cerita kita', width: 1536, height: 1024 },
-  { photo: 'groom.jpg', caption: couple.groom.fullName, width: 1254, height: 1254 },
-  { photo: 'bride.jpg', caption: couple.bride.fullName, width: 1254, height: 1254 },
-  { photo: 'gallery-3.jpg', caption: 'Janji untuk ke depan', width: 1024, height: 1536 },
-  { photo: 'cover.jpg', caption: 'Menuju hari bahagia', width: 941, height: 1672 },
+  { photo: 'gallery-1.jpg', caption: 'Momen mesra berdua', width: 799, height: 1200 },
+  { photo: 'gallery-2.jpg', caption: 'Tawa & cerita kita', width: 800, height: 1200 },
+  { photo: 'groom.jpg', caption: couple.groom.fullName, width: 1080, height: 1080 },
+  { photo: 'bride.jpg', caption: couple.bride.fullName, width: 1080, height: 1080 },
+  { photo: 'gallery-3.jpg', caption: 'Syukur menuju bahagia', width: 800, height: 1200 },
+  { photo: 'cover.jpg', caption: 'Menuju hari bahagia', width: 1080, height: 1623 },
 ];
 
 /**
@@ -183,8 +183,8 @@ export const seo = {
   title: `Undangan Pernikahan ${couple.shortName}`,
   description: `Dengan memohon rahmat dan ridho Allah SWT, kami mengundang Bapak/Ibu/Saudara/i untuk hadir pada pernikahan ${couple.groom.fullName} & ${couple.bride.fullName}, di Kediaman Mempelai Wanita, Dk. Kepoh, Desa Nglarangan, Kec. Kanor, Kab. Bojonegoro.`,
   coverImage: 'cover.jpg',
-  coverWidth: 941,
-  coverHeight: 1672,
+  coverWidth: 1080,
+  coverHeight: 1623,
 };
 
 /** Kunci penyimpanan ucapan di browser + kunci lama yang perlu dimigrasi. */
