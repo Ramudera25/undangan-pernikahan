@@ -4,13 +4,17 @@ import Cover from '../components/Cover.astro';
 import Hero from '../components/Hero.astro';
 import LoveStory from '../components/LoveStory.astro';
 import EventDetail from '../components/EventDetail.astro';
+import GuestInfo from '../components/GuestInfo.astro';
 import Gallery from '../components/Gallery.astro';
 import GuestBook from '../components/GuestBook';
 import GiftInfo from '../components/GiftInfo.astro';
 import Footer from '../components/Footer.astro';
 import MusicPlayer from '../components/MusicPlayer';
+import ThemeToggle from '../components/ThemeToggle';
 import BottomNav from '../components/BottomNav';
 import PetalsAnimation from '../components/PetalsAnimation.astro';
+import GoldConfetti from '../components/GoldConfetti.astro';
+import DoveFollow from '../components/DoveFollow.astro';
 import RevealOnScroll from '../components/RevealOnScroll.astro';
 import { seo } from '../data/wedding';
 ---
@@ -18,16 +22,20 @@ import { seo } from '../data/wedding';
 <Layout title={seo.title}>
   <RevealOnScroll />
   <PetalsAnimation />
+  <GoldConfetti />
+  <DoveFollow />
   <Cover />
   <main id="home" class="w-full overflow-hidden has-bottom-nav">
     <Hero />
     <LoveStory />
     <EventDetail />
+    <GuestInfo />
     <Gallery />
     <GuestBook client:visible />
     <GiftInfo />
     <Footer />
   </main>
   <MusicPlayer client:load />
+  <ThemeToggle client:load />
   <BottomNav client:load />
 </Layout>

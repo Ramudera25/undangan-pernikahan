@@ -1,0 +1,89 @@
+---
+/* Merpati putih kecil yang mengikuti gulir dengan parallax halus.
+   pointer-events none, ±48px, disembunyikan saat tab tidak aktif. */
+---
+
+<div id="dove-follow" aria-hidden="true">
+  <svg viewBox="0 0 48 48" class="w-full h-full">
+    <!-- Ekor -->
+    <path d="M10 30 L3 34 L4 28 L11 26 Z" fill="#dceef8" stroke="#8fb6ce" stroke-width="1" />
+    <!-- Badan -->
+    <ellipse cx="24" cy="28" rx="11" ry="7.5" fill="#ffffff" stroke="#8fb6ce" stroke-width="1.2" />
+    <!-- Kepala -->
+    <circle cx="33" cy="22" r="5" fill="#ffffff" stroke="#8fb6ce" stroke-width="1.2" />
+    <!-- Paruh emas -->
+    <path d="M37.5 21 L41 22.5 L37.5 24 Z" fill="#c9a24b" />
+    <!-- Mata -->
+    <circle cx="34.5" cy="21" r="1" fill="#243e50" />
+    <!-- Kalung emas tipis -->
+    <path d="M28 26.5 Q31 28.5 34 26" fill="none" stroke="#c9a24b" stroke-width="1" opacity="0.8" />
+    <!-- Sayap (kepak via CSS .dove-wing) -->
+    <path
+      class="dove-wing"
+      d="M24 26 C18 16 12 12 5 11 C10 18 15 24 22 29 Z"
+      fill="#f5fafe"
+      stroke="#8fb6ce"
+      stroke-width="1.2"
+    />
+  </svg>
+</div>
+
+<script>
+  (function () {
+    var el = document.getElementById('dove-follow') as HTMLElement | null;
+    if (!el || !window.requestAnimationFrame) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      el.style.display = 'none';
+      return;
+    }
+    var dove = el;
+
+    var targetY = 0;
+    var currentY = -80;
+    var rafId = 0;
+    var t0 = performance.now();
+
+    function updateTarget() {
+      // Ikuti posisi gulir: melayang di ~35% tinggi viewport dari posisi scroll.
+      var y = window.scrollY + window.innerHeight * 0.35;
+      var max = document.documentElement.scrollHeight - 120;
+      targetY = Math.max(80, Math.min(y, max));
+    }
+
+    function tick(now: number) {
+      // Parallax: kejar target dengan lag halus + ayunan naik-turun lembut.
+      currentY += (targetY - currentY) * 0.06;
+      var bob = Math.sin((now - t0) / 900) * 9;
+      var sway = Math.sin((now - t0) / 1600) * 6;
+      dove.style.transform =
+        'translateY(' + (currentY + bob).toFixed(1) + 'px) translateX(' + sway.toFixed(1) + 'px)';
+      rafId = requestAnimationFrame(tick);
+    }
+
+    function start() {
+      if (rafId || document.hidden) return;
+      updateTarget();
+      rafId = requestAnimationFrame(tick);
+    }
+    function stop() {
+      if (rafId) cancelAnimationFrame(rafId);
+      rafId = 0;
+    }
+
+    window.addEventListener('scroll', updateTarget, { passive: true });
+    window.addEventListener('resize', updateTarget);
+    document.addEventListener('visibilitychange', function () {
+      if (document.hidden) {
+        stop();
+        dove.style.visibility = 'hidden';
+      } else {
+        dove.style.visibility = 'visible';
+        start();
+      }
+    });
+
+    updateTarget();
+    currentY = targetY;
+    start();
+  })();
+</script>

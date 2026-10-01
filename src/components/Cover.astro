@@ -68,7 +68,7 @@ const eventDate = countdownEvent.startISO ? formatEventDate(countdownEvent.start
       </div>
     </div>
 
-    <div class="backdrop-blur-md bg-white/75 border border-wedding-300 p-5 rounded-2xl w-full mb-8 shadow-lg">
+    <div class="cover-guest-card backdrop-blur-md bg-wedding-50/80 border border-wedding-300 p-5 rounded-2xl w-full mb-8 shadow-lg">
       <p class="text-[9px] tracking-[0.22em] text-wedding-600 uppercase font-semibold">
         Kepada Yth. Bapak/Ibu/Saudara/i
       </p>
@@ -178,6 +178,8 @@ const eventDate = countdownEvent.startISO ? formatEventDate(countdownEvent.start
     document.body.classList.add('overflow-hidden');
 
     btnOpen?.addEventListener('click', () => {
+      // Ledakan konfeti emas tepat saat undangan dibuka.
+      (window as unknown as { fireGoldConfetti?: () => void }).fireGoldConfetti?.();
       // (a) Flap amplop terbuka, (b) segel terangkat, lalu (c) cover slide-up.
       const envelope = document.getElementById('cover-envelope');
       (btnOpen as HTMLButtonElement | null)?.setAttribute('disabled', '');

@@ -4,16 +4,30 @@
    ========================================================================== */
 
 :root {
-  --wedding-bg: #f5fafe;
-  --wedding-pastel: #dceef8;
-  --wedding-line: #bdd7e8;
-  --wedding-accent: #426b87;
-  --wedding-ink: #243e50;
-
-  /* Aksen emas — dipakai hemat sebagai aksen di atas dasar biru muda */
+  /* Palet sebagai channel RGB "r g b" agar Tailwind bisa memakai alpha. */
+  --w-50: 245 250 254; /* latar utama */
+  --w-100: 234 244 251;
+  --w-200: 220 238 248; /* biru pastel dominan */
+  --w-300: 189 215 232; /* garis & bingkai */
+  --w-400: 143 182 206;
+  --w-500: 94 143 174;
+  --w-600: 66 107 135; /* aksen tombol */
+  --w-700: 51 84 108;
+  --w-800: 36 62 80; /* teks utama / section gelap */
+  --ink: 36 62 80;
+  --ink-soft: 85 112 138;
+  --ink-muted: 130 150 168;
   --wedding-gold: #c9a24b;
   --wedding-gold-light: #e8cf8f;
   --wedding-champagne: #f6ecd4;
+  --gold: 201 162 75;
+  --gold-light: 232 207 143;
+
+  /* Permukaan kartu & bingkai foto (bisa ditukar saat mode malam) */
+  --surface: 255 255 255;
+  --frame-hi: 255 255 255;
+  --frame-mid: 220 238 248;
+  --frame-line: 189 215 232;
 
   /* Tinggi toolbar bawah + ruang aman ponsel */
   --nav-height: 74px;
@@ -22,10 +36,36 @@
   --float-offset: calc(var(--nav-height) + var(--nav-safe-bottom) + 20px);
 }
 
+/* ---------- Mode malam: navy + emas -------------------------------------- */
+html.dark {
+  --w-50: 9 17 28; /* latar utama */
+  --w-100: 15 27 43;
+  --w-200: 21 37 58;
+  --w-300: 43 68 96; /* garis & bingkai */
+  --w-400: 96 140 178;
+  --w-500: 143 182 206;
+  --w-600: 88 132 166; /* aksen tombol */
+  --w-700: 120 160 190;
+  --w-800: 6 12 21; /* section gelap */
+  --ink: 226 238 248;
+  --ink-soft: 164 188 208;
+  --ink-muted: 128 152 178;
+  --surface: 15 27 43;
+  --frame-hi: 30 52 78;
+  --frame-mid: 21 37 58;
+  --frame-line: 62 96 130;
+  color-scheme: dark;
+}
+
 /* ---------- Tekstur motif kawung (opasitas rendah, tidak mengganggu) ------- */
 .orn-kawung {
   background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20width%3D'44'%20height%3D'44'%20viewBox%3D'0%200%2044%2044'%3E%3Cg%20fill%3D'none'%20stroke%3D'%23BDD7E8'%20stroke-width%3D'1'%3E%3Cellipse%20cx%3D'22'%20cy%3D'22'%20rx%3D'6.5'%20ry%3D'11.5'%20transform%3D'rotate(45%2022%2022)'%2F%3E%3Cellipse%20cx%3D'22'%20cy%3D'22'%20rx%3D'6.5'%20ry%3D'11.5'%20transform%3D'rotate(-45%2022%2022)'%2F%3E%3Ccircle%20cx%3D'0'%20cy%3D'0'%20r%3D'2.6'%2F%3E%3Ccircle%20cx%3D'44'%20cy%3D'0'%20r%3D'2.6'%2F%3E%3Ccircle%20cx%3D'0'%20cy%3D'44'%20r%3D'2.6'%2F%3E%3Ccircle%20cx%3D'44'%20cy%3D'44'%20r%3D'2.6'%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E");
   background-size: 44px 44px;
+}
+
+/* Mode malam: motif kawung terang diganti garis navy redup. */
+html.dark .orn-kawung {
+  background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20width%3D'44'%20height%3D'44'%20viewBox%3D'0%200%2044%2044'%3E%3Cg%20fill%3D'none'%20stroke%3D'%232B4460'%20stroke-width%3D'1'%3E%3Cellipse%20cx%3D'22'%20cy%3D'22'%20rx%3D'6.5'%20ry%3D'11.5'%20transform%3D'rotate(45%2022%2022)'%2F%3E%3Cellipse%20cx%3D'22'%20cy%3D'22'%20rx%3D'6.5'%20ry%3D'11.5'%20transform%3D'rotate(-45%2022%2022)'%2F%3E%3Ccircle%20cx%3D'0'%20cy%3D'0'%20r%3D'2.6'%2F%3E%3Ccircle%20cx%3D'44'%20cy%3D'0'%20r%3D'2.6'%2F%3E%3Ccircle%20cx%3D'44'%20cy%3D'0'%20r%3D'2.6'%2F%3E%3Ccircle%20cx%3D'44'%20cy%3D'44'%20r%3D'2.6'%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E");
 }
 
 /* Varian untuk section gelap (garis biru pucat di atas latar biru tua). */
@@ -39,9 +79,14 @@
   position: relative;
   border-radius: 9999px;
   padding: 4px;
-  background: linear-gradient(160deg, #ffffff 0%, #dceef8 55%, #bdd7e8 100%);
+  background: linear-gradient(
+    160deg,
+    rgb(var(--frame-hi)) 0%,
+    rgb(var(--frame-mid)) 55%,
+    rgb(var(--frame-line)) 100%
+  );
   box-shadow:
-    0 0 0 1px #bdd7e8,
+    0 0 0 1px rgb(var(--frame-line)),
     0 14px 30px -14px rgba(36, 62, 80, 0.35);
 }
 .photo-frame::after {
@@ -49,7 +94,7 @@
   position: absolute;
   inset: 9px;
   border-radius: 9999px;
-  border: 1px solid rgba(189, 215, 232, 0.9);
+  border: 1px solid rgb(var(--frame-line) / 0.9);
   pointer-events: none;
 }
 .photo-frame img {
@@ -89,8 +134,8 @@
 
 /* ---------- Kartu permukaan ------------------------------------------------ */
 .surface {
-  background-color: #ffffff;
-  border: 1px solid #bdd7e8;
+  background-color: rgb(var(--surface));
+  border: 1px solid rgb(var(--w-300));
   box-shadow: 0 10px 30px -20px rgba(36, 62, 80, 0.35);
 }
 
@@ -241,4 +286,93 @@
   .kenburns-soft {
     animation: none;
   }
+}
+
+/* ==========================================================================
+   Preloader monogram — overlay saat halaman dimuat, fade out maks ~1.2 dtk.
+   ========================================================================== */
+#preloader {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgb(var(--w-50));
+  transition: opacity 0.45s ease;
+}
+#preloader.preloader-done {
+  opacity: 0;
+  pointer-events: none;
+}
+.preloader-ring {
+  width: 120px;
+  height: 120px;
+  border-radius: 9999px;
+  border: 2px solid var(--wedding-gold);
+  outline: 1px solid var(--wedding-gold-light);
+  outline-offset: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: preloader-pulse 1.1s ease-in-out infinite;
+}
+@keyframes preloader-pulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.05); opacity: 0.85; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .preloader-ring { animation: none; }
+  #preloader { transition: none; }
+}
+
+/* ==========================================================================
+   Konfeti emas — canvas fixed di atas segalanya, pointer-events none.
+   ========================================================================== */
+#gold-confetti-canvas {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  pointer-events: none;
+}
+
+/* ==========================================================================
+   Merpati pengikut — SVG fixed kecil, mengikuti scroll dengan parallax halus.
+   ========================================================================== */
+#dove-follow {
+  position: fixed;
+  right: 10px;
+  top: 0;
+  width: 48px;
+  height: 48px;
+  z-index: 30;
+  pointer-events: none;
+  opacity: 0.92;
+  filter: drop-shadow(0 3px 6px rgba(36, 62, 80, 0.25));
+  will-change: transform;
+}
+#dove-follow .dove-wing {
+  transform-origin: 24px 26px;
+  animation: dove-flap 0.55s ease-in-out infinite;
+}
+@keyframes dove-flap {
+  0%, 100% { transform: rotate(14deg); }
+  50% { transform: rotate(-18deg); }
+}
+@media (prefers-reduced-motion: reduce) {
+  #dove-follow { display: none; }
+  #dove-follow .dove-wing { animation: none; }
+}
+
+/* ==========================================================================
+   Tombol tema (mode malam) — melayang di atas tombol musik.
+   ========================================================================== */
+.theme-toggle-float {
+  bottom: calc(var(--float-offset) + 58px);
+}
+
+/* Kartu nama tamu di cover — kaca gelap saat mode malam. */
+html.dark .cover-guest-card {
+  background: rgb(15 27 43 / 0.82);
+  border-color: rgb(var(--w-300));
 }

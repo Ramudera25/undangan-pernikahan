@@ -140,7 +140,7 @@ export default function BottomNav() {
       }
       style={{ bottom: 'calc(env(safe-area-inset-bottom, 0px) + 14px)' }}
     >
-      <div className="rounded-3xl border border-wedding-300 bg-white/85 backdrop-blur-lg shadow-[0_18px_40px_-20px_rgba(36,62,80,0.45)] px-2 py-2">
+      <div className="rounded-3xl border border-wedding-300 bg-wedding-50/85 backdrop-blur-lg shadow-[0_18px_40px_-20px_rgba(36,62,80,0.45)] px-2 py-2">
         <ul className="grid grid-cols-5 gap-1">
           {ITEMS.map((item) => {
             const isActive = active === item.id;

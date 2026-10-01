@@ -1,0 +1,108 @@
+---
+/* Tombol bagikan: WhatsApp, Telegram, salin link (menyertakan ?to= bila ada). */
+---
+
+<div class="flex flex-wrap items-center justify-center gap-3" data-reveal>
+  <span class="text-[11px] tracking-[0.2em] uppercase font-semibold text-ink-soft w-full text-center mb-1">
+    Bagikan Undangan
+  </span>
+
+  <button
+    type="button"
+    data-share="whatsapp"
+    class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-xs font-semibold text-white bg-[#25D366] hover:brightness-95 active:scale-95 transition shadow-lg"
+  >
+    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M12 2a10 10 0 00-8.6 15.1L2 22l5-1.3A10 10 0 1012 2zm5.4 14.1c-.2.7-1.3 1.3-1.9 1.4-.5.1-1.1.1-1.8-.1a13.6 13.6 0 01-4.8-3.1 11.4 11.4 0 01-2.4-3.2c-.3-.6-.1-1.2.1-1.5l.9-1.1c.2-.3.5-.4.8-.2l1.5 1.7c.2.3.3.6.1 1l-.6.9c-.2.2-.1.5.1.8a9.6 9.6 0 003.1 2.7c.3.2.6.2.8-.1l1-1.2c.3-.3.6-.3.9-.1l1.7 1c.3.2.4.5.2.9z" />
+    </svg>
+    WhatsApp
+  </button>
+
+  <button
+    type="button"
+    data-share="telegram"
+    class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-xs font-semibold text-white bg-[#229ED9] hover:brightness-95 active:scale-95 transition shadow-lg"
+  >
+    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M21.9 4.6L2.7 12.2c-.7.3-.7 1.2.1 1.4l4.7 1.5 1.8 5.6c.3.8 1.3.9 1.8.2l2.6-3.1 4.9 3.6c.6.4 1.4.1 1.7-.6l3.4-14.1c.3-1-.7-1.9-1.8-1.1zM8.6 13.6l9.1-6.9c.2-.2.5.1.3.3l-7.5 7.4-.3 3-1.6-3.8z" />
+    </svg>
+    Telegram
+  </button>
+
+  <button
+    type="button"
+    data-share="copy"
+    class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-xs font-semibold bg-wedding-600 text-white hover:bg-wedding-700 active:scale-95 transition shadow-lg"
+  >
+    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" aria-hidden="true">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H6a2 2 0 00-2 2v9a2 2 0 002 2h7.5M13.5 6l3 3m-3-3L10.5 9M13.5 6V4.5M20 12v7a2 2 0 01-2 2h-7.5" />
+      <rect x="9" y="9" width="11" height="11" rx="2" />
+    </svg>
+    Salin Link
+  </button>
+
+  <p id="share-hint" class="w-full text-center text-[11px] text-ink-muted h-4" role="status" aria-live="polite"></p>
+</div>
+
+<script>
+  import { shareUrlWithGuest } from '../utils/getGuestName';
+  import { couple } from '../data/wedding';
+
+  (function () {
+    var hint = document.getElementById('share-hint');
+    var timer = 0;
+
+    function showHint(msg: string) {
+      var hintEl = hint as HTMLElement | null;
+      if (!hintEl) return;
+      hintEl.textContent = msg;
+      window.clearTimeout(timer);
+      timer = window.setTimeout(function () {
+        var h = hint as HTMLElement | null;
+        if (h) h.textContent = '';
+      }, 2600);
+    }
+
+    function shareText() {
+      return 'Undangan Pernikahan ' + couple.shortName + ' — dengan hormat kami mengundang Bapak/Ibu/Saudara/i untuk hadir.';
+    }
+
+    document.querySelectorAll('[data-share]').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var kind = btn.getAttribute('data-share');
+        var url = shareUrlWithGuest() || window.location.href;
+        if (kind === 'whatsapp') {
+          window.open(
+            'https://wa.me/?text=' + encodeURIComponent(shareText() + ' ' + url),
+            '_blank',
+            'noopener'
+          );
+        } else if (kind === 'telegram') {
+          window.open(
+            'https://t.me/share/url?url=' + encodeURIComponent(url) + '&text=' + encodeURIComponent(shareText()),
+            '_blank',
+            'noopener'
+          );
+        } else if (kind === 'copy') {
+          var done = function (ok: boolean) {
+            showHint(ok ? 'Link undangan berhasil disalin!' : 'Gagal menyalin link.');
+          };
+          if (navigator.clipboard && window.isSecureContext) {
+            navigator.clipboard.writeText(url).then(function () { done(true); }, function () { done(false); });
+          } else {
+            var ta = document.createElement('textarea');
+            ta.value = url;
+            ta.style.position = 'fixed';
+            ta.style.opacity = '0';
+            document.body.appendChild(ta);
+            ta.select();
+            var ok = false;
+            try { ok = document.execCommand('copy'); } catch (e) {}
+            document.body.removeChild(ta);
+            done(ok);
+          }
+        }
+      });
+    });
+  })();
+</script>

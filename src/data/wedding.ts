@@ -117,6 +117,25 @@ export const rsvpWhatsApp = '';
 /** Pilihan acara yang bisa disebut pada pesan WhatsApp RSVP. */
 export const rsvpEventChoices = events.map((e) => e.label);
 
+/** Info praktis untuk tamu: dress code, rundown, dan parkir. */
+export const guestInfo = {
+  dressCode: {
+    title: 'Dress Code',
+    text: 'Batik atau busana muslim yang sopan dan rapi.',
+  },
+  /** Rundown diturunkan otomatis dari jam acara di atas. */
+  rundown: {
+    title: 'Rundown Acara',
+    items: events
+      .filter((e) => e.startISO !== null)
+      .map((e) => ({ time: e.timeLabel, label: e.label })),
+  },
+  parking: {
+    title: 'Denah & Parkir',
+    text: 'Area parkir tersedia di sekitar lokasi acara. Ikuti arahan panitia setibanya di lokasi.',
+  },
+};
+
 /** Linimasa "Perjalanan Kasih" — 4 bagian. */
 export const milestones = [
   {

@@ -1,0 +1,42 @@
+---
+import { couple } from '../data/wedding';
+---
+
+<div id="preloader" aria-hidden="true">
+  <div class="flex flex-col items-center gap-4">
+    <div class="preloader-ring">
+      <span class="font-script text-4xl gold-shimmer leading-none pt-1">{couple.initials}</span>
+    </div>
+    <p class="text-[10px] tracking-[0.35em] uppercase text-wedding-600 font-semibold">
+      Undangan Pernikahan
+    </p>
+  </div>
+</div>
+
+<script>
+  // Fade out segera setelah DOM siap; total tampil maks ~1.2 detik.
+  // Tidak memblokir konten: overlay hanya menutupi, bukan menahan render.
+  (function () {
+    var done = false;
+    function finish() {
+      if (done) return;
+      done = true;
+      var el = document.getElementById('preloader') as HTMLElement | null;
+      if (!el) return;
+      var target = el;
+      target.classList.add('preloader-done');
+      setTimeout(function () {
+        target.remove();
+      }, 500);
+    }
+    if (document.readyState !== 'loading') {
+      setTimeout(finish, 500);
+    } else {
+      document.addEventListener('DOMContentLoaded', function () {
+        setTimeout(finish, 500);
+      });
+    }
+    // Pengaman: paksa hilang setelah 1.5 dtk apa pun yang terjadi.
+    setTimeout(finish, 1500);
+  })();
+</script>

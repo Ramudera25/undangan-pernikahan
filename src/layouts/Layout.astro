@@ -1,5 +1,6 @@
 ---
 import '../styles/theme.css';
+import Preloader from '../components/Preloader.astro';
 import { couple, events, seo } from '../data/wedding';
 
 interface Props {
@@ -12,6 +13,8 @@ const makeUrl = (p: string) => `${import.meta.env.BASE_URL}/${p}`.replace(/(?<!:
 const site = import.meta.env.SITE;
 const absolute = (p: string) => `${site}${makeUrl(p)}`.replace(/(?<!:)\/\/+/g, '/');
 const coverImage = absolute(seo.coverImage);
+/* Gambar pratinjau saat link dibagikan (1200x630, dibuat saat build/deploy). */
+const ogImage = absolute('og-image.jpg');
 
 const scheduled = events.filter((e) => e.startISO !== null);
 const firstStart = scheduled[0]?.startISO ?? null;
@@ -66,27 +69,44 @@ const tabTitle = `${couple.shortName} \u00b7 `;
     <meta property="og:site_name" content={couple.shortName} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    <meta property="og:image" content={coverImage} />
-    <meta property="og:image:width" content={String(seo.coverWidth)} />
-    <meta property="og:image:height" content={String(seo.coverHeight)} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={`Undangan Pernikahan ${couple.shortName}`} />
     <meta property="og:url" content={absolute('')} />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
-    <meta name="twitter:image" content={coverImage} />
+    <meta name="twitter:image" content={ogImage} />
 
     <script type="application/ld+json" is:inline set:html={JSON.stringify(weddingEvent)}></script>
+
+    <!-- Terapkan tema tersimpan sedini mungkin agar tidak ada kedip terang. -->
+    <script is:inline>
+      (function () {
+        try {
+          var keys = Object.keys(localStorage);
+          for (var i = 0; i < keys.length; i++) {
+            if (/-theme$/.test(keys[i]) && localStorage.getItem(keys[i]) === 'dark') {
+              document.documentElement.classList.add('dark');
+              break;
+            }
+          }
+        } catch (e) {}
+      })();
+    </script>
 
     <title>{title}</title>
 
     <script is:inline define:vars={{ tabTitle }}>
       (function () {
         var params = new URLSearchParams(window.location.search);
-        var name = params.get('to') || params.get('kpd') || params.get('untuk');
+        var name = params.get('to') || params.get('nama') || params.get('kpd') || params.get('untuk');
         if (name) {
           try {
             name = decodeURIComponent(name).replace(/\+/g, ' ').trim();
           } catch (e) {}
+          name = String(name).replace(/<[^>]*>/g, '').slice(0, 60);
           if (name) {
             document.title = tabTitle + name;
           }
@@ -97,6 +117,7 @@ const tabTitle = `${couple.shortName} \u00b7 `;
   <body
     class="bg-wedding-50 text-ink font-sans antialiased selection:bg-wedding-300 selection:text-ink relative"
   >
+    <Preloader />
     <!-- Tekstur motif kawung beropasitas rendah -->
     <div class="orn-kawung fixed inset-0 pointer-events-none opacity-[0.35] z-0"></div>
 
