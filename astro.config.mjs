@@ -6,8 +6,12 @@ import tailwind from '@astrojs/tailwind';
 // Untuk live preview lokal bisa di-override via env ASTRO_BASE_URL (mis. "/").
 const base = process.env.ASTRO_BASE_URL || '/undangan-pernikahan';
 
+// Site URL default mengarah ke GitHub Pages.
+// Untuk deploy Netlify bisa di-override via env ASTRO_SITE_URL.
+const site = process.env.ASTRO_SITE_URL || 'https://ramudera25.github.io';
+
 export default defineConfig({
-  site: 'https://ramudera25.github.io',
+  site,
   base,
   integrations: [react(), tailwind()],
   vite: {

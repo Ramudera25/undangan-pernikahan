@@ -5,3 +5,4 @@
 [build.environment]
   NODE_VERSION = "20"
   ASTRO_BASE_URL = "/"
+  ASTRO_SITE_URL = "https://mykisah-bayulilik.netlify.app"
