@@ -14,6 +14,13 @@
  *   <PrayerTree adapter={firebase} />
  *
  * ---------------------------------------------------------------------------
+ * STATUS MIGRASI (1 Okt 2026): adapter Firebase SUDAH diimplementasikan di
+ * `./firebaseBlessingAdapter.ts` (`FirebaseBlessingAdapter`, path
+ * `doa/undangan-bayu-lilik`) dan menjadi DEFAULT via
+ * `getDefaultBlessingAdapter()` — `LocalStorageAdapter` hanya fallback bila
+ * inisialisasi Firebase gagal. Seed comments tetap dari konstanta lokal dan
+ * TIDAK ditulis ke database.
+ * ---------------------------------------------------------------------------
  * PANDUAN MIGRASI: Firebase Realtime Database (paket gratis / Spark)
  * ---------------------------------------------------------------------------
  * Kontrak yang WAJIB diimplementasikan oleh adapter Firebase:
@@ -58,6 +65,7 @@
 import { couple } from '../data/wedding';
 import type { StorageLike } from './commentStore';
 import { safeStorage } from './commentStore';
+import { FirebaseBlessingAdapter } from './firebaseBlessingAdapter';
 
 /** Satu doa/ucapan yang menjadi bunga di pohon. */
 export type Blessing = {
@@ -223,7 +231,20 @@ export class MemoryAdapter implements BlessingAdapter {
   }
 }
 
-/** Adapter bawaan yang dipakai komponen bila tidak diberikan adapter lain. */
+/**
+ * Adapter bawaan yang dipakai komponen bila tidak diberikan adapter lain.
+ *
+ * Di browser: coba Firebase Realtime Database dulu (doa realtime untuk
+ * semua tamu). Bila inisialisasi Firebase gagal — atau saat SSR/build —
+ * fallback ke `LocalStorageAdapter` (doa hanya di perangkat pengirim).
+ */
 export function getDefaultBlessingAdapter(): BlessingAdapter {
+  if (typeof window !== 'undefined') {
+    try {
+      return new FirebaseBlessingAdapter();
+    } catch {
+      /* Firebase gagal diinisialisasi — lanjut ke penyimpanan lokal. */
+    }
+  }
   return new LocalStorageAdapter();
 }

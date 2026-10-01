@@ -50,7 +50,7 @@ function formatDate(iso: string): string {
 }
 
 type Props = {
-  /** Adapter penyimpanan. Default: LocalStorageAdapter (tanpa backend). */
+  /** Adapter penyimpanan. Default: Firebase (realtime), fallback localStorage. */
   adapter?: BlessingAdapter;
 };
 
