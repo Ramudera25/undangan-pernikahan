@@ -58,14 +58,18 @@ export type WeddingEvent = {
 };
 
 /**
- * Alamat kediaman — SAMA untuk mempelai pria & wanita, hanya keterangannya
- * yang dibedakan ("Kediaman Mempelai Pria" vs "Kediaman Mempelai Wanita").
+ * Alamat kediaman mempelai WANITA (Lilik) — lokasi Akad & Resepsi
+ * sekaligus alamat pengiriman kado fisik.
  */
-const homeAddress =
-  'Dk. Butoh Lor RT 06 RW 03, Desa Butoh, Kecamatan Sumberrejo, Kab. Bojonegoro, Jawa Timur';
+export const brideHomeAddress =
+  'Dk. Kepoh RT 01 RW 03, Desa Nglarangan, Kec. Kanor, Kab. Bojonegoro, Jawa Timur';
 
-/** Alamat kediaman mempelai pria (lokasi Ngunduh Mantu). */
-export const groomHomeAddress = homeAddress;
+/**
+ * Alamat kediaman mempelai PRIA (Bayu) — lokasi Ngunduh Mantu.
+ * Catatan: masih memakai alamat lama Butoh; menunggu konfirmasi alamat baru.
+ */
+export const groomHomeAddress =
+  'Dk. Butoh Lor RT 06 RW 03, Desa Butoh, Kecamatan Sumberrejo, Kab. Bojonegoro, Jawa Timur';
 
 export const events: WeddingEvent[] = [
   {
@@ -73,7 +77,7 @@ export const events: WeddingEvent[] = [
     label: 'Akad & Resepsi',
     icon: 'ring',
     venue: 'Kediaman Mempelai Wanita',
-    address: homeAddress,
+    address: brideHomeAddress,
     dateLabel: 'Rabu, 21 Oktober 2026',
     timeLabel: '08.00 – Selesai',
     startISO: '2026-10-21T08:00:00+07:00',
@@ -212,7 +216,7 @@ export const music = {
 /** Metadata halaman & berbagi sosial. */
 export const seo = {
   title: `Undangan Pernikahan ${couple.shortName}`,
-  description: `Dengan memohon rahmat dan ridho Allah SWT, kami mengundang Bapak/Ibu/Saudara/i untuk hadir pada pernikahan ${couple.groom.fullName} & ${couple.bride.fullName}, di Kediaman Mempelai Wanita, Dk. Kepoh, Desa Nglarangan, Kec. Kanor, Kab. Bojonegoro.`,
+  description: `Dengan memohon rahmat dan ridho Allah SWT, kami mengundang Bapak/Ibu/Saudara/i untuk hadir pada pernikahan ${couple.groom.fullName} & ${couple.bride.fullName}, di Kediaman Mempelai Wanita, Dk. Kepoh RT 01 RW 03, Desa Nglarangan, Kec. Kanor, Kab. Bojonegoro.`,
   coverImage: 'cover.jpg',
   coverWidth: 1080,
   coverHeight: 1623,

@@ -105,7 +105,7 @@ describe('data undangan', () => {
     expect(events.map((e) => e.id)).toEqual(['akad-resepsi', 'ngunduh-mantu']);
     expect(events[0].timeLabel).toBe('08.00 – Selesai');
     expect(events[0].address).toBe(
-      'Dk. Butoh Lor RT 06 RW 03, Desa Butoh, Kecamatan Sumberrejo, Kab. Bojonegoro, Jawa Timur',
+      'Dk. Kepoh RT 01 RW 03, Desa Nglarangan, Kec. Kanor, Kab. Bojonegoro, Jawa Timur',
     );
     expect(events[1].venue).toBe('Kediaman Mempelai Pria');
     expect(events[1].address).toBe(

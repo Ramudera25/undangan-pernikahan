@@ -1,5 +1,5 @@
 ---
-import { bankAccounts, couple } from '../data/wedding';
+import { bankAccounts, brideHomeAddress, couple } from '../data/wedding';
 import SulurDivider from './ornaments/SulurDivider.astro';
 import BungaHias from './ornaments/BungaHias.astro';
 ---
@@ -21,11 +21,11 @@ import BungaHias from './ornaments/BungaHias.astro';
     <h3 class="font-serif text-base font-bold text-ink mb-1">Alamat Pengiriman Kado Fisik:</h3>
     <p class="text-sm text-ink-soft leading-relaxed">
       <strong>{couple.bride.fullName}</strong> (Mempelai Wanita)<br />
-      Dk. Butoh Lor RT 06 RW 03, Desa Butoh, Kecamatan Sumberrejo, Kab. Bojonegoro, Jawa Timur
+      {brideHomeAddress}
     </p>
     <button
       type="button"
-      data-copy-target={`${couple.bride.fullName}, Dk. Butoh Lor RT 06 RW 03, Desa Butoh, Kecamatan Sumberrejo, Kab. Bojonegoro, Jawa Timur`}
+      data-copy-target={`${couple.bride.fullName}, ${brideHomeAddress}`}
       data-copy-label="Alamat"
       class="mt-4 inline-flex items-center gap-2 px-6 py-2.5 bg-wedding-600 text-white text-xs font-semibold rounded-full hover:bg-wedding-700 transition-colors"
     >
