@@ -4,6 +4,7 @@ import { events } from '../data/wedding';
 import { formatEventDate, formatEventRange } from '../utils/schedule';
 import { calendarEvents, googleCalendarUrl, mapsUrl } from '../utils/calendar';
 import SulurDivider from './ornaments/SulurDivider.astro';
+import BungaHias from './ornaments/BungaHias.astro';
 
 // Tautan Google Calendar dibuat saat build sehingga tidak ada tautan mati.
 const gcalByEventId = new Map(
@@ -44,6 +45,7 @@ const scheduledCount = cards.filter((c) => c.scheduled).length;
       Waktu &amp; Lokasi
     </h2>
     <SulurDivider class="w-48 h-6 mx-auto text-wedding-300/70 mt-2" data-reveal data-reveal-delay="120" />
+    <BungaHias class="w-24 h-11 mx-auto text-wedding-300/60 mt-3" data-reveal data-reveal-delay="160" />
 
     <Countdown client:visible />
 

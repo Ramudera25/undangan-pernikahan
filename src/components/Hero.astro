@@ -2,6 +2,7 @@
 import { couple } from '../data/wedding';
 import Gunungan from './ornaments/Gunungan.astro';
 import SulurDivider from './ornaments/SulurDivider.astro';
+import BungaHias from './ornaments/BungaHias.astro';
 
 const makeUrl = (p: string) => `${import.meta.env.BASE_URL}/${p}`.replace(/(?<!:)\/\/+/g, '/');
 const { groom, bride } = couple;
@@ -26,6 +27,7 @@ const person = [
     Maha Suci Allah yang telah menyatukan kami dalam ikatan suci pernikahan.
   </p>
   <SulurDivider class="w-48 h-6 mx-auto text-gold mb-12" data-reveal data-reveal-delay="200" />
+  <BungaHias class="w-24 h-11 mx-auto text-wedding-400/70 -mt-8 mb-8" data-reveal data-reveal-delay="240" />
 
   <div class="space-y-10">
     {person.map((p, i) => (

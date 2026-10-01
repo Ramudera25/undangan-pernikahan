@@ -3,6 +3,8 @@ import { couple, countdownEvent } from '../data/wedding';
 import { formatEventDate } from '../utils/schedule';
 import Gunungan from './ornaments/Gunungan.astro';
 import SulurDivider from './ornaments/SulurDivider.astro';
+import BungaHias from './ornaments/BungaHias.astro';
+import MegaMendung from './ornaments/MegaMendung.astro';
 
 const eventDate = countdownEvent.startISO ? formatEventDate(countdownEvent.startISO) : '';
 const year = new Date().getFullYear();
@@ -14,9 +16,11 @@ const year = new Date().getFullYear();
     class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[420px] h-[420px] bg-wedding-200/70 rounded-full blur-3xl pointer-events-none"
   ></div>
   <Gunungan class="absolute -bottom-4 left-1/2 -translate-x-1/2 w-40 h-56 text-wedding-300/50 pointer-events-none" />
+  <MegaMendung class="absolute top-0 left-0 w-full h-10 text-wedding-400/40 pointer-events-none" />
 
   <div class="relative z-10 max-w-xl mx-auto">
     <SulurDivider class="w-48 h-6 mx-auto text-wedding-500 mb-6" data-reveal />
+    <BungaHias class="w-24 h-11 mx-auto text-wedding-400/70 -mt-3 mb-6" data-reveal data-reveal-delay="40" />
 
     <blockquote
       class="font-serif text-xl sm:text-2xl text-ink leading-relaxed"

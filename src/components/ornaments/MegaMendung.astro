@@ -1,0 +1,39 @@
+---
+/**
+ * Pita motif mega mendung — awan-awan batik Cirebon yang digambar
+ * sebagai garis tipis. Warna mengikuti `currentColor`.
+ * Dipakai sebagai aksen tepi (atas/bawah) yang elegan.
+ */
+const { class: className = '', ...rest } = Astro.props;
+
+// Satu unit awan mega mendung (lebar 100), diulang 4x dalam viewBox 400.
+const clouds = [0, 100, 200, 300];
+---
+
+<svg viewBox="0 0 400 44" fill="none" stroke="currentColor" class={className} aria-hidden="true" {...rest} preserveAspectRatio="xMidYMid slice">
+  {clouds.map((x, i) => (
+    <g transform={`translate(${x} 0)`} opacity={i % 2 === 0 ? 0.9 : 0.65}>
+      <!-- Gumpalan awan utama -->
+      <path
+        stroke-width="1.6"
+        stroke-linecap="round"
+        d="M8 34 C8 22 18 14 30 14 C34 6 46 4 54 10 C64 6 76 12 78 22 C88 24 92 32 88 38"
+      />
+      <!-- Lengkung dalam khas mega mendung -->
+      <path
+        stroke-width="1.1"
+        stroke-linecap="round"
+        opacity="0.8"
+        d="M22 32 C24 25 31 21 38 22 C42 17 50 17 54 22"
+      />
+      <path
+        stroke-width="1"
+        stroke-linecap="round"
+        opacity="0.6"
+        d="M58 30 C62 26 68 26 71 30"
+      />
+    </g>
+  ))}
+  <!-- Garis dasar pita -->
+  <line x1="0" y1="41" x2="400" y2="41" stroke-width="1" opacity="0.5" />
+</svg>

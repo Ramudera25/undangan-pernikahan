@@ -193,13 +193,12 @@ export const gallery = [
 /**
  * Backsound undangan.
  *
- * Ganti `src` dengan file audio hasil ekstraksi dari "Backsound Undangan Digital.mp4"
- * (mis. `backsound.mp3` / `backsound.m4a`) lalu taruh filenya di `public/`.
- * File video tidak dimuat sebagai audio agar hemat kuota tamu.
+ * File: `public/music.mp3` — "Backsound Undangan Digital" (MP3 128 kbps,
+ * durasi ±3:09, ±3 MB — cukup ringan untuk web, diputar berulang/loop).
  */
 export const music = {
   src: 'music.mp3',
-  title: 'Backsound Undangan',
+  title: 'Backsound Undangan Digital',
 };
 
 /** Metadata halaman & berbagi sosial. */

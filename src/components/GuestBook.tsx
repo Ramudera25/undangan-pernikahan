@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import Avatar from './Avatar';
+import FlowerOrnament from './FlowerOrnament';
 import { couple, rsvpEventChoices, rsvpWhatsApp, storageKeys } from '../data/wedding';
 import { seedComments } from '../data/seedComments';
 import { getGuestName } from '../utils/getGuestName';
@@ -247,6 +248,7 @@ export default function GuestBook() {
 
       {/* ---------- Kolom komentar tanpa login ---------- */}
       <form onSubmit={handleSubmit} className="surface p-6 rounded-2xl space-y-4">
+        <FlowerOrnament className="w-24 h-11 mx-auto text-wedding-400/70 -mb-1" />
         <h3 className="font-serif text-2xl text-center text-ink">Ucapan &amp; Doa</h3>
         <p className="text-sm text-ink-soft text-center -mt-1">
           Tulis pesan untuk kami — tanpa perlu masuk akun apa pun.

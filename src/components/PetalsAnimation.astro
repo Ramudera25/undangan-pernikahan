@@ -10,6 +10,7 @@
     speedY: number;
     speedX: number;
     opacity: number;
+    color: string;
     rotation: number;
     rotationSpeed: number;
     canvasWidth: number;
@@ -20,13 +21,16 @@
       this.canvasHeight = canvasHeight;
       this.x = Math.random() * canvasWidth;
       this.y = Math.random() * -canvasHeight;
-      this.size = Math.random() * 6 + 4;
+      this.size = Math.random() * 7 + 4;
       this.speedY = Math.random() * 1 + 0.6;
       this.speedX = Math.random() * 0.8 - 0.4;
-      // Opasitas diturunkan agar tidak mengganggu keterbacaan teks
-      this.opacity = Math.random() * 0.22 + 0.12;
+      // Opasitas dijaga rendah agar tetap elegan & tidak mengganggu keterbacaan
+      this.opacity = Math.random() * 0.2 + 0.14;
       this.rotation = Math.random() * 360;
       this.rotationSpeed = Math.random() * 2 - 1;
+      // Varian warna merah muda — dipilih acak per kelopak
+      const pinks = ['#F9A8C9', '#F48FB1', '#F06292', '#F7B8D0', '#EC7FA5'];
+      this.color = pinks[Math.floor(Math.random() * pinks.length)];
     }
 
     update() {
@@ -46,9 +50,9 @@
       ctx.rotate((this.rotation * Math.PI) / 180);
       ctx.globalAlpha = this.opacity;
 
-      // Menggambar bentuk daun / kelopak bunga elegan
+      // Menggambar bentuk daun / kelopak bunga merah muda yang elegan
       ctx.beginPath();
-      ctx.fillStyle = '#B8D4E8'; // Biru muda lembut, senada dengan tema
+      ctx.fillStyle = this.color; // Merah muda lembut
       ctx.moveTo(0, 0);
       ctx.quadraticCurveTo(this.size, -this.size / 2, this.size, -this.size);
       ctx.quadraticCurveTo(0, -this.size * 1.5, -this.size, -this.size);
@@ -79,7 +83,7 @@
       height = canvas.height = window.innerHeight;
     });
 
-    const totalPetals = window.innerWidth < 768 ? 14 : 22; // Otomatis menyesuaikan jumlah di HP agar enteng
+    const totalPetals = window.innerWidth < 768 ? 28 : 44; // Diperbanyak; otomatis menyesuaikan di HP agar enteng
     const petals: Petal[] = Array.from({ length: totalPetals }, () => new Petal(width, height));
 
     let rafId = 0;
