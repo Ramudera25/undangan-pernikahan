@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import {
   countdownEvent,
   lastScheduledEvent,
-  scheduleConfirmed,
 } from '../data/wedding';
 import {
   formatEventDate,
@@ -127,12 +126,6 @@ export default function Countdown() {
           );
         })}
       </div>
-
-      {!scheduleConfirmed && (
-        <p className="mt-4 text-[11px] text-wedding-200/75 italic">
-          Jadwal di atas masih contoh dan belum dikonfirmasi.
-        </p>
-      )}
 
       <style>{`
         .flip-num {

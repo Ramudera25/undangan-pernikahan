@@ -14,16 +14,16 @@ export const seedComments: GuestComment[] = [
     name: 'Ir. H. Joko Widodo',
     gender: 'L',
     message:
-      'Selamat menempuh hidup baru untuk Bayu dan Lilik. Semoga menjadi keluarga yang sakinah, mawaddah, warahmah.',
+      'Selamat untuk Bayu dan Lilik! Pesan saya sederhana: dalam rumah tangga itu yang penting kerja, kerja, kerja... sama-sama. Semoga sakinah, mawaddah, warahmah!',
     attendance: 'Hadir',
     createdAt: '2026-09-16T10:15:00+07:00',
   },
   {
     id: 'seed-02',
-    name: 'Prof. Dr. K.H. Ma\u2019ruf Amin',
+    name: 'Prof. Dr. K.H. Ma’ruf Amin',
     gender: 'L',
     message:
-      'Barakallahu laka wa baraka alaika wa jamaa bainakuma fi khair. Selamat untuk kedua mempelai, semoga pernikahannya penuh berkah.',
+      'Barakallahu laka wa baraka alaika wa jamaa bainakuma fi khair. Saya sudah hitung: hari ini adalah hari paling berkah untuk menikah. Selamat untuk kedua mempelai!',
     attendance: 'Hadir',
     createdAt: '2026-09-17T14:30:00+07:00',
   },
@@ -32,7 +32,7 @@ export const seedComments: GuestComment[] = [
     name: 'H. Prabowo Subianto',
     gender: 'L',
     message:
-      'Selamat berbahagia untuk Bayu dan Lilik. Semoga rumah tangga yang dibangun langgeng hingga ke anak cucu.',
+      'Selamat Bayu dan Lilik! Ingat, dalam rumah tangga tidak ada oposisi — semuanya harus koalisi. Semoga langgeng sampai kakek-nenek!',
     attendance: 'Hadir',
     createdAt: '2026-09-19T09:05:00+07:00',
   },
@@ -41,7 +41,7 @@ export const seedComments: GuestComment[] = [
     name: 'Khofifah Indar Parawansa',
     gender: 'P',
     message:
-      'Turut berbahagia atas pernikahan Bayu dan Lilik. Semoga Allah SWT memberkahi dan menjadikan keduanya pasangan yang saling menguatkan.',
+      'Turut berbahagia! Semoga pernikahannya seadem hawa Malang dan sehangat sambutan arek Suroboyo. Jawa Timur siap menyambut keluarga baru!',
     attendance: 'Hadir',
     createdAt: '2026-09-21T16:45:00+07:00',
   },
@@ -50,7 +50,7 @@ export const seedComments: GuestComment[] = [
     name: 'Gibran Rakabuming Raka',
     gender: 'L',
     message:
-      'Selamat untuk Bayu dan Lilik! Semoga acaranya lancar dan menjadi awal yang baik untuk perjalanan panjang ke depan.',
+      'Selamat Mas Bayu dan Mbak Lilik! Tips dari saya: kalau berantem, yang ngalah duluan itu yang paling sayang. Sudah saya coba sendiri, works 100%.',
     attendance: 'Hadir',
     createdAt: '2026-09-22T11:20:00+07:00',
   },
@@ -59,7 +59,7 @@ export const seedComments: GuestComment[] = [
     name: 'Rizky Pratama',
     gender: 'L',
     message:
-      'Akhirnya hari yang ditunggu-tunggu tiba! Selamat bro Bayu dan Mbak Lilik, sampai ketemu di hari H ya!',
+      'AKHIRNYA! Setelah bertahun-tahun jadi tim hore di kondangan orang, sekarang giliran kita kondangan ke kamu, bro! Selamat Bayu dan Lilik!',
     attendance: 'Hadir',
     createdAt: '2026-09-24T19:10:00+07:00',
   },
@@ -68,7 +68,7 @@ export const seedComments: GuestComment[] = [
     name: 'Dewi Anggraini',
     gender: 'P',
     message:
-      'MasyaAllah, ikut senang banget dengar kabar bahagia ini. Selamat ya Lilik sayang, semoga lancar sampai hari H!',
+      'Lilik sayang, selamat! Ingat janji kita: yang nikah duluan traktir yang belum. Tagihannya saya kirim via WA ya. Bercanda... atau tidak. Lancar sampai hari H!',
     attendance: 'Hadir',
     createdAt: '2026-09-25T08:35:00+07:00',
   },
@@ -77,7 +77,7 @@ export const seedComments: GuestComment[] = [
     name: 'Andi Saputra',
     gender: 'L',
     message:
-      'Wah, selamat Bayu! Semoga jadi keluarga yang bahagia selalu. Kabari kalau butuh bantuan pas acara ya.',
+      'Selamat Bayu! Resmi lulus dari status "tanya mama dulu". Semoga jadi imam yang baik dan tidak lupa jadwal futsal. Sampai jumpa di hari H!',
     attendance: 'Hadir',
     createdAt: '2026-09-27T13:50:00+07:00',
   },
@@ -86,7 +86,7 @@ export const seedComments: GuestComment[] = [
     name: 'Maya Putri',
     gender: 'P',
     message:
-      'Selamat untuk kalian berdua! Pengen banget datang, tapi masih nunggu kepastian jadwal. Doaku yang terbaik untuk kalian!',
+      'Selamat kalian berdua! Aku sudah siapkan outfit terbaik dan perut kosong khusus untuk prasmanan. Doa terbaik, semoga acaranya semeriah antusiasmeku!',
     attendance: 'Masih Ragu',
     createdAt: '2026-09-28T20:25:00+07:00',
   },
@@ -95,7 +95,7 @@ export const seedComments: GuestComment[] = [
     name: 'Budi Santoso',
     gender: 'L',
     message:
-      'Selamat menempuh hidup baru, Bayu dan Lilik! Semoga acaranya meriah dan berkesan. Masih usaha atur cuti biar bisa hadir.',
+      'Bayu, Lilik, selamat! Cuti sudah di-approve bos (doakan tidak di-cancel). Siap jadi tim dokumentasi dadakan — gratis, yang penting makan.',
     attendance: 'Masih Ragu',
     createdAt: '2026-09-29T07:40:00+07:00',
   },

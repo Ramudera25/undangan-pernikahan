@@ -376,3 +376,15 @@ html.dark .cover-guest-card {
   background: rgb(15 27 43 / 0.82);
   border-color: rgb(var(--w-300));
 }
+
+/* ---------- Keterbacaan teks informasi ------------------------------------
+   Aturan tipografi situs:
+   - Teks informasi (alamat, rundown, deskripsi, isi ucapan, label form):
+     'Plus Jakarta Sans' (sudah default di body) dengan line-height nyaman.
+   - Judul / info penting (nama section, nama mempelai, nama acara, angka):
+     'Playfair Display' (.font-serif) atau font script (.font-script).
+   Tailwind `leading-relaxed` (= 1.625) dipakai di semua paragraf informasi,
+   jadi dinaikkan sedikit ke 1.75 agar nyaman dibaca tanpa mengubah markup. */
+.leading-relaxed {
+  line-height: 1.75;
+}

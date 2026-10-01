@@ -36,9 +36,6 @@ export const couple = {
   },
 } as const;
 
-/** Penanda apakah jadwal di bawah sudah dikonfirmasi pemilik undangan. */
-export const scheduleConfirmed = false;
-
 export type WeddingEvent = {
   id: string;
   label: string;
@@ -51,18 +48,24 @@ export type WeddingEvent = {
   timeLabel: string;
   /**
    * ISO 8601 dengan zona waktu eksplisit WIB (+07:00).
-   * `null` berarti jadwal belum ditetapkan -> acara tidak dimasukkan ke
-   * file .ics maupun tautan Google Calendar sampai datanya diisi.
+   * `endISO: null` berarti acara bersifat TERBUKA ("Selesai") — jam selesai
+   * tidak ditetapkan, tetapi acara tetap masuk kalender (lihat calendar.ts).
+   * `startISO: null` berarti jadwal belum ditetapkan -> acara tidak dimasukkan
+   * ke file .ics maupun tautan Google Calendar sampai datanya diisi.
    */
   startISO: string | null;
   endISO: string | null;
 };
 
 /**
- * Alamat kediaman mempelai pria (lokasi Ngunduh Mantu).
- * Placeholder jelas sampai alamat aslinya diberikan pemilik undangan.
+ * Alamat kediaman — SAMA untuk mempelai pria & wanita, hanya keterangannya
+ * yang dibedakan ("Kediaman Mempelai Pria" vs "Kediaman Mempelai Wanita").
  */
-export const groomHomeAddress = 'Alamat menyusul';
+const homeAddress =
+  'Dk. Butoh Lor RT 06 RW 03, Desa Butoh, Kecamatan Sumberrejo, Kab. Bojonegoro, Jawa Timur';
+
+/** Alamat kediaman mempelai pria (lokasi Ngunduh Mantu). */
+export const groomHomeAddress = homeAddress;
 
 export const events: WeddingEvent[] = [
   {
@@ -70,11 +73,11 @@ export const events: WeddingEvent[] = [
     label: 'Akad & Resepsi',
     icon: 'ring',
     venue: 'Kediaman Mempelai Wanita',
-    address: 'Dk. Butoh Lor RT 06 RW 03, Desa Butoh, Kecamatan Sumberrejo, Kab. Bojonegoro, Jawa Timur',
+    address: homeAddress,
     dateLabel: 'Rabu, 21 Oktober 2026',
-    timeLabel: '08.00 – 14.00 WIB',
+    timeLabel: '08.00 – Selesai',
     startISO: '2026-10-21T08:00:00+07:00',
-    endISO: '2026-10-21T14:00:00+07:00',
+    endISO: null,
   },
   {
     id: 'ngunduh-mantu',
@@ -83,8 +86,8 @@ export const events: WeddingEvent[] = [
     venue: 'Kediaman Mempelai Pria',
     address: groomHomeAddress,
     dateLabel: 'Minggu, 25 Oktober 2026',
-    timeLabel: 'Menyusul',
-    startISO: null,
+    timeLabel: '09.00 – Selesai',
+    startISO: '2026-10-25T09:00:00+07:00',
     endISO: null,
   },
 ];

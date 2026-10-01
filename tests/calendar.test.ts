@@ -11,9 +11,9 @@ import {
 } from '../src/data/wedding';
 
 describe('calendarEvents', () => {
-  it('menyertakan acara terjadwal dan melewati yang belum punya tanggal', () => {
+  it('menyertakan semua acara yang sudah punya tanggal', () => {
     const list = calendarEvents();
-    expect(list.map((e) => e.id)).toEqual(['akad-resepsi']);
+    expect(list.map((e) => e.id)).toEqual(['akad-resepsi', 'ngunduh-mantu']);
   });
 
   it('memakai identitas pasangan baru, bukan data lama', () => {
@@ -30,7 +30,11 @@ describe('calendarEvents', () => {
     const list = calendarEvents();
     const akadResepsi = list.find((e) => e.id === 'akad-resepsi')!;
     expect(akadResepsi.start).toBe('20261021T010000Z'); // 08.00 WIB
-    expect(akadResepsi.end).toBe('20261021T070000Z'); // 14.00 WIB
+    // Label "Selesai" = acara terbuka; kolom kalender memakai estimasi +4 jam.
+    expect(akadResepsi.end).toBe('20261021T050000Z');
+    const ngunduhMantu = list.find((e) => e.id === 'ngunduh-mantu')!;
+    expect(ngunduhMantu.start).toBe('20261025T020000Z'); // 09.00 WIB
+    expect(ngunduhMantu.end).toBe('20261025T060000Z');
   });
 
   it('memakai domain UID identitas baru', () => {
@@ -44,7 +48,7 @@ describe('buildICS', () => {
   it('menghasilkan blok VEVENT per acara dengan baris CRLF', () => {
     const ics = buildICS(calendarEvents());
     const blocks = ics.split('BEGIN:VEVENT').length - 1;
-    expect(blocks).toBe(1);
+    expect(blocks).toBe(2);
     expect(ics).toContain('BEGIN:VCALENDAR');
     expect(ics.trimEnd().endsWith('END:VCALENDAR')).toBe(true);
     expect(ics).toContain('\r\n');
@@ -72,7 +76,7 @@ describe('googleCalendarUrl & mapsUrl', () => {
     const url = googleCalendarUrl(calendarEvents()[0]);
     expect(url.startsWith('https://calendar.google.com/calendar/render?')).toBe(true);
     expect(url).toContain('Akad');
-    expect(url).toContain('dates=20261021T010000Z%2F20261021T070000Z');
+    expect(url).toContain('dates=20261021T010000Z%2F20261021T050000Z');
   });
 
   it('membuat tautan peta dari alamat acara, bukan pin karangan', () => {
@@ -99,11 +103,17 @@ describe('data undangan', () => {
   it('punya dua acara dengan alamat yang benar', () => {
     expect(events).toHaveLength(2);
     expect(events.map((e) => e.id)).toEqual(['akad-resepsi', 'ngunduh-mantu']);
+    expect(events[0].timeLabel).toBe('08.00 – Selesai');
     expect(events[0].address).toBe(
       'Dk. Butoh Lor RT 06 RW 03, Desa Butoh, Kecamatan Sumberrejo, Kab. Bojonegoro, Jawa Timur',
     );
-    expect(events[1].address).toBe('Alamat menyusul');
-    expect(events[1].startISO).toBeNull();
+    expect(events[1].venue).toBe('Kediaman Mempelai Pria');
+    expect(events[1].address).toBe(
+      'Dk. Butoh Lor RT 06 RW 03, Desa Butoh, Kecamatan Sumberrejo, Kab. Bojonegoro, Jawa Timur',
+    );
+    expect(events[1].timeLabel).toBe('09.00 – Selesai');
+    expect(events[1].startISO).toBe('2026-10-25T09:00:00+07:00');
+    expect(events[1].endISO).toBeNull();
   });
 
   it('menyimpan semua ISO acara dengan zona waktu WIB eksplisit', () => {

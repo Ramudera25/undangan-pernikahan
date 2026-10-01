@@ -79,19 +79,30 @@ export function googleCalendarUrl(e: CalEvent): string {
  * Ubah data acara undangan menjadi entri kalender.
  * Acara yang jadwalnya belum ditetapkan (`startISO === null`) dilewati,
  * bukan diisi tanggal karangan.
+ *
+ * Catatan: label "Selesai" pada timeLabel berarti acara bersifat TERBUKA
+ * (jam selesai tidak ditetapkan). Karena format kalender (.ics / Google
+ * Calendar) mewajibkan waktu selesai, dipakai estimasi +4 jam dari waktu
+ * mulai KHUSUS untuk kolom DTEND/dates — teks yang tampil ke tamu tetap
+ * memakai timeLabel asli ("08.00 – Selesai").
  */
 export function calendarEvents(): CalEvent[] {
   return weddingEvents
-    .filter((e) => e.startISO !== null && e.endISO !== null)
-    .map((e) => ({
-      id: e.id,
-      uid: `${e.id}-${(e.startISO as string).slice(0, 10)}`,
-      summary: `${e.label} — ${couple.shortName}`,
-      description: `${e.label} pernikahan ${couple.groom.fullName} & ${couple.bride.fullName}. ${formatEventDate(e.startISO as string)}, ${formatEventRange(e.startISO, e.endISO, e.timeLabel)}. Mohon doa restu.`,
-      location: `${e.venue}, ${e.address}`,
-      start: icsTimestamp(e.startISO as string),
-      end: icsTimestamp(e.endISO as string),
-    }));
+    .filter((e) => e.startISO !== null)
+    .map((e) => {
+      const startISO = e.startISO as string;
+      const endISO =
+        e.endISO ?? new Date(new Date(startISO).getTime() + 4 * 3600_000).toISOString();
+      return {
+        id: e.id,
+        uid: `${e.id}-${startISO.slice(0, 10)}`,
+        summary: `${e.label} — ${couple.shortName}`,
+        description: `${e.label} pernikahan ${couple.groom.fullName} & ${couple.bride.fullName}. ${formatEventDate(startISO)}, ${formatEventRange(startISO, e.endISO, e.timeLabel)}. Mohon doa restu.`,
+        location: `${e.venue}, ${e.address}`,
+        start: icsTimestamp(startISO),
+        end: icsTimestamp(endISO),
+      };
+    });
 }
 
 /** Tautan peta berbasis alamat acara — bukan pin rumah yang dikarang. */
