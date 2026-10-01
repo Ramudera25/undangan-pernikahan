@@ -12,12 +12,16 @@ import ShareButtons from './ShareButtons.astro';
   <h2 class="font-serif text-3xl sm:text-4xl text-ink my-2" data-reveal data-reveal-delay="80">
     Info <span class="gold-text">Tamu</span>
   </h2>
-  <SulurDivider class="w-48 h-6 mx-auto text-gold mt-2 mb-8" data-reveal data-reveal-delay="120" />
+  <p class="text-sm text-ink-soft max-w-md mx-auto leading-relaxed mt-3" data-reveal data-reveal-delay="100">
+    Kehadiran Bapak/Ibu/Saudara/i adalah hadiah terindah bagi kami.
+    Berikut panduan kecil agar hari bahagia ini terasa nyaman untuk kita semua.
+  </p>
+  <SulurDivider class="w-48 h-6 mx-auto text-gold mt-4 mb-8" data-reveal data-reveal-delay="120" />
   <BungaHias class="w-24 h-11 mx-auto text-wedding-400/70 -mt-5 mb-8" data-reveal data-reveal-delay="160" />
 
-  <div class="grid gap-5 md:grid-cols-3 text-left">
+  <div class="grid gap-5 md:grid-cols-3 text-center">
     <!-- Dress code -->
-    <div class="surface rounded-2xl p-6" data-reveal data-reveal-delay="140">
+    <div class="surface rounded-2xl p-6 flex flex-col items-center" data-reveal data-reveal-delay="140">
       <div class="w-11 h-11 rounded-full bg-wedding-200 flex items-center justify-center mb-4">
         <svg class="w-5 h-5 text-wedding-600" fill="none" stroke="currentColor" stroke-width="1.7" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" d="M9 3L4 7l2.5 3L4 21h16l-2.5-11L20 7l-5-4a3 3 0 01-6 0z" />
@@ -28,7 +32,7 @@ import ShareButtons from './ShareButtons.astro';
     </div>
 
     <!-- Rundown -->
-    <div class="surface rounded-2xl p-6" data-reveal data-reveal-delay="220">
+    <div class="surface rounded-2xl p-6 flex flex-col items-center" data-reveal data-reveal-delay="220">
       <div class="w-11 h-11 rounded-full bg-wedding-200 flex items-center justify-center mb-4">
         <svg class="w-5 h-5 text-wedding-600" fill="none" stroke="currentColor" stroke-width="1.7" viewBox="0 0 24 24">
           <circle cx="12" cy="12" r="8.5" />
@@ -36,21 +40,22 @@ import ShareButtons from './ShareButtons.astro';
         </svg>
       </div>
       <h3 class="font-serif text-lg text-ink mb-3">{guestInfo.rundown.title}</h3>
-      <ul class="space-y-3">
+      <ul class="space-y-3 w-full">
         {guestInfo.rundown.items.map((item) => (
-          <li class="flex gap-3 items-start">
-            <span class="shrink-0 mt-0.5 inline-block w-2 h-2 rounded-full bg-gold"></span>
-            <div>
-              <p class="text-[13px] font-semibold text-ink">{item.label}</p>
-              <p class="text-xs text-ink-soft">{item.time}</p>
-            </div>
+          <li class="flex flex-col items-center gap-1">
+            <span class="inline-block w-2 h-2 rounded-full bg-gold"></span>
+            <p class="text-[13px] font-semibold text-ink">{item.label}</p>
+            <p class="text-xs text-ink-soft">{item.time}</p>
           </li>
         ))}
       </ul>
+      <p class="text-xs text-ink-soft/80 italic mt-4 leading-relaxed">
+        Catat waktunya — jangan sampai terlewat momen bahagianya!
+      </p>
     </div>
 
     <!-- Denah & parkir -->
-    <div class="surface rounded-2xl p-6" data-reveal data-reveal-delay="300">
+    <div class="surface rounded-2xl p-6 flex flex-col items-center" data-reveal data-reveal-delay="300">
       <div class="w-11 h-11 rounded-full bg-wedding-200 flex items-center justify-center mb-4">
         <svg class="w-5 h-5 text-wedding-600" fill="none" stroke="currentColor" stroke-width="1.7" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" d="M9 20l-5.5-2.5v-13L9 7l6-2.5L20.5 7v13L15 17.5 9 20zm0 0v-13m6 10.5v-13" />

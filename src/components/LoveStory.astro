@@ -5,6 +5,13 @@ import BungaHias from './ornaments/BungaHias.astro';
 import MegaMendung from './ornaments/MegaMendung.astro';
 
 const makeUrl = (p: string) => `${import.meta.env.BASE_URL}/${p}`.replace(/(?<!:)\/\/+/g, '/');
+
+/** Foto semua milestone diratakan dengan indeks global untuk lightbox. */
+let kisahPhotoIdx = -1;
+const kisahMilestones = milestones.map((m) => ({
+  ...m,
+  photos: m.photos.map((p) => ({ ...p, url: makeUrl(p.src), idx: ++kisahPhotoIdx })),
+}));
 ---
 
 <section id="kisah" class="py-16 px-4 max-w-3xl mx-auto relative scroll-mt-24 overflow-hidden">
@@ -28,7 +35,7 @@ const makeUrl = (p: string) => `${import.meta.env.BASE_URL}/${p}`.replace(/(?<!:
     ></div>
 
     <ol class="space-y-12">
-      {milestones.map((m, i) => {
+      {kisahMilestones.map((m, i) => {
         const even = i % 2 === 0;
         const [hero, ...rest] = m.photos;
         return (
@@ -63,34 +70,42 @@ const makeUrl = (p: string) => `${import.meta.env.BASE_URL}/${p}`.replace(/(?<!:
               data-reveal
               data-reveal-delay={String(i * 100)}
             >
-              {/* Foto utama dalam bingkai arch */}
+              {/* Foto utama dalam bingkai arch — bisa diklik untuk memperbesar */}
               {hero && (
                 <div class="p-4 pb-0">
-                  <div class="arch-frame overflow-hidden">
+                  <button
+                    type="button"
+                    data-kisah-open={hero.idx}
+                    class="arch-frame group block w-full overflow-hidden cursor-zoom-in focus:outline-none focus-visible:ring-2 focus-visible:ring-wedding-600"
+                    aria-label={`Perbesar foto: ${hero.alt}`}
+                  >
                     <img
-                      src={makeUrl(hero.src)}
+                      src={hero.url}
                       alt={hero.alt}
                       loading="lazy"
-                      class="w-full aspect-[4/3] object-cover hover:scale-105 transition-transform duration-700"
+                      class="w-full aspect-[4/3] object-cover group-hover:scale-105 transition-transform duration-700"
                     />
-                  </div>
+                  </button>
                 </div>
               )}
 
-              {/* Foto pendamping */}
+              {/* Foto pendamping — bisa diklik untuk memperbesar */}
               {rest.length > 0 && (
                 <div class="grid grid-cols-2 gap-3 px-4 pt-3">
                   {rest.map((p) => (
-                    <div
-                      class="overflow-hidden rounded-2xl ring-1 ring-[#d4af37]/40 shadow-sm"
+                    <button
+                      type="button"
+                      data-kisah-open={p.idx}
+                      class="group block w-full overflow-hidden rounded-2xl ring-1 ring-[#d4af37]/40 shadow-sm cursor-zoom-in focus:outline-none focus-visible:ring-2 focus-visible:ring-wedding-600"
+                      aria-label={`Perbesar foto: ${p.alt}`}
                     >
                       <img
-                        src={makeUrl(p.src)}
+                        src={p.url}
                         alt={p.alt}
                         loading="lazy"
-                        class="w-full aspect-[4/3] object-cover hover:scale-105 transition-transform duration-700"
+                        class="w-full aspect-[4/3] object-cover group-hover:scale-105 transition-transform duration-700"
                       />
-                    </div>
+                    </button>
                   ))}
                 </div>
               )}
@@ -128,7 +143,164 @@ const makeUrl = (p: string) => `${import.meta.env.BASE_URL}/${p}`.replace(/(?<!:
   <MegaMendung class="absolute bottom-0 left-0 w-full h-8 text-wedding-500/40 pointer-events-none -scale-y-100" />
 </section>
 
+<!-- Lightbox Kisah Kami -->
+<div
+  id="kisah-lightbox"
+  class="fixed inset-0 z-[70] hidden items-center justify-center bg-[#14100a]/95 backdrop-blur-sm p-4"
+  role="dialog"
+  aria-modal="true"
+  aria-label="Tampilan foto kisah kami"
+>
+  <button
+    id="kisah-lb-close"
+    class="absolute top-4 right-4 w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 active:bg-white/25 text-white flex items-center justify-center transition z-10"
+    aria-label="Tutup"
+  >
+    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-width="2" d="M6 6l12 12M18 6L6 18"></path>
+    </svg>
+  </button>
+  <button
+    id="kisah-lb-prev"
+    class="absolute left-3 sm:left-6 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 active:bg-white/25 text-white flex items-center justify-center transition z-10"
+    aria-label="Foto sebelumnya"
+  >
+    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+    </svg>
+  </button>
+  <button
+    id="kisah-lb-next"
+    class="absolute right-3 sm:right-6 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 active:bg-white/25 text-white flex items-center justify-center transition z-10"
+    aria-label="Foto berikutnya"
+  >
+    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+    </svg>
+  </button>
+  <figure class="max-w-3xl w-full max-h-[85vh] flex flex-col items-center gap-3">
+    <img
+      id="kisah-lb-image"
+      src=""
+      alt=""
+      class="max-h-[72vh] max-w-full rounded-lg shadow-2xl object-contain"
+    />
+    <figcaption id="kisah-lb-caption" class="text-sm text-[#e8d9a8] tracking-wide text-center"></figcaption>
+  </figure>
+</div>
+
+<script>
+  const triggers = Array.from(
+    document.querySelectorAll<HTMLButtonElement>('[data-kisah-open]'),
+  );
+  const lightbox = document.getElementById('kisah-lightbox') as HTMLElement | null;
+  const lbImage = document.getElementById('kisah-lb-image') as HTMLImageElement | null;
+  const lbCaption = document.getElementById('kisah-lb-caption') as HTMLElement | null;
+  if (!lightbox || !lbImage || !lbCaption) throw new Error('kisah lightbox teardown');
+
+  const photos = triggers.map((btn) => {
+    const img = btn.querySelector('img');
+    return { url: img?.getAttribute('src') ?? '', cap: img?.getAttribute('alt') ?? '' };
+  });
+
+  let current = 0;
+  /** Elemen pemicu, supaya fokus bisa dikembalikan setelah lightbox ditutup. */
+  let lastTrigger: HTMLElement | null = null;
+
+  function show(index: number) {
+    if (!photos.length) return;
+    current = (index + photos.length) % photos.length;
+    const photo = photos[current];
+    lbImage!.src = photo.url;
+    lbImage!.alt = photo.cap;
+    lbCaption!.textContent = photo.cap;
+    lightbox!.classList.add('show');
+    document.body.style.overflow = 'hidden';
+    (document.getElementById('kisah-lb-close') as HTMLElement | null)?.focus();
+  }
+
+  function close() {
+    lightbox!.classList.remove('show');
+    document.body.style.overflow = '';
+    lastTrigger?.focus();
+    lastTrigger = null;
+  }
+
+  triggers.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      lastTrigger = btn;
+      show(Number(btn.dataset.kisahOpen));
+    });
+  });
+
+  document.getElementById('kisah-lb-close')?.addEventListener('click', close);
+  document.getElementById('kisah-lb-prev')?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    show(current - 1);
+  });
+  document.getElementById('kisah-lb-next')?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    show(current + 1);
+  });
+
+  // Geser (swipe) kiri/kanan > 50px untuk pindah foto di perangkat sentuh.
+  let touchStartX: number | null = null;
+  lightbox.addEventListener(
+    'touchstart',
+    (e) => {
+      touchStartX = e.touches[0]?.clientX ?? null;
+    },
+    { passive: true },
+  );
+  lightbox.addEventListener('touchend', (e) => {
+    if (touchStartX === null) return;
+    const dx = (e.changedTouches[0]?.clientX ?? touchStartX) - touchStartX;
+    touchStartX = null;
+    if (Math.abs(dx) <= 50) return;
+    if (dx < 0) show(current + 1);
+    else show(current - 1);
+  });
+
+  // Klik area gelap (di luar gambar & tombol) menutup lightbox.
+  lightbox.addEventListener('click', (e) => {
+    if (e.target === lightbox) close();
+  });
+  document.addEventListener('keydown', (e) => {
+    if (!lightbox.classList.contains('show')) return;
+    if (e.key === 'Escape') close();
+    if (e.key === 'ArrowLeft') show(current - 1);
+    if (e.key === 'ArrowRight') show(current + 1);
+  });
+</script>
+
 <style>
+  /* ---------- Lightbox Kisah Kami ---------- */
+  #kisah-lightbox.show {
+    display: flex;
+    animation: kisah-lb-fade 0.25s ease-out;
+  }
+  #kisah-lb-image {
+    animation: kisah-lb-zoom 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  @keyframes kisah-lb-fade {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  @keyframes kisah-lb-zoom {
+    from {
+      transform: scale(0.92);
+      opacity: 0;
+    }
+    to {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+
   /* ---------- Bingkai arch untuk foto utama ---------- */
   .arch-frame {
     border-radius: 10rem 10rem 1.25rem 1.25rem;

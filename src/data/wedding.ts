@@ -129,7 +129,7 @@ export const rsvpEventChoices = events.map((e) => e.label);
 export const guestInfo = {
   dressCode: {
     title: 'Dress Code',
-    text: 'Batik atau busana muslim yang sopan dan rapi.',
+    text: 'Tampil terbaik dengan batik atau busana muslim yang sopan dan rapi — kami tak sabar menyambut kehadiran Anda dengan penuh sukacita.',
   },
   /** Rundown diturunkan otomatis dari jam acara di atas. */
   rundown: {
@@ -140,7 +140,7 @@ export const guestInfo = {
   },
   parking: {
     title: 'Denah & Parkir',
-    text: 'Area parkir tersedia di sekitar lokasi acara. Ikuti arahan panitia setibanya di lokasi.',
+    text: 'Tak perlu khawatir soal kendaraan — area parkir tersedia di sekitar lokasi acara, dan tim panitia kami yang ramah akan dengan senang hati mengarahkan Anda setibanya di sana.',
   },
 };
 
@@ -152,6 +152,7 @@ export const milestones = [
     photos: [
       { src: 'love-story/2017-1-koridor-sekolah.jpg', alt: 'Bayu dan Lilik berpapasan di koridor sekolah' },
       { src: 'love-story/2017-2-tangga-sekolah.jpg', alt: 'Bayu dan Lilik menuruni tangga sekolah' },
+      { src: 'love-story/2017-3-kelas.jpg', alt: 'Bayu dan Lilik belajar di kelas yang sama' },
     ],
     text: 'Semua bermula dari halaman yang sama. Dari bangku MTs Attanwir hingga MA Attanwir, langkah kami pernah berpapasan tanpa benar-benar saling menyadari — tumbuh di tempat yang sama, pada waktu yang sama. Perjalanan kemudian membawa kami menempuh ilmu di UIN Walisongo, menata mimpi masing-masing di jalan yang sempat berbeda. Namun di antara sekian banyak nama yang datang lalu pergi, ada dua hati yang Tuhan dekatkan perlahan, hingga akhirnya kami dipertemukan.',
   },
