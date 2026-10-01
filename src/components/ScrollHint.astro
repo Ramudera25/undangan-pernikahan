@@ -1,0 +1,51 @@
+---
+---
+
+<!-- Indikator "gulir ke bawah": muncul setelah undangan dibuka, hilang saat mulai menggulir -->
+<div
+  id="scroll-hint"
+  aria-hidden="true"
+  class="fixed left-1/2 -translate-x-1/2 bottom-24 z-40 flex flex-col items-center gap-1 text-wedding-600 opacity-0 pointer-events-none transition-opacity duration-700"
+>
+  <span class="text-[10px] tracking-[0.25em] uppercase font-semibold drop-shadow-sm">
+    Gulir ke bawah
+  </span>
+  <svg
+    class="w-6 h-6 animate-bounce"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="2"
+    viewBox="0 0 24 24"
+  >
+    <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"></path>
+  </svg>
+</div>
+
+<script>
+  const hint = document.getElementById('scroll-hint');
+  let opened = false;
+
+  function refresh() {
+    if (!hint) return;
+    // Tampil hanya setelah undangan dibuka dan pengguna belum menggulir jauh.
+    const visible = opened && window.scrollY <= 120;
+    hint.classList.toggle('opacity-0', !visible);
+  }
+
+  window.addEventListener('undangan-opened', () => {
+    opened = true;
+    refresh();
+  });
+  window.addEventListener('scroll', refresh, { passive: true });
+</script>
+
+<style>
+  @media (prefers-reduced-motion: reduce) {
+    #scroll-hint svg {
+      animation: none;
+    }
+    #scroll-hint {
+      transition: none;
+    }
+  }
+</style>

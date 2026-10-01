@@ -58,28 +58,34 @@ export type WeddingEvent = {
   endISO: string | null;
 };
 
+/**
+ * Alamat kediaman mempelai pria (lokasi Ngunduh Mantu).
+ * Placeholder jelas sampai alamat aslinya diberikan pemilik undangan.
+ */
+export const groomHomeAddress = 'Alamat menyusul';
+
 export const events: WeddingEvent[] = [
   {
-    id: 'akad',
-    label: 'Akad Nikah',
+    id: 'akad-resepsi',
+    label: 'Akad & Resepsi',
     icon: 'ring',
     venue: 'Kediaman Mempelai Wanita',
     address: 'Dk. Butoh Lor RT 06 RW 03, Desa Butoh, Kecamatan Sumberrejo, Kab. Bojonegoro, Jawa Timur',
     dateLabel: 'Rabu, 21 Oktober 2026',
-    timeLabel: '08.00 – 10.00 WIB',
+    timeLabel: '08.00 – 14.00 WIB',
     startISO: '2026-10-21T08:00:00+07:00',
-    endISO: '2026-10-21T10:00:00+07:00',
+    endISO: '2026-10-21T14:00:00+07:00',
   },
   {
-    id: 'resepsi',
-    label: 'Resepsi Pernikahan',
-    icon: 'party',
-    venue: 'Kediaman Mempelai Wanita',
-    address: 'Dk. Butoh Lor RT 06 RW 03, Desa Butoh, Kecamatan Sumberrejo, Kab. Bojonegoro, Jawa Timur',
+    id: 'ngunduh-mantu',
+    label: 'Ngunduh Mantu',
+    icon: 'home',
+    venue: 'Kediaman Mempelai Pria',
+    address: groomHomeAddress,
     dateLabel: 'Minggu, 25 Oktober 2026',
-    timeLabel: '11.00 – 14.00 WIB',
-    startISO: '2026-10-25T11:00:00+07:00',
-    endISO: '2026-10-25T14:00:00+07:00',
+    timeLabel: 'Menyusul',
+    startISO: null,
+    endISO: null,
   },
 ];
 
@@ -107,12 +113,11 @@ export const bankAccounts = [
 ] as const;
 
 /**
- * Nomor WhatsApp untuk RSVP, format internasional tanpa tanda "+" (contoh: '6281234567890').
- *
- * Dibiarkan kosong karena nomor aslinya belum diberikan. Selama kosong, tombol
- * kirim RSVP dinonaktifkan agar tamu tidak diarahkan ke nomor dummy.
+ * Nomor WhatsApp untuk RSVP, format internasional tanpa tanda "+".
+ * Konfirmasi kehadiran dibuka via wa.me dengan pesan terisi otomatis;
+ * bila dikosongkan lagi, konfirmasi disimpan di localStorage perangkat tamu.
  */
-export const rsvpWhatsApp = '';
+export const rsvpWhatsApp = '6288215645161';
 
 /** Pilihan acara yang bisa disebut pada pesan WhatsApp RSVP. */
 export const rsvpEventChoices = events.map((e) => e.label);
@@ -136,30 +141,38 @@ export const guestInfo = {
   },
 };
 
-/** Linimasa "Perjalanan Kasih" — 4 bagian. */
+/** Linimasa "Perjalanan Kasih" — 4 bagian, tiap bagian memakai foto asli pasangan. */
 export const milestones = [
   {
     year: '2017',
     title: 'Awal yang Telah Dituliskan',
     icon: 'sparkles',
+    photo: 'gallery-2.jpg',
+    photoAlt: 'Bayu & Lilik duduk berdua',
     text: 'Semua bermula dari halaman yang sama. Dari bangku MTs Attanwir hingga MA Attanwir, langkah kami pernah berpapasan tanpa benar-benar saling menyadari — tumbuh di tempat yang sama, pada waktu yang sama. Perjalanan kemudian membawa kami menempuh ilmu di UIN Walisongo, menata mimpi masing-masing di jalan yang sempat berbeda. Namun di antara sekian banyak nama yang datang lalu pergi, ada dua hati yang Tuhan dekatkan perlahan, hingga akhirnya kami dipertemukan.',
   },
   {
     year: '2022',
     title: 'Bertumbuh dalam Doa',
     icon: 'chat',
+    photo: 'gallery-3.jpg',
+    photoAlt: 'Bayu & Lilik dalam pose sungkeman',
     text: 'Tahun-tahun berikutnya adalah tentang memantaskan diri. Kami sibuk dengan karier dan tanggung jawab masing-masing, menjalani hari yang panjang, dan belajar menjadi pribadi yang lebih dewasa. Meski jarang bertegur sapa, nama itu tidak pernah benar-benar hilang — ia tetap tinggal, hadir diam-diam di sela doa yang kami panjatkan setiap malam.',
   },
   {
     year: '2025',
     title: 'Menemukan Jalan Pulang',
     icon: 'heart',
+    photo: 'gallery-1.jpg',
+    photoAlt: 'Momen mesra Bayu & Lilik',
     text: 'Setelah sekian lama menempuh jalan sendiri, kami dipertemukan kembali. Dan kali ini tidak ada yang terasa asing: kami menemukan rumah pada satu sama lain. Dua jiwa yang telah lebih dewasa, lebih tenang, dan lebih siap — akhirnya bersatu bukan karena kebetulan, melainkan karena waktu yang memang sudah tepat.',
   },
   {
     year: '2026',
     title: 'Menuju Ridha-Nya',
     icon: 'rings',
+    photo: 'cover.jpg',
+    photoAlt: 'Bayu & Lilik dalam busana pengantin adat Jawa',
     text: 'Kini perjalanan itu kami lanjutkan dalam ikatan yang lebih suci: pernikahan. Bukan sebagai akhir dari sebuah kisah, melainkan awal dari ibadah yang panjang. Bismillah, semoga setiap langkah kami senantiasa berada dalam ridha-Nya, dan rumah tangga kami menjadi keluarga yang sakinah, mawaddah, warahmah.',
   },
 ];

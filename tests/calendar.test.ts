@@ -13,7 +13,7 @@ import {
 describe('calendarEvents', () => {
   it('menyertakan acara terjadwal dan melewati yang belum punya tanggal', () => {
     const list = calendarEvents();
-    expect(list.map((e) => e.id)).toEqual(['akad', 'resepsi']);
+    expect(list.map((e) => e.id)).toEqual(['akad-resepsi']);
   });
 
   it('memakai identitas pasangan baru, bukan data lama', () => {
@@ -21,19 +21,16 @@ describe('calendarEvents', () => {
     expect(ics).toContain(`PRODID:${calendarIdentity.productId}`);
     expect(ics).toContain('Bayu & Lilik');
     expect(ics).not.toContain('Winda');
-    expect(ics).toContain('Nglarangan');
+    expect(ics).toContain('Butoh Lor');
     // Ngunduh mantu belum punya jadwal, jadi belum masuk file kalender.
-    expect(ics).not.toContain('Dk. Butoh Lor');
+    expect(ics).not.toContain('Alamat menyusul');
   });
 
   it('menulis jam acara dalam UTC dasar ICS', () => {
     const list = calendarEvents();
-    const akad = list.find((e) => e.id === 'akad')!;
-    const resepsi = list.find((e) => e.id === 'resepsi')!;
-    expect(akad.start).toBe('20261024T010000Z'); // 08.00 WIB
-    expect(akad.end).toBe('20261024T030000Z'); // 10.00 WIB
-    expect(resepsi.start).toBe('20261024T040000Z'); // 11.00 WIB
-    expect(resepsi.end).toBe('20261024T070000Z'); // 14.00 WIB
+    const akadResepsi = list.find((e) => e.id === 'akad-resepsi')!;
+    expect(akadResepsi.start).toBe('20261021T010000Z'); // 08.00 WIB
+    expect(akadResepsi.end).toBe('20261021T070000Z'); // 14.00 WIB
   });
 
   it('memakai domain UID identitas baru', () => {
@@ -47,7 +44,7 @@ describe('buildICS', () => {
   it('menghasilkan blok VEVENT per acara dengan baris CRLF', () => {
     const ics = buildICS(calendarEvents());
     const blocks = ics.split('BEGIN:VEVENT').length - 1;
-    expect(blocks).toBe(2);
+    expect(blocks).toBe(1);
     expect(ics).toContain('BEGIN:VCALENDAR');
     expect(ics.trimEnd().endsWith('END:VCALENDAR')).toBe(true);
     expect(ics).toContain('\r\n');
@@ -75,7 +72,7 @@ describe('googleCalendarUrl & mapsUrl', () => {
     const url = googleCalendarUrl(calendarEvents()[0]);
     expect(url.startsWith('https://calendar.google.com/calendar/render?')).toBe(true);
     expect(url).toContain('Akad');
-    expect(url).toContain('dates=20261024T010000Z%2F20261024T030000Z');
+    expect(url).toContain('dates=20261021T010000Z%2F20261021T070000Z');
   });
 
   it('membuat tautan peta dari alamat acara, bukan pin karangan', () => {
@@ -99,16 +96,14 @@ describe('data undangan', () => {
     expect(couple.bride.relation).toBe('Putri dari');
   });
 
-  it('punya tiga acara dengan alamat yang benar', () => {
-    expect(events).toHaveLength(3);
-    expect(events.map((e) => e.id)).toEqual(['akad', 'resepsi', 'ngunduh-mantu']);
+  it('punya dua acara dengan alamat yang benar', () => {
+    expect(events).toHaveLength(2);
+    expect(events.map((e) => e.id)).toEqual(['akad-resepsi', 'ngunduh-mantu']);
     expect(events[0].address).toBe(
-      'Dk. Kepoh RT 01 RW 03, Desa Nglarangan, Kec. Kanor, Kab. Bojonegoro',
+      'Dk. Butoh Lor RT 06 RW 03, Desa Butoh, Kecamatan Sumberrejo, Kab. Bojonegoro, Jawa Timur',
     );
-    expect(events[2].address).toBe(
-      'Dk. Butoh Lor RT 06 RW 03, Desa Butoh, Kecamatan Sumberrejo, Kab. Bojonegoro',
-    );
-    expect(events[2].startISO).toBeNull();
+    expect(events[1].address).toBe('Alamat menyusul');
+    expect(events[1].startISO).toBeNull();
   });
 
   it('menyimpan semua ISO acara dengan zona waktu WIB eksplisit', () => {

@@ -1,5 +1,5 @@
 ---
-import { couple, countdownEvent, scheduleConfirmed } from '../data/wedding';
+import { couple, countdownEvent } from '../data/wedding';
 import { formatEventDate } from '../utils/schedule';
 import Gunungan from './ornaments/Gunungan.astro';
 import SulurDivider from './ornaments/SulurDivider.astro';
@@ -36,7 +36,7 @@ const year = new Date().getFullYear();
       <p class="font-script text-5xl mt-6 text-wedding-600 leading-none">{couple.shortName}</p>
       {eventDate && (
         <p class="text-[10px] tracking-[0.3em] text-wedding-600 uppercase mt-3 font-semibold">
-          {eventDate}{!scheduleConfirmed ? ' (jadwal contoh)' : ''}
+          {eventDate}
         </p>
       )}
       <p class="text-sm text-ink-soft mt-4 leading-relaxed">

@@ -1,6 +1,8 @@
 ---
 import { milestones } from '../data/wedding';
 import SulurDivider from './ornaments/SulurDivider.astro';
+
+const makeUrl = (p: string) => `${import.meta.env.BASE_URL}/${p}`.replace(/(?<!:)\/\/+/g, '/');
 ---
 
 <section id="kisah" class="py-16 px-4 max-w-3xl mx-auto relative scroll-mt-24">
@@ -36,19 +38,29 @@ import SulurDivider from './ornaments/SulurDivider.astro';
           <!-- Kartu konten: kiri/kanan berselang di desktop -->
           <div
             class:list={[
-              'surface w-full rounded-2xl p-6 backdrop-blur-md hover:border-wedding-400 transition-all md:w-[calc(50%-2.5rem)]',
-              i % 2 === 0 ? 'md:mr-auto md:pr-8 md:text-right' : 'md:ml-auto md:pl-8 md:text-left',
+              'surface w-full rounded-2xl overflow-hidden backdrop-blur-md hover:border-wedding-400 transition-all md:w-[calc(50%-2.5rem)]',
+              i % 2 === 0 ? 'md:mr-auto' : 'md:ml-auto',
             ]}
             data-reveal
             data-reveal-delay={String(i * 100)}
           >
-            <span
-              class="inline-block text-[10px] font-semibold tracking-[0.2em] uppercase px-3 py-1 rounded-full border border-[#d4af37]/60 bg-gradient-to-r from-[#faf0d2] to-[#f3dd9a] text-[#8a6d1c]"
-            >
-              {m.year}
-            </span>
-            <h3 class="font-serif text-xl text-ink mt-3">{m.title}</h3>
-            <p class="text-sm text-ink-soft leading-relaxed mt-2">{m.text}</p>
+            <div class="overflow-hidden">
+              <img
+                src={makeUrl(m.photo)}
+                alt={m.photoAlt}
+                loading="lazy"
+                class="w-full h-56 object-cover object-top hover:scale-105 transition-transform duration-700"
+              />
+            </div>
+            <div class:list={['p-6', i % 2 === 0 ? 'md:pr-8 md:text-right' : 'md:pl-8 md:text-left']}>
+              <span
+                class="inline-block text-[10px] font-semibold tracking-[0.2em] uppercase px-3 py-1 rounded-full border border-[#d4af37]/60 bg-gradient-to-r from-[#faf0d2] to-[#f3dd9a] text-[#8a6d1c]"
+              >
+                {m.year}
+              </span>
+              <h3 class="font-serif text-xl text-ink mt-3">{m.title}</h3>
+              <p class="text-sm text-ink-soft leading-relaxed mt-2">{m.text}</p>
+            </div>
           </div>
         </li>
       ))}

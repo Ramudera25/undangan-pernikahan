@@ -19,6 +19,7 @@ const cards = events.map((e) => ({
   date: e.startISO ? formatEventDate(e.startISO) : e.dateLabel,
   time: formatEventRange(e.startISO, e.endISO, e.timeLabel),
   map: mapsUrl(`${e.venue}, ${e.address}`),
+  embed: `https://www.google.com/maps?q=${encodeURIComponent(`${e.venue}, ${e.address}`)}&output=embed`,
   scheduled: e.startISO !== null,
   gcal: gcalByEventId.get(e.id) ?? null,
 }));
@@ -46,7 +47,7 @@ const scheduledCount = cards.filter((c) => c.scheduled).length;
 
     <Countdown client:visible />
 
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-5 max-w-4xl mx-auto mt-8">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-5 max-w-4xl mx-auto mt-8">
       {cards.map((card, i) => (
         <div
           class="p-7 border border-wedding-300/35 rounded-2xl bg-gradient-to-b from-white/10 to-transparent backdrop-blur-sm text-left"
@@ -116,6 +117,14 @@ const scheduledCount = cards.filter((c) => c.scheduled).length;
               </a>
             )}
           </div>
+
+          <iframe
+            title={`Peta lokasi ${card.label}`}
+            src={card.embed}
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+            class="w-full h-[220px] rounded-xl border border-wedding-300/40 mt-4 bg-wedding-200/20"
+          ></iframe>
         </div>
       ))}
     </div>

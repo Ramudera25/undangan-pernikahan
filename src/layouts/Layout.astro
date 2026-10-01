@@ -118,6 +118,12 @@ const tabTitle = `${couple.shortName} \u00b7 `;
     class="bg-wedding-50 text-ink font-sans antialiased selection:bg-wedding-300 selection:text-ink relative"
   >
     <Preloader />
+    <!-- Progress bar emas: terisi sesuai progres scroll -->
+    <div
+      id="scroll-progress"
+      aria-hidden="true"
+      class="fixed top-0 left-0 h-[3px] w-0 z-[70] bg-gradient-to-r from-[#b8860b] via-[#f4dc8a] to-[#d4af37] pointer-events-none"
+    ></div>
     <!-- Tekstur motif kawung beropasitas rendah -->
     <div class="orn-kawung fixed inset-0 pointer-events-none opacity-[0.35] z-0"></div>
 
@@ -132,6 +138,34 @@ const tabTitle = `${couple.shortName} \u00b7 `;
     <div class="relative z-10">
       <slot />
     </div>
+
+    <!-- Perbarui progress bar emas mengikuti posisi scroll -->
+    <script is:inline>
+      (function () {
+        var bar = document.getElementById('scroll-progress');
+        if (!bar) return;
+        var ticking = false;
+        function update() {
+          ticking = false;
+          var h = document.documentElement;
+          var max = h.scrollHeight - h.clientHeight;
+          var p = max > 0 ? h.scrollTop / max : 0;
+          bar.style.width = (p * 100).toFixed(2) + '%';
+        }
+        window.addEventListener(
+          'scroll',
+          function () {
+            if (!ticking) {
+              ticking = true;
+              requestAnimationFrame(update);
+            }
+          },
+          { passive: true },
+        );
+        window.addEventListener('resize', update);
+        update();
+      })();
+    </script>
   </body>
 </html>
 
