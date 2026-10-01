@@ -149,33 +149,40 @@ export const milestones = [
   {
     year: '2017',
     title: 'Awal yang Telah Dituliskan',
-    icon: 'sparkles',
-    photo: 'gallery-2.jpg',
-    photoAlt: 'Bayu & Lilik duduk berdua',
+    photos: [
+      { src: 'love-story/2017-1-koridor-sekolah.jpg', alt: 'Bayu dan Lilik berpapasan di koridor sekolah' },
+      { src: 'love-story/2017-2-tangga-sekolah.jpg', alt: 'Bayu dan Lilik menuruni tangga sekolah' },
+    ],
     text: 'Semua bermula dari halaman yang sama. Dari bangku MTs Attanwir hingga MA Attanwir, langkah kami pernah berpapasan tanpa benar-benar saling menyadari — tumbuh di tempat yang sama, pada waktu yang sama. Perjalanan kemudian membawa kami menempuh ilmu di UIN Walisongo, menata mimpi masing-masing di jalan yang sempat berbeda. Namun di antara sekian banyak nama yang datang lalu pergi, ada dua hati yang Tuhan dekatkan perlahan, hingga akhirnya kami dipertemukan.',
   },
   {
     year: '2022',
     title: 'Bertumbuh dalam Doa',
-    icon: 'chat',
-    photo: 'gallery-3.jpg',
-    photoAlt: 'Bayu & Lilik dalam pose sungkeman',
+    photos: [
+      { src: 'love-story/2022-1-kampus-uin.jpg', alt: 'Bayu dan Lilik berjalan di jalan kampus UIN Walisongo' },
+      { src: 'love-story/2022-2-perpustakaan-tatap.jpg', alt: 'Bayu dan Lilik bertatap muka di perpustakaan kampus' },
+      { src: 'love-story/2022-3-perpustakaan-tawa.jpg', alt: 'Bayu dan Lilik tertawa bersama di perpustakaan' },
+    ],
     text: 'Tahun-tahun berikutnya adalah tentang memantaskan diri. Kami sibuk dengan karier dan tanggung jawab masing-masing, menjalani hari yang panjang, dan belajar menjadi pribadi yang lebih dewasa. Meski jarang bertegur sapa, nama itu tidak pernah benar-benar hilang — ia tetap tinggal, hadir diam-diam di sela doa yang kami panjatkan setiap malam.',
   },
   {
     year: '2025',
     title: 'Menemukan Jalan Pulang',
-    icon: 'heart',
-    photo: 'gallery-1.jpg',
-    photoAlt: 'Momen mesra Bayu & Lilik',
+    photos: [
+      { src: 'love-story/2025-1-jalan-raya-malam.jpg', alt: 'Bayu dan Lilik berjalan di jalan raya pada malam hari' },
+      { src: 'love-story/2025-2-perjalanan-terpisah.jpg', alt: 'Bayu dan Lilik menempuh perjalanan masing-masing' },
+      { src: 'love-story/2025-3-lembur-malam.jpg', alt: 'Lilik bekerja lembur di malam hari' },
+    ],
     text: 'Setelah sekian lama menempuh jalan sendiri, kami dipertemukan kembali. Dan kali ini tidak ada yang terasa asing: kami menemukan rumah pada satu sama lain. Dua jiwa yang telah lebih dewasa, lebih tenang, dan lebih siap — akhirnya bersatu bukan karena kebetulan, melainkan karena waktu yang memang sudah tepat.',
   },
   {
     year: '2026',
     title: 'Menuju Ridha-Nya',
-    icon: 'rings',
-    photo: 'cover.jpg',
-    photoAlt: 'Bayu & Lilik dalam busana pengantin adat Jawa',
+    photos: [
+      { src: 'love-story/2026-1-doa-bayu.jpg', alt: 'Bayu berdoa dengan khusyuk' },
+      { src: 'love-story/2026-2-doa-lilik.jpg', alt: 'Lilik berdoa dengan khusyuk' },
+      { src: 'love-story/2026-3-pintu-rumah.jpg', alt: 'Bayu dan Lilik dalam busana Jawa di depan pintu rumah' },
+    ],
     text: 'Kini perjalanan itu kami lanjutkan dalam ikatan yang lebih suci: pernikahan. Bukan sebagai akhir dari sebuah kisah, melainkan awal dari ibadah yang panjang. Bismillah, semoga setiap langkah kami senantiasa berada dalam ridha-Nya, dan rumah tangga kami menjadi keluarga yang sakinah, mawaddah, warahmah.',
   },
 ];

@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import Avatar from './Avatar';
 import FlowerOrnament from './FlowerOrnament';
 import { couple, rsvpEventChoices, rsvpWhatsApp, storageKeys } from '../data/wedding';
@@ -14,6 +14,11 @@ import {
   type Gender,
   type GuestComment,
 } from '../utils/commentStore';
+import {
+  getDefaultUcapanAdapter,
+  sanitizeUcapanInput,
+  type UcapanAdapter,
+} from '../utils/firebaseUcapanAdapter';
 
 const GENDER_OPTIONS: Array<{ value: Gender; label: string }> = [
   { value: 'L', label: 'Laki-laki' },
@@ -52,14 +57,19 @@ function readRsvps(): RsvpEntry[] {
   }
 }
 
+type FirebaseState = 'loading' | 'ready' | 'error';
+
 /**
- * Kolom komentar tamu — tanpa login dan tanpa backend.
+ * Kolom komentar tamu — tanpa login.
  *
- * Avatar mengikuti jenis kelamin yang dipilih pengirim, lalu nama dan isi
- * komentar tampil di bawahnya. Karena tidak ada server, komentar disimpan di
- * `localStorage` perangkat pengirim (lihat catatan di bagian bawah komponen).
- * Komentar bawaan (`seedComments`) hanya untuk tampilan awal: tidak disimpan
- * ke `localStorage` dan tidak ikut tertulis saat pengguna mengirim ucapan.
+ * Ucapan disimpan di Firebase Realtime Database (path
+ * `ucapan/undangan-bayu-lilik`) sehingga terlihat SEMUA tamu secara
+ * real-time. Bila Firebase belum siap (rules path `ucapan/` belum dipasang
+ * atau jaringan gagal), ucapan jatuh ke `localStorage` perangkat pengirim.
+ *
+ * Avatar mengikuti jenis kelamin yang dipilih pengirim. Komentar bawaan
+ * (`seedComments`) hanya untuk tampilan awal: selalu di bawah entri tamu,
+ * tidak disimpan ke database maupun `localStorage`.
  */
 export default function GuestBook() {
   const [name, setName] = useState('');
@@ -68,52 +78,127 @@ export default function GuestBook() {
   const [chosenEvent, setChosenEvent] = useState<string>(rsvpEventChoices[0] ?? '');
   const [guests, setGuests] = useState(1);
   const [message, setMessage] = useState('');
-  const [userComments, setUserComments] = useState<GuestComment[]>([]);
+  const [remoteComments, setRemoteComments] = useState<GuestComment[]>([]);
+  const [localComments, setLocalComments] = useState<GuestComment[]>([]);
+  const [firebaseState, setFirebaseState] = useState<FirebaseState>('loading');
   const [notice, setNotice] = useState<string | null>(null);
   const [rsvpNotice, setRsvpNotice] = useState<string | null>(null);
+  const adapterRef = useRef<UcapanAdapter | null>(null);
+
+  if (!adapterRef.current) adapterRef.current = getDefaultUcapanAdapter();
 
   useEffect(() => {
     setName(getGuestName());
-    setUserComments(readComments());
+    setLocalComments(readComments());
 
-    // Ikut memperbarui bila tab lain menulis komentar.
+    const adapter = adapterRef.current;
+    let cancelled = false;
+    let unsubscribe: (() => void) | undefined;
+
+    const refresh = () => {
+      if (!adapter) return;
+      adapter
+        .list()
+        .then((list) => {
+          if (!cancelled) {
+            setRemoteComments(list);
+            setFirebaseState('ready');
+          }
+        })
+        .catch(() => {
+          if (!cancelled) setFirebaseState('error');
+        });
+    };
+
+    if (adapter) {
+      refresh();
+      unsubscribe = adapter.subscribe(refresh);
+    } else {
+      setFirebaseState('error');
+    }
+
+    // Ikut memperbarui bila tab lain menulis komentar lokal.
     const onStorage = (e: StorageEvent) => {
-      if (e.key === storageKeys.comments) setUserComments(readComments());
+      if (e.key === storageKeys.comments) setLocalComments(readComments());
     };
     window.addEventListener('storage', onStorage);
-    return () => window.removeEventListener('storage', onStorage);
+    return () => {
+      cancelled = true;
+      window.removeEventListener('storage', onStorage);
+      unsubscribe?.();
+    };
   }, []);
 
-  /** Gabungan komentar bawaan + komentar pengguna: dedupe by id, terbaru dulu. */
+  /**
+   * Gabungan ucapan: entri Firebase (realtime) + komentar lokal, terbaru dulu;
+   * seed bawaan selalu di bawah sebagai fallback, tidak ditulis ke mana pun.
+   */
   const comments = useMemo(() => {
     const seen = new Set<string>();
-    const all = [...seedComments, ...userComments].filter((c) => {
+    const merged = [...remoteComments, ...localComments].filter((c) => {
       if (seen.has(c.id)) return false;
       seen.add(c.id);
       return true;
     });
-    return sortComments(all);
-  }, [userComments]);
+    const seeds = seedComments.filter((c) => {
+      if (seen.has(c.id)) return false;
+      seen.add(c.id);
+      return true;
+    });
+    return [...sortComments(merged), ...seeds];
+  }, [remoteComments, localComments]);
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    const draft = parseComment({
+  /** Simpan ucapan ke localStorage (dipakai saat Firebase tidak tersedia). */
+  const saveLocal = (draft: {
+    name: string;
+    gender: Gender;
+    attendance: Attendance | null;
+    message: string;
+  }): boolean => {
+    const parsed = parseComment({
       id: `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
-      name: name.trim() || 'Tamu Undangan',
-      gender,
-      attendance,
-      message: message.trim(),
+      name: draft.name,
+      gender: draft.gender,
+      attendance: draft.attendance,
+      message: draft.message,
       createdAt: new Date().toISOString(),
     });
-    if (!draft) {
+    if (!parsed) return false;
+    const next = [parsed, ...localComments];
+    setLocalComments(next);
+    return writeComments(next);
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const clean = sanitizeUcapanInput({
+      name: name.trim() || 'Tamu Undangan',
+      message: message.trim(),
+      gender,
+      attendance,
+    });
+    if (!clean) {
       setNotice('Nama dan ucapan perlu diisi terlebih dahulu.');
       return;
     }
 
-    // Hanya komentar pengguna yang ditulis ke penyimpanan; seed tidak ikut.
-    const next = [draft, ...userComments];
-    setUserComments(next);
-    const saved = writeComments(next);
+    const adapter = adapterRef.current;
+    if (adapter) {
+      try {
+        const saved = await adapter.add(clean);
+        setRemoteComments((prev) =>
+          sortComments([saved, ...prev.filter((c) => c.id !== saved.id)]),
+        );
+        setNotice('Terima kasih! Ucapan Anda sudah tampil dan terlihat semua tamu.');
+        setMessage('');
+        return;
+      } catch {
+        // Firebase gagal (mis. rules path ucapan/ belum dipasang) — jatuh ke lokal.
+        setFirebaseState('error');
+      }
+    }
+
+    const saved = saveLocal(clean);
     setNotice(
       saved
         ? 'Terima kasih! Ucapan Anda sudah ditampilkan di bawah.'
@@ -161,6 +246,7 @@ export default function GuestBook() {
     () => comments.filter((c) => c.attendance === 'Hadir').length,
     [comments],
   );
+  const realtime = firebaseState === 'ready';
 
   return (
     <section id="ucapan" className="py-16 px-4 max-w-md mx-auto space-y-8 scroll-mt-24">
@@ -174,6 +260,22 @@ export default function GuestBook() {
           Kolom klasik untuk menyampaikan ucapan selamat sekaligus konfirmasi kehadiran Anda.
           Semua ucapan tampil sebagai kartu di bawah ini.
         </p>
+        {firebaseState !== 'loading' && (
+          <p
+            className={
+              'inline-flex items-center gap-1.5 text-[11px] px-3 py-1 rounded-full border ' +
+              (realtime
+                ? 'bg-green-50 text-green-700 border-green-200'
+                : 'bg-amber-50 text-amber-700 border-amber-200')
+            }
+          >
+            <span
+              className={'w-1.5 h-1.5 rounded-full ' + (realtime ? 'bg-green-500' : 'bg-amber-500')}
+              aria-hidden="true"
+            />
+            {realtime ? 'Realtime — terlihat semua tamu' : 'Mode lokal — hanya di perangkat ini'}
+          </p>
+        )}
       </div>
 
       {/* ---------- Konfirmasi kehadiran ---------- */}
@@ -386,8 +488,9 @@ export default function GuestBook() {
         )}
 
         <p className="text-[11px] leading-relaxed text-ink-muted text-center">
-          Ucapan disimpan di peramban perangkat Anda. Untuk buku tamu bersama yang terlihat semua
-          tamu, diperlukan layanan penyimpanan (backend).
+          {realtime
+            ? 'Ucapan tersimpan otomatis dan langsung terlihat oleh semua tamu secara realtime.'
+            : 'Ucapan disimpan di peramban perangkat Anda. Untuk buku tamu bersama yang terlihat semua tamu, diperlukan layanan penyimpanan (backend).'}
         </p>
       </div>
     </section>

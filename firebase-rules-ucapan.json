@@ -1,0 +1,58 @@
+{
+  "rules": {
+    "doa": {
+      "undangan-bayu-lilik": {
+        "$entryId": {
+          "$other": {
+            ".validate": false
+          },
+          ".validate": "newData.hasChildren(['name', 'message', 'createdAt'])",
+          ".write": "!data.exists() && newData.exists()",
+          "createdAt": {
+            ".validate": "newData.isNumber()"
+          },
+          "message": {
+            ".validate": "newData.isString() && newData.val().length >= 1 && newData.val().length <= 500"
+          },
+          "name": {
+            ".validate": "newData.isString() && newData.val().length >= 1 && newData.val().length <= 60"
+          }
+        },
+        ".indexOn": [
+          "createdAt"
+        ],
+        ".read": true
+      }
+    },
+    "ucapan": {
+      "undangan-bayu-lilik": {
+        "$entryId": {
+          "$other": {
+            ".validate": false
+          },
+          ".validate": "newData.hasChildren(['name', 'message', 'createdAt'])",
+          ".write": "!data.exists() && newData.exists()",
+          "attendance": {
+            ".validate": "newData.isString() && (newData.val() == 'Hadir' || newData.val() == 'Tidak Hadir' || newData.val() == 'Masih Ragu')"
+          },
+          "createdAt": {
+            ".validate": "newData.isNumber()"
+          },
+          "gender": {
+            ".validate": "newData.isString() && (newData.val() == 'L' || newData.val() == 'P' || newData.val() == 'netral')"
+          },
+          "message": {
+            ".validate": "newData.isString() && newData.val().length >= 1 && newData.val().length <= 500"
+          },
+          "name": {
+            ".validate": "newData.isString() && newData.val().length >= 1 && newData.val().length <= 60"
+          }
+        },
+        ".indexOn": [
+          "createdAt"
+        ],
+        ".read": true
+      }
+    }
+  }
+}

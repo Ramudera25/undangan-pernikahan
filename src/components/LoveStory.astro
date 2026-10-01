@@ -2,11 +2,14 @@
 import { milestones } from '../data/wedding';
 import SulurDivider from './ornaments/SulurDivider.astro';
 import BungaHias from './ornaments/BungaHias.astro';
+import MegaMendung from './ornaments/MegaMendung.astro';
 
 const makeUrl = (p: string) => `${import.meta.env.BASE_URL}/${p}`.replace(/(?<!:)\/\/+/g, '/');
 ---
 
-<section id="kisah" class="py-16 px-4 max-w-3xl mx-auto relative scroll-mt-24">
+<section id="kisah" class="py-16 px-4 max-w-3xl mx-auto relative scroll-mt-24 overflow-hidden">
+  <MegaMendung class="absolute top-0 left-0 w-full h-8 text-wedding-500/40 pointer-events-none" />
+
   <div class="text-center mb-14" data-reveal>
     <p class="text-[10px] text-wedding-600 tracking-[0.25em] uppercase font-semibold">Kisah Kami</p>
     <h2 class="font-serif text-3xl sm:text-4xl text-ink mt-1 mb-3">Perjalanan Kasih</h2>
@@ -19,59 +22,138 @@ const makeUrl = (p: string) => `${import.meta.env.BASE_URL}/${p}`.replace(/(?<!:
   </div>
 
   <div class="relative">
-    <!-- Garis tengah linimasa: gradient emas -->
+    <!-- Batang pohon: garis tengah gradient emas -->
     <div
       class="absolute left-7 md:left-1/2 -translate-x-1/2 top-0 bottom-0 w-0.5 bg-gradient-to-b from-transparent via-[#d4af37] to-transparent"
     ></div>
 
-    <ol class="space-y-10">
-      {milestones.map((m, i) => (
-        <li class="relative pl-20 md:pl-0">
-          <!-- Simpul pada garis: lingkaran dengan ring emas + dot emas -->
-          <div
-            class="timeline-node absolute left-7 md:left-1/2 -translate-x-1/2 top-1 z-10 flex items-center justify-center w-11 h-11 rounded-full"
-            data-reveal
-            data-reveal-delay={String(i * 100)}
-            aria-hidden="true"
-          >
-            <span class="timeline-dot block w-3.5 h-3.5 rounded-full"></span>
-          </div>
+    <ol class="space-y-12">
+      {milestones.map((m, i) => {
+        const even = i % 2 === 0;
+        const [hero, ...rest] = m.photos;
+        return (
+          <li class="relative pl-20 md:pl-0">
+            <!-- Simpul pada batang: lingkaran ring emas + dot emas -->
+            <div
+              class="timeline-node absolute left-7 md:left-1/2 -translate-x-1/2 top-2 z-10 flex items-center justify-center w-11 h-11 rounded-full"
+              data-reveal
+              data-reveal-delay={String(i * 100)}
+              aria-hidden="true"
+            >
+              <span class="timeline-dot block w-3.5 h-3.5 rounded-full"></span>
+            </div>
 
-          <!-- Kartu konten: kiri/kanan berselang di desktop -->
-          <div
-            class:list={[
-              'surface w-full rounded-2xl overflow-hidden backdrop-blur-md hover:border-wedding-400 transition-all md:w-[calc(50%-2.5rem)]',
-              i % 2 === 0 ? 'md:mr-auto' : 'md:ml-auto',
-            ]}
-            data-reveal
-            data-reveal-delay={String(i * 100)}
-          >
-            <div class="overflow-hidden">
-              <img
-                src={makeUrl(m.photo)}
-                alt={m.photoAlt}
-                loading="lazy"
-                class="w-full h-56 object-cover object-top hover:scale-105 transition-transform duration-700"
-              />
-            </div>
-            <div class:list={['p-6', i % 2 === 0 ? 'md:pr-8 md:text-right' : 'md:pl-8 md:text-left']}>
-              <span
-                class="inline-block text-[10px] font-semibold tracking-[0.2em] uppercase px-3 py-1 rounded-full border border-[#d4af37]/60 bg-gradient-to-r from-[#faf0d2] to-[#f3dd9a] text-[#8a6d1c]"
+            {/* Cabang horizontal dari batang ke kartu (desktop) */}
+            <div
+              aria-hidden="true"
+              class:list={[
+                'hidden md:block absolute top-[1.65rem] h-0.5 w-10 z-0',
+                even
+                  ? 'right-1/2 bg-gradient-to-l from-[#d4af37] to-transparent'
+                  : 'left-1/2 bg-gradient-to-r from-[#d4af37] to-transparent',
+              ]}
+            ></div>
+
+            <!-- Kartu cabang: kiri/kanan berselang di desktop -->
+            <article
+              class:list={[
+                'surface relative w-full rounded-[1.75rem] overflow-hidden backdrop-blur-md hover:border-wedding-400 transition-all md:w-[calc(50%-2.5rem)] shadow-lg shadow-[#d4af37]/10',
+                even ? 'md:mr-auto' : 'md:ml-auto',
+              ]}
+              data-reveal
+              data-reveal-delay={String(i * 100)}
+            >
+              {/* Foto utama dalam bingkai arch */}
+              {hero && (
+                <div class="p-4 pb-0">
+                  <div class="arch-frame overflow-hidden">
+                    <img
+                      src={makeUrl(hero.src)}
+                      alt={hero.alt}
+                      loading="lazy"
+                      class="w-full aspect-[4/3] object-cover hover:scale-105 transition-transform duration-700"
+                    />
+                  </div>
+                </div>
+              )}
+
+              {/* Foto pendamping */}
+              {rest.length > 0 && (
+                <div class="grid grid-cols-2 gap-3 px-4 pt-3">
+                  {rest.map((p) => (
+                    <div
+                      class="overflow-hidden rounded-2xl ring-1 ring-[#d4af37]/40 shadow-sm"
+                    >
+                      <img
+                        src={makeUrl(p.src)}
+                        alt={p.alt}
+                        loading="lazy"
+                        class="w-full aspect-[4/3] object-cover hover:scale-105 transition-transform duration-700"
+                      />
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {/* Tahun besar + judul + narasi */}
+              <div
+                class:list={[
+                  'p-6 pt-5 text-center',
+                  even ? 'md:text-right' : 'md:text-left',
+                ]}
               >
-                {m.year}
-              </span>
-              <h3 class="font-serif text-xl text-ink mt-3">{m.title}</h3>
-              <p class="text-sm text-ink-soft leading-relaxed mt-2">{m.text}</p>
-            </div>
-          </div>
-        </li>
-      ))}
+                <p
+                  class="year-display font-serif font-bold leading-none"
+                  aria-label={`Tahun ${m.year}`}
+                >
+                  {m.year}
+                </p>
+                <h3 class="font-serif text-xl text-ink mt-2">{m.title}</h3>
+                <div
+                  class:list={[
+                    'mt-3 h-px w-16 bg-gradient-to-r from-transparent via-[#d4af37] to-transparent mx-auto',
+                    even ? 'md:ml-auto md:mr-0' : 'md:mr-auto md:ml-0',
+                  ]}
+                  aria-hidden="true"
+                ></div>
+                <p class="text-sm text-ink-soft leading-relaxed mt-3">{m.text}</p>
+              </div>
+            </article>
+          </li>
+        );
+      })}
     </ol>
   </div>
+
+  <MegaMendung class="absolute bottom-0 left-0 w-full h-8 text-wedding-500/40 pointer-events-none -scale-y-100" />
 </section>
 
 <style>
-  /* ---------- Simpul linimasa emas ---------- */
+  /* ---------- Bingkai arch untuk foto utama ---------- */
+  .arch-frame {
+    border-radius: 10rem 10rem 1.25rem 1.25rem;
+    box-shadow:
+      0 0 0 2px #d4af37,
+      0 0 0 6px rgba(212, 175, 55, 0.18),
+      0 12px 28px -12px rgba(120, 90, 30, 0.45);
+  }
+
+  /* ---------- Tahun raksasa: gradient emas eye-catching ---------- */
+  .year-display {
+    font-size: 3.75rem;
+    background: linear-gradient(180deg, #f4dc8a 0%, #d4af37 55%, #9a7418 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    filter: drop-shadow(0 2px 3px rgba(154, 116, 24, 0.25));
+  }
+  @media (min-width: 768px) {
+    .year-display {
+      font-size: 4.5rem;
+    }
+  }
+
+  /* ---------- Simpul pada batang ---------- */
   .timeline-node {
     background: #fffdf7;
     box-shadow:
