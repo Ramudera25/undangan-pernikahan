@@ -1,5 +1,5 @@
 ---
-import { bankAccounts } from '../data/wedding';
+import { bankAccounts, couple } from '../data/wedding';
 import SulurDivider from './ornaments/SulurDivider.astro';
 import BungaHias from './ornaments/BungaHias.astro';
 ---
@@ -20,12 +20,13 @@ import BungaHias from './ornaments/BungaHias.astro';
   <div class="mb-8 p-5 bg-wedding-100/60 border border-wedding-300 rounded-2xl text-left shadow-sm" data-reveal data-reveal-delay="220">
     <h3 class="font-serif text-base font-bold text-ink mb-1">Alamat Pengiriman Kado Fisik:</h3>
     <p class="text-sm text-ink-soft leading-relaxed">
-      <strong>Kediaman Mempelai Wanita / Lokasi Akad</strong><br/>
+      <strong>{couple.bride.fullName}</strong> (Mempelai Wanita)<br />
       Dk. Butoh Lor RT 06 RW 03, Desa Butoh, Kecamatan Sumberrejo, Kab. Bojonegoro, Jawa Timur
     </p>
     <button
       type="button"
-      data-copy-target="Kediaman Mempelai Wanita / Lokasi Akad, Dk. Butoh Lor RT 06 RW 03, Desa Butoh, Kecamatan Sumberrejo, Kab. Bojonegoro, Jawa Timur"
+      data-copy-target={`${couple.bride.fullName}, Dk. Butoh Lor RT 06 RW 03, Desa Butoh, Kecamatan Sumberrejo, Kab. Bojonegoro, Jawa Timur`}
+      data-copy-label="Alamat"
       class="mt-4 inline-flex items-center gap-2 px-6 py-2.5 bg-wedding-600 text-white text-xs font-semibold rounded-full hover:bg-wedding-700 transition-colors"
     >
       <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -54,6 +55,7 @@ import BungaHias from './ornaments/BungaHias.astro';
         <button
           type="button"
           data-copy-target={rek.number}
+          data-copy-label="Nomor rekening"
           class="mt-5 inline-flex items-center gap-2 px-6 py-2.5 bg-wedding-600 text-white text-xs font-semibold rounded-full hover:bg-wedding-700 transition-colors"
         >
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -122,13 +124,14 @@ import BungaHias from './ornaments/BungaHias.astro';
     toastTimer = window.setTimeout(() => toast.classList.remove('toast-show'), 2400);
   }
 
-  // Satu tombol salin untuk tiap rekening.
+  // Satu tombol salin untuk tiap target (rekening / alamat).
   document.querySelectorAll<HTMLButtonElement>('[data-copy-target]').forEach((btn) => {
     btn.addEventListener('click', async () => {
       const rek = btn.dataset.copyTarget?.trim();
       if (!rek) return;
+      const label = btn.dataset.copyLabel?.trim() || 'Nomor rekening';
       const ok = await copyText(rek);
-      showToast(ok ? `Nomor rekening ${rek} berhasil disalin!` : `Gagal menyalin. Salin manual: ${rek}`, ok);
+      showToast(ok ? `${label} berhasil disalin!` : `Gagal menyalin. Salin manual: ${rek}`, ok);
     });
   });
 </script>

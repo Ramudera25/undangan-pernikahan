@@ -164,6 +164,18 @@ export default function GuestBook() {
 
   return (
     <section id="ucapan" className="py-16 px-4 max-w-md mx-auto space-y-8 scroll-mt-24">
+      {/* ---------- Kepala section: bedakan dari Pohon Doa ---------- */}
+      <div className="text-center space-y-2">
+        <p className="text-[10px] text-wedding-600 tracking-[0.25em] uppercase font-semibold">
+          💌 Buku Tamu
+        </p>
+        <h2 className="font-serif text-3xl text-ink">Ucapan Selamat &amp; Kehadiran</h2>
+        <p className="text-sm text-ink-soft leading-relaxed max-w-sm mx-auto">
+          Kolom klasik untuk menyampaikan ucapan selamat sekaligus konfirmasi kehadiran Anda.
+          Semua ucapan tampil sebagai kartu di bawah ini.
+        </p>
+      </div>
+
       {/* ---------- Konfirmasi kehadiran ---------- */}
       <form onSubmit={handleRSVP} className="surface p-6 rounded-2xl space-y-4">
         <h3 className="font-serif text-2xl text-center text-ink">Konfirmasi Kehadiran</h3>
@@ -249,7 +261,7 @@ export default function GuestBook() {
       {/* ---------- Kolom komentar tanpa login ---------- */}
       <form onSubmit={handleSubmit} className="surface p-6 rounded-2xl space-y-4">
         <FlowerOrnament className="w-24 h-11 mx-auto text-wedding-400/70 -mb-1" />
-        <h3 className="font-serif text-2xl text-center text-ink">Ucapan &amp; Doa</h3>
+        <h3 className="font-serif text-2xl text-center text-ink">Kirim Ucapan Selamat</h3>
         <p className="text-sm text-ink-soft text-center -mt-1">
           Tulis pesan untuk kami — tanpa perlu masuk akun apa pun.
         </p>
@@ -295,11 +307,11 @@ export default function GuestBook() {
         </label>
 
         <label className="block">
-          <span className="text-xs font-medium text-ink-soft">Ucapan &amp; doa</span>
+          <span className="text-xs font-medium text-ink-soft">Ucapan selamat</span>
           <textarea
             value={message}
             onChange={(e) => setMessage(e.target.value)}
-            placeholder="Tulis ucapan & doa untuk kami..."
+            placeholder="Tulis ucapan selamat untuk kedua mempelai..."
             className="mt-1 w-full p-3 border border-wedding-300 rounded-lg text-sm h-28 focus:ring-2 focus:ring-wedding-600 focus:border-transparent outline-none resize-y"
             maxLength={500}
             required
@@ -326,7 +338,7 @@ export default function GuestBook() {
       {/* ---------- Daftar komentar ---------- */}
       <div className="space-y-4">
         <div className="flex items-baseline justify-between">
-          <h4 className="font-serif text-xl text-ink">Buku Tamu</h4>
+          <h4 className="font-serif text-xl text-ink">Daftar Ucapan</h4>
           <p className="text-[11px] text-ink-muted">
             {total} ucapan{total > 0 ? ` · ${hadir} hadir` : ''}
           </p>

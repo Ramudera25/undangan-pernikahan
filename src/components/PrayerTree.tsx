@@ -128,9 +128,15 @@ export default function PrayerTree({ adapter }: Props) {
         Sampaikan Doa Terbaikmu
       </h2>
       <FlowerOrnament className="w-24 h-11 mx-auto text-wedding-400/70 mb-2" />
-      <p className="text-sm text-ink-soft max-w-md mx-auto leading-relaxed mb-2" data-reveal data-reveal-delay="160">
-        Setiap doa yang Anda kirim akan mekar menjadi bunga di pohon ini.
+      <p className="text-sm text-ink-soft max-w-md mx-auto leading-relaxed mb-3" data-reveal data-reveal-delay="160">
+        Berbeda dengan kolom Ucapan di atas, setiap doa yang Anda titipkan di sini akan mekar
+        menjadi bunga di pohon interaktif ini — dan langsung terlihat oleh semua tamu.
         Ketuk bunganya untuk membaca doa dari para tamu.
+      </p>
+      <p data-reveal data-reveal-delay="180">
+        <span className="inline-flex items-center gap-1.5 text-[11px] font-semibold text-wedding-600 bg-wedding-100 border border-wedding-300 rounded-full px-3 py-1">
+          🌸 Interaktif &amp; realtime
+        </span>
       </p>
 
       <p className="text-xs font-semibold text-wedding-600 mb-6" data-reveal data-reveal-delay="200" aria-live="polite">
@@ -138,7 +144,11 @@ export default function PrayerTree({ adapter }: Props) {
       </p>
 
       {/* ---------- Pohon ---------- */}
-      <div className="relative mx-auto max-w-md" data-reveal data-reveal-delay="240">
+      <div
+        className="relative mx-auto max-w-md rounded-[2.5rem] px-2 py-6 bg-gradient-to-b from-[#fbe9f1]/70 via-wedding-50/40 to-transparent"
+        data-reveal
+        data-reveal-delay="240"
+      >
         <svg
           viewBox="0 0 400 470"
           role="img"
@@ -274,8 +284,7 @@ export default function PrayerTree({ adapter }: Props) {
           </p>
         )}
         <p className="text-[11px] leading-relaxed text-ink-muted text-center">
-          Doa tersimpan di peramban perangkat ini. Buku doa bersama untuk semua tamu
-          akan hadir setelah tersambung ke layanan penyimpanan.
+          Doa Anda tersimpan dan langsung terlihat oleh semua tamu secara realtime.
         </p>
       </form>
 

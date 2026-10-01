@@ -69,13 +69,25 @@ const ITEMS: NavItem[] = [
       </svg>
     ),
   },
+  {
+    id: 'hadiah',
+    target: 'amplop',
+    label: 'Hadiah',
+    icon: (
+      <svg viewBox="0 0 24 24" className="w-5 h-5" {...stroke}>
+        <rect x="4" y="9" width="16" height="3" rx="1" />
+        <path d="M6 12v8a1 1 0 001 1h10a1 1 0 001-1v-8M12 9v12" />
+        <path d="M12 9S8.5 9 7.2 7.7C6.2 6.7 6.9 5.4 8.1 5.6 9.6 5.9 12 9 12 9zm0 0s3.5 0 4.8-1.3c1-1 .3-2.3-.9-2.1C14.4 5.9 12 9 12 9z" />
+      </svg>
+    ),
+  },
 ];
 
 /** Batas atas (px) untuk menentukan section yang sedang aktif. */
 const ACTIVE_LINE = 140;
 
 /**
- * Toolbar bawah 5 menu dengan penanda menu aktif mengikuti posisi gulir,
+ * Toolbar bawah 6 menu dengan penanda menu aktif mengikuti posisi gulir,
  * sudut membulat, latar putih kebiruan transparan, dan ruang aman ponsel.
  */
 export default function BottomNav() {
@@ -141,7 +153,7 @@ export default function BottomNav() {
       style={{ bottom: 'calc(env(safe-area-inset-bottom, 0px) + 14px)' }}
     >
       <div className="rounded-3xl border border-wedding-300 bg-wedding-50/85 backdrop-blur-lg shadow-[0_18px_40px_-20px_rgba(36,62,80,0.45)] px-2 py-2">
-        <ul className="grid grid-cols-5 gap-1">
+        <ul className="grid grid-cols-6 gap-1">
           {ITEMS.map((item) => {
             const isActive = active === item.id;
             return (
