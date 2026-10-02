@@ -164,7 +164,7 @@ export const milestones = [
     year: '2022',
     title: 'Bertumbuh dalam Doa',
     photos: [
-      { src: 'love-story/2022-1-kampus-uin.jpg', alt: 'Bayu dan Lilik berjalan di jalan kampus UIN Walisongo' },
+      { src: 'love-story/2022-1-perpustakaan-almamater.jpg', alt: 'Bayu dan Lilik beralmamater kuning-hijau duduk bersama di perpustakaan UIN Walisongo' },
       { src: 'love-story/2022-2-perpustakaan-tatap.jpg', alt: 'Bayu dan Lilik bertatap muka di perpustakaan kampus' },
       { src: 'love-story/2022-3-perpustakaan-tawa.jpg', alt: 'Bayu dan Lilik tertawa bersama di perpustakaan' },
     ],
