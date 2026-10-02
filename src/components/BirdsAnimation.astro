@@ -1,0 +1,156 @@
+---
+---
+<canvas
+  id="birds-canvas"
+  aria-hidden="true"
+  class="pointer-events-none fixed inset-0 z-40 w-full h-full"></canvas>
+
+<script>
+  /**
+   * Kawanan burung siluet yang terbang terus-menerus melintasi seluruh halaman.
+   * Pola mengikuti PetalsAnimation: canvas fixed overlay, pointer-events none,
+   * hormat pada prefers-reduced-motion, jeda saat tab tidak terlihat.
+   */
+  class Bird {
+    x: number;
+    y: number;
+    baseY: number;
+    size: number;
+    speed: number;
+    dir: 1 | -1;
+    opacity: number;
+    bobAmp: number;
+    bobFreq: number;
+    bobPhase: number;
+    flapFreq: number;
+    flapPhase: number;
+
+    constructor(
+      private canvasWidth: number,
+      private canvasHeight: number,
+      initial: boolean,
+    ) {
+      this.x = 0;
+      this.y = 0;
+      this.baseY = 0;
+      this.size = 6;
+      this.speed = 0.6;
+      this.dir = 1;
+      this.opacity = 0.4;
+      this.bobAmp = 10;
+      this.bobFreq = 0.002;
+      this.bobPhase = 0;
+      this.flapFreq = 0.12;
+      this.flapPhase = 0;
+      this.reset(initial);
+    }
+
+    /** Tempatkan burung: di dalam layar (awal) atau di tepi luar (respawn). */
+    reset(inside: boolean) {
+      const w = this.canvasWidth;
+      const h = this.canvasHeight;
+      this.dir = Math.random() < 0.5 ? 1 : -1;
+      this.size = Math.random() * 8 + 6; // bentang sayap 6–14 px
+      this.speed = Math.random() * 0.7 + 0.4;
+      this.opacity = Math.random() * 0.18 + 0.28; // 0.28–0.46: siluet lembut
+      this.baseY = h * (Math.random() * 0.47 + 0.08); // sepertiga atas–tengah layar
+      this.bobAmp = Math.random() * 12 + 6;
+      this.bobFreq = Math.random() * 0.0015 + 0.001;
+      this.bobPhase = Math.random() * Math.PI * 2;
+      this.flapFreq = Math.random() * 0.06 + 0.09;
+      this.flapPhase = Math.random() * Math.PI * 2;
+      const margin = 80 + Math.random() * 120; // offset acak agar kemunculan tak serempak
+      this.x =
+        this.dir === 1
+          ? (inside ? Math.random() * w : -margin)
+          : (inside ? Math.random() * w : w + margin);
+      this.y = this.baseY;
+    }
+
+    update(now: number) {
+      this.x += this.speed * this.dir;
+      this.y = this.baseY + Math.sin(now * this.bobFreq + this.bobPhase) * this.bobAmp;
+      this.flapPhase += this.flapFreq;
+
+      const out =
+        (this.dir === 1 && this.x > this.canvasWidth + 90) ||
+        (this.dir === -1 && this.x < -90);
+      if (out) this.reset(false);
+    }
+
+    draw(ctx: CanvasRenderingContext2D, color: string) {
+      const s = this.size;
+      // Kepak sayap: -1 (sayap turun) .. 1 (sayap terangkat)
+      const lift = Math.sin(this.flapPhase) * s * 0.55;
+      ctx.save();
+      ctx.translate(this.x, this.y);
+      ctx.globalAlpha = this.opacity;
+      ctx.strokeStyle = color;
+      ctx.lineWidth = Math.max(1.4, s * 0.16);
+      ctx.lineCap = 'round';
+      // Siluet burung camar: dua busur dari badan ke ujung sayap
+      ctx.beginPath();
+      ctx.moveTo(-s, -lift);
+      ctx.quadraticCurveTo(-s * 0.45, s * 0.25, 0, 0);
+      ctx.quadraticCurveTo(s * 0.45, s * 0.25, s, -lift);
+      ctx.stroke();
+      ctx.restore();
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const canvas = document.getElementById('birds-canvas') as HTMLCanvasElement;
+    if (!canvas) return;
+
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      canvas.style.display = 'none';
+      return;
+    }
+
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    let width = (canvas.width = window.innerWidth);
+    let height = (canvas.height = window.innerHeight);
+
+    window.addEventListener('resize', () => {
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+    });
+
+    const totalBirds = window.innerWidth < 768 ? 7 : 12; // lebih sedikit di HP agar enteng
+    const birds: Bird[] = Array.from(
+      { length: totalBirds },
+      () => new Bird(width, height, true),
+    );
+
+    let rafId = 0;
+    let running = true;
+
+    function animate(now: number) {
+      if (!running) return;
+      // Warna siluet menyesuaikan mode: navy di siang, terang lembut di malam
+      const dark = document.documentElement.classList.contains('dark');
+      const color = dark ? '#DCEEF8' : '#243E50';
+      ctx?.clearRect(0, 0, width, height);
+      birds.forEach((bird) => {
+        bird.update(now);
+        bird.draw(ctx!, color);
+      });
+      rafId = requestAnimationFrame(animate);
+    }
+
+    // Jeda animasi saat tab tidak terlihat agar hemat baterai
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) {
+        cancelAnimationFrame(rafId);
+        running = false;
+      } else if (!running) {
+        running = true;
+        requestAnimationFrame(animate);
+      }
+    });
+
+    requestAnimationFrame(animate);
+  });
+</script>
