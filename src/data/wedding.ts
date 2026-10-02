@@ -164,9 +164,9 @@ export const milestones = [
     year: '2022',
     title: 'Bertumbuh dalam Doa',
     photos: [
-      { src: 'love-story/2022-1-perpustakaan-almamater.jpg', alt: 'Bayu dan Lilik beralmamater kuning-hijau duduk bersama di perpustakaan UIN Walisongo' },
+      { src: 'love-story/2022-1-kampus-uin.jpg', alt: 'Bayu dan Lilik berpapasan di jalan kampus UIN Walisongo' },
       { src: 'love-story/2022-2-perpustakaan-tatap.jpg', alt: 'Bayu dan Lilik bertatap muka di perpustakaan kampus' },
-      { src: 'love-story/2022-3-perpustakaan-tawa.jpg', alt: 'Bayu dan Lilik tertawa bersama di perpustakaan' },
+      { src: 'love-story/2022-1-perpustakaan-almamater.jpg', alt: 'Bayu dan Lilik beralmamater kuning-hijau duduk bersama di perpustakaan UIN Walisongo' },
     ],
     text: 'Tahun-tahun berikutnya adalah tentang memantaskan diri. Kami sibuk dengan karier dan tanggung jawab masing-masing, menjalani hari yang panjang, dan belajar menjadi pribadi yang lebih dewasa. Meski jarang bertegur sapa, nama itu tidak pernah benar-benar hilang — ia tetap tinggal, hadir diam-diam di sela doa yang kami panjatkan setiap malam.',
   },
